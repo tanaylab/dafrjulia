@@ -153,7 +153,7 @@ get_dataframe_query <- function(daf = NULL, query = NULL, cache = TRUE) {
 #' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html) for details.
 #' @export
 parse_query <- function(query_string) {
-    julia_call("DataAxesFormats.Queries.Query", query_string)
+    julia_call("DataAxesFormats.Queries.parse_query", query_string)
 }
 
 #' Get the number of dimensions of a query result
@@ -965,10 +965,6 @@ ReduceToRow <- function(reduction, ...) {
 #'   for other queries.
 #' @export
 is_axis_query <- function(query) {
-    # Convert string to Query object if needed
-    if (is.character(query)) {
-        query <- parse_query(query)
-    }
     julia_call("DataAxesFormats.Queries.is_axis_query", query)
 }
 
@@ -982,10 +978,6 @@ is_axis_query <- function(query) {
 #'   or for building compound queries programmatically.
 #' @export
 query_axis_name <- function(query) {
-    # Convert string to Query object if needed
-    if (is.character(query)) {
-        query <- parse_query(query)
-    }
     julia_call("DataAxesFormats.Queries.query_axis_name", query)
 }
 

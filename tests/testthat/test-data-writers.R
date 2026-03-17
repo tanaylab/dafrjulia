@@ -305,7 +305,7 @@ test_that("get_frame with named list columns works", {
     set_vector(daf, "batch", "sex", c("Male", "Female"))
 
     # Get frame with named list (complex queries)
-    result <- get_frame(daf, "cell", list(age = ": age", sex = ": batch => sex"))
+    result <- get_frame(daf, "cell", list(age = ": age", sex = ": batch : sex"))
     expect_true(is.data.frame(result))
     expect_true("age" %in% names(result))
     expect_true("sex" %in% names(result))

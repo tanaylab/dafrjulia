@@ -590,7 +590,7 @@ test_that("Count operation with type parameter", {
 
 test_that("Count query string format works", {
     daf <- setup_test_data()
-    result <- get_query(daf, "/ cell : values %> Count")
+    result <- get_query(daf, "@ cell : values %> Count")
     # Count counts all elements
     expect_equal(result, 3)
 })
@@ -693,7 +693,7 @@ test_that("Mode query string format works", {
     daf <- memory_daf(name = "mode_string_test!")
     add_axis(daf, "item", c("A", "B", "C", "D", "E"))
     set_vector(daf, "item", "vals", c(1, 2, 2, 3, 2))
-    result <- get_query(daf, "/ item : vals %> Mode")
+    result <- get_query(daf, "@ item : vals %> Mode")
     expect_equal(result, 2)
 })
 

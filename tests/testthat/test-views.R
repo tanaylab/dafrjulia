@@ -31,7 +31,7 @@ test_that("viewer creates correct views", {
     view <- viewer(
         daf,
         name = "view!",
-        axes = list("obs" = "/ cell", "var" = "/ gene"),
+        axes = list("obs" = "@ cell", "var" = "@ gene"),
         data = data_list
     )
 

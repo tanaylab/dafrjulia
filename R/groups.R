@@ -17,12 +17,8 @@ group_names <- function(daf, axis, entries_of_groups, prefix) {
     validate_daf_object(daf)
     # Convert R list to Julia Vector{Vector{Int}}
     entries_of_groups <- lapply(entries_of_groups, as.integer)
-    # Use julia_eval to properly construct the typed vector
-    jl_entries <- JuliaCall::julia_eval("Vector{Vector{Int}}()")
-    for (group in entries_of_groups) {
-        JuliaCall::julia_call("push!", jl_entries, group)
-    }
-    julia_call("DataAxesFormats.Groups.group_names", daf$jl_obj, axis, jl_entries, prefix = prefix)
+    entry_names <- axis_entries(daf, axis)
+    julia_call("DataAxesFormats.Groups.group_names", entry_names, entries_of_groups, prefix = prefix)
 }
 
 #' Compact group indices

@@ -23,7 +23,7 @@ test_that("adapter works correctly", {
     result <- adapter(
         daf,
         computation,
-        input_axes = list("obs" = "/ cell")
+        input_axes = list("obs" = "@ cell")
     )
 
     # Check that computation results are returned
@@ -58,7 +58,7 @@ test_that("adapter captures new axes", {
     result <- adapter(
         daf,
         computation,
-        input_axes = list("obs" = "/ cell")
+        input_axes = list("obs" = "@ cell")
     )
 
     # Check the computation result
@@ -81,7 +81,7 @@ test_that("adapter with scalar renaming works", {
     # Define a computation function that uses get_query
     computation <- function(adapted_daf) {
         # Get the input scalar using a query
-        input_value <- get_query(adapted_daf, ": input")
+        input_value <- get_scalar(adapted_daf, "input")
 
         # Set the output scalar
         set_scalar(adapted_daf, "output", input_value)

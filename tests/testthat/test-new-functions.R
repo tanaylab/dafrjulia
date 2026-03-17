@@ -46,10 +46,10 @@ test_that("version counters work", {
 
 test_that("is_axis_query works", {
     # Axis query should return TRUE
-    expect_true(is_axis_query("/ cell"))
+    expect_true(is_axis_query("@ cell"))
 
     # Vector query should return FALSE
-    expect_false(is_axis_query("/ cell : age"))
+    expect_false(is_axis_query("@ cell : age"))
 
     # Query with Axis() should return TRUE
     axis_q <- Axis("cell")
@@ -57,8 +57,8 @@ test_that("is_axis_query works", {
 })
 
 test_that("query_axis_name works", {
-    expect_equal(query_axis_name("/ cell"), "cell")
-    expect_equal(query_axis_name("/ gene"), "gene")
+    expect_equal(query_axis_name("@ cell"), "cell")
+    expect_equal(query_axis_name("@ gene"), "gene")
 
     axis_q <- Axis("metacell")
     expect_equal(query_axis_name(axis_q), "metacell")
