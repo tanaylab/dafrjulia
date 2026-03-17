@@ -47,6 +47,8 @@ reference:
       - read_only
       - chain_reader
       - complete_daf
+      - complete_chain
+      - complete_path
       - open_daf
 
   - title: "Writers"
@@ -112,6 +114,10 @@ reference:
       - Mode
       - CountBy
       - GroupBy
+      - GroupColumnsBy
+      - GroupRowsBy
+      - ReduceToColumn
+      - ReduceToRow
 
   - title: "Query Operations - Logical"
     desc: "Logical operations for filtering and combining data"
@@ -129,10 +135,15 @@ reference:
     contents:
       - Axis
       - Lookup
+      - LookupScalar
+      - LookupMatrix
       - Names
       - AsAxis
       - Fetch
       - starts_with("If")
+      - BeginMask
+      - BeginNegatedMask
+      - EndMask
       - MaskSlice
       - starts_with("SquareMask")
 
@@ -181,4 +192,9 @@ reference:
       - empty_cache
       - set_seed
       - setup_logger
+
+  - title: "Deprecated"
+    desc: "Deprecated functions and their replacements"
+    contents:
+      - deprecated-queries
 
