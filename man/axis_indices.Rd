@@ -25,5 +25,5 @@ Returns the integer indices for specified entry names along an axis.
 This function maps names to their position indices along the axis.
 If \code{allow_empty} is TRUE, empty strings are converted to index -1.
 Indices in R are 1-based (first element has index 1), consistent with R conventions.
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/readers.html#DataAxesFormats.Readers.axis_indices}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.axis_indices}{documentation} for details.
 }

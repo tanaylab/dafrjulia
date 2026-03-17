@@ -25,5 +25,5 @@ its parent repository (if any).
 If mode is "r+", only the first (leaf) repository is opened in write mode.
 The \code{base_daf_repository} path is relative to the directory containing the child repository.
 
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/complete.html}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/complete.html}{documentation} for details.
 }

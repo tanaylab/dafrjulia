@@ -24,5 +24,5 @@ Removes a vector property with the specified name from the Daf data set.
 \details{
 If \code{must_exist} is TRUE and the vector doesn't exist, an error will be raised.
 Otherwise, the function will silently succeed even if the vector doesn't exist.
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/writers.html#DataAxesFormats.Writers.delete_vector!}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/writers.html#DataAxesFormats.Writers.delete_vector!}{documentation} for details.
 }

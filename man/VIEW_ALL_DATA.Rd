@@ -16,6 +16,6 @@ A list of pairs to use in the \code{data} parameter of \code{viewer} to expose a
 See the Julia documentation for details.
 }
 \references{
-\url{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/views.html#DataAxesFormats.Views.VIEW_ALL_DATA}
+\url{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/views.html#DataAxesFormats.Views.VIEW_ALL_DATA}
 }
 \keyword{datasets}

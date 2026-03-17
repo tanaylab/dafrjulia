@@ -26,5 +26,5 @@ Removes a matrix property with the specified name from the Daf data set.
 \details{
 If \code{must_exist} is TRUE and the matrix doesn't exist, an error will be raised.
 Otherwise, the function will silently succeed even if the matrix doesn't exist.
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/writers.html#DataAxesFormats.Writers.delete_matrix!}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/writers.html#DataAxesFormats.Writers.delete_matrix!}{documentation} for details.
 }

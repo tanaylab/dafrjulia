@@ -20,5 +20,5 @@ Returns the number of entries along the specified axis in the Daf data set.
 \details{
 The axis length corresponds to the size of vector properties for this axis
 and to one of the dimensions of matrix properties involving this axis.
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/readers.html#DataAxesFormats.Readers.axis_length}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.axis_length}{documentation} for details.
 }

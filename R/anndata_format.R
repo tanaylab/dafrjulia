@@ -9,7 +9,7 @@
 #' @param X_is Optional name for the main matrix
 #' @param unsupported_handler How to handle unsupported features (one of IGNORE_HANDLER, WARN_HANDLER, or ERROR_HANDLER)
 #' @return A Daf object
-#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/anndata_format.html#anndata_as_daf) for details.
+#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/anndata_format.html#anndata_as_daf) for details.
 #' Note that this function works with h5ad file paths, as the Julia AnnData object comes from the Muon.jl package
 #' and is not compatible with R/python anndata implementations.
 #' @export
@@ -43,7 +43,7 @@ h5ad_as_daf <- function(h5ad, name = NULL, obs_is = NULL, var_is = NULL, X_is = 
 #' @param X_is Optional name for the main matrix
 #' @param X_eltype Optional element type for the X matrix (e.g., "Float32"). If NULL, the original type is preserved.
 #' @return Invisibly returns the input Daf object
-#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/anndata_format.html#DataAxesFormats.AnnDataFormat.daf_as_anndata) for details.
+#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/anndata_format.html#DataAxesFormats.AnnDataFormat.daf_as_anndata) for details.
 #' Note this just creates the h5ad file. The Julia (Muon.jl) AnnData object is not returned or exposed to R.
 #' @export
 daf_as_h5ad <- function(daf, h5ad, obs_is = NULL, var_is = NULL, X_is = NULL, X_eltype = NULL) {

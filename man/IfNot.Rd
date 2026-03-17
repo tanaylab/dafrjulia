@@ -18,6 +18,6 @@ A query operation object that can be used in a query sequence
 A query operation providing a value to use for "false-ish" values in a vector.
 This replaces empty strings, zero numeric values, or false Boolean values with the specified value.
 This is useful for handling default or missing values in data without completely replacing the property.
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Queries.IfNot}{documentation} for
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.IfNot}{documentation} for
 details.
 }

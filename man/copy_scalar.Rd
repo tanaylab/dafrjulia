@@ -42,5 +42,5 @@ The destination Daf object (invisibly)
 Copy a scalar from source to destination
 }
 \details{
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/copies.html#DataAxesFormats.Copies.copy_scalar!}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/copies.html#DataAxesFormats.Copies.copy_scalar!}{documentation} for details.
 }

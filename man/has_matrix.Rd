@@ -27,5 +27,5 @@ Determines whether a matrix property with the specified name exists for the give
 Matrix properties store two-dimensional data along two axes.
 If \code{relayout} is TRUE, this function will also check if the matrix exists with
 the axes flipped (i.e., rows as columns and columns as rows).
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/readers.html#DataAxesFormats.Readers.has_matrix}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.has_matrix}{documentation} for details.
 }

@@ -51,5 +51,5 @@ The destination Daf object (invisibly)
 Concatenate multiple Daf data sets along some axis
 }
 \details{
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/concat.html}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/concat.html}{documentation} for details.
 }

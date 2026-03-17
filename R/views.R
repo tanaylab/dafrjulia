@@ -4,7 +4,7 @@
 #' See the Julia documentation for details.
 #'
 #' @format Character string
-#' @references \url{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/views.html#DataAxesFormats.Views.ALL_SCALARS}
+#' @references \url{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/views.html#DataAxesFormats.Views.ALL_SCALARS}
 #' @export
 ALL_SCALARS <- "*"
 
@@ -14,7 +14,7 @@ ALL_SCALARS <- "*"
 #' See the Julia documentation for details.
 #'
 #' @format Character string
-#' @references \url{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/views.html#DataAxesFormats.Views.ALL_AXES}
+#' @references \url{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/views.html#DataAxesFormats.Views.ALL_AXES}
 #' @export
 ALL_AXES <- "*"
 
@@ -24,7 +24,7 @@ ALL_AXES <- "*"
 #' See the Julia documentation for details.
 #'
 #' @format Character vector of length 2
-#' @references \url{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/views.html#DataAxesFormats.Views.ALL_VECTORS}
+#' @references \url{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/views.html#DataAxesFormats.Views.ALL_VECTORS}
 #' @export
 ALL_VECTORS <- c("*", "*")
 
@@ -34,7 +34,7 @@ ALL_VECTORS <- c("*", "*")
 #' See the Julia documentation for details.
 #'
 #' @format Character vector of length 3
-#' @references \url{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/views.html#DataAxesFormats.Views.ALL_MATRICES}
+#' @references \url{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/views.html#DataAxesFormats.Views.ALL_MATRICES}
 #' @export
 ALL_MATRICES <- c("*", "*", "*")
 
@@ -44,7 +44,7 @@ ALL_MATRICES <- c("*", "*", "*")
 #' See the Julia documentation for details.
 #'
 #' @format A named list representing the pair ALL_AXES => "="
-#' @references \url{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/views.html#DataAxesFormats.Views.VIEW_ALL_AXES}
+#' @references \url{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/views.html#DataAxesFormats.Views.VIEW_ALL_AXES}
 #' @export
 VIEW_ALL_AXES <- stats::setNames(list("="), ALL_AXES)
 
@@ -54,7 +54,7 @@ VIEW_ALL_AXES <- stats::setNames(list("="), ALL_AXES)
 #' See the Julia documentation for details.
 #'
 #' @format A named list representing the pair ALL_SCALARS => "="
-#' @references \url{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/views.html#DataAxesFormats.Views.VIEW_ALL_SCALARS}
+#' @references \url{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/views.html#DataAxesFormats.Views.VIEW_ALL_SCALARS}
 #' @export
 VIEW_ALL_SCALARS <- stats::setNames(list("="), ALL_SCALARS)
 
@@ -64,7 +64,7 @@ VIEW_ALL_SCALARS <- stats::setNames(list("="), ALL_SCALARS)
 #' See the Julia documentation for details.
 #'
 #' @format A named list representing the pair ALL_VECTORS => "="
-#' @references \url{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/views.html#DataAxesFormats.Views.VIEW_ALL_VECTORS}
+#' @references \url{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/views.html#DataAxesFormats.Views.VIEW_ALL_VECTORS}
 #' @export
 VIEW_ALL_VECTORS <- stats::setNames(list("="), paste(ALL_VECTORS, collapse = ","))
 
@@ -74,7 +74,7 @@ VIEW_ALL_VECTORS <- stats::setNames(list("="), paste(ALL_VECTORS, collapse = ","
 #' See the Julia documentation for details.
 #'
 #' @format A named list representing the pair ALL_MATRICES => "="
-#' @references \url{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/views.html#DataAxesFormats.Views.VIEW_ALL_MATRICES}
+#' @references \url{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/views.html#DataAxesFormats.Views.VIEW_ALL_MATRICES}
 #' @export
 VIEW_ALL_MATRICES <- stats::setNames(list("="), paste(ALL_MATRICES, collapse = ","))
 
@@ -85,7 +85,7 @@ VIEW_ALL_MATRICES <- stats::setNames(list("="), paste(ALL_MATRICES, collapse = "
 #' See the Julia documentation for details.
 #'
 #' @format A list containing VIEW_ALL_SCALARS, VIEW_ALL_VECTORS, and VIEW_ALL_MATRICES
-#' @references \url{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/views.html#DataAxesFormats.Views.VIEW_ALL_DATA}
+#' @references \url{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/views.html#DataAxesFormats.Views.VIEW_ALL_DATA}
 #' @export
 VIEW_ALL_DATA <- list(VIEW_ALL_SCALARS, VIEW_ALL_VECTORS, VIEW_ALL_MATRICES)
 
@@ -99,7 +99,7 @@ VIEW_ALL_DATA <- list(VIEW_ALL_SCALARS, VIEW_ALL_VECTORS, VIEW_ALL_MATRICES)
 #' @param data Named list specifying data to expose
 #'
 #' @return A read-only Daf object
-#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/views.html#DataAxesFormats.Views.viewer) for details.
+#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/views.html#DataAxesFormats.Views.viewer) for details.
 #' @export
 viewer <- function(daf, name = NULL, axes = NULL, data = NULL) {
     validate_daf_object(daf)

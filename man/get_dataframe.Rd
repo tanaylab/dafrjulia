@@ -38,5 +38,5 @@ Retrieves multiple vector properties for an axis as a dataframe.
 This function allows retrieving multiple vectors for the same axis in a single operation.
 The \code{columns} parameter can be a vector of vector names, or a named list mapping output column names
 to vector names or query strings.
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Queries.get_frame}{documentation} for more details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.get_frame}{documentation} for more details.
 }

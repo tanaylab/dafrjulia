@@ -192,7 +192,6 @@ jl_pairify_data <- function(data) {
 }
 
 
-
 #' Convert R types to Julia types
 #'
 #' This function converts R types or values to their appropriate Julia type equivalents.
@@ -328,7 +327,6 @@ create_julia_sparse_matrix <- function(sparse_matrix) {
         need_return = "Julia"
     ))
 }
-
 
 
 #' Convert an R vector to a Julia Vector, safely handling single-element vectors

@@ -18,5 +18,5 @@ Returns the names of all scalar properties in the Daf data set.
 \details{
 This function provides the complete set of available scalar properties
 that can be retrieved using \code{get_scalar()}.
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/readers.html#DataAxesFormats.Readers.scalars_set}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.scalars_set}{documentation} for details.
 }

@@ -1,7 +1,7 @@
 #' Create a Daf object with in-memory storage
 #'
 #' This function creates a Daf object that stores data in memory. See the Julia
-#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/memory_format.html) for details.
+#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/memory_format.html) for details.
 #'
 #' @param name The name of the Daf object (default: "memory")
 #' @return A Daf object with in-memory storage
@@ -14,7 +14,7 @@ memory_daf <- function(name = "memory") {
 #' Create a Daf object with file-based storage
 #'
 #' This function creates a Daf object that stores data in disk files. See the Julia
-#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/files_format.html) for details.
+#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/files_format.html) for details.
 #'
 #' @param path Path to the files storage location
 #' @param mode Mode to open the storage ("r" for read-only, "r+" for read-write)
@@ -30,7 +30,7 @@ files_daf <- function(path, mode = "r", name = NULL) {
 #' Create a Daf object with HDF5-based storage
 #'
 #' This function creates a Daf object that stores data in an HDF5 disk file. See the Julia
-#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/h5df_format.html) for details.
+#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/h5df_format.html) for details.
 #'
 #' @param root Path to the HDF5 file, or a Julia HDF5 File or Group object
 #' @param mode Mode to open the storage ("r" for read-only, "r+" for read-write)
@@ -46,7 +46,7 @@ h5df <- function(root, mode = "r", name = NULL) {
 #' Create a read-only chain wrapper of DafReader objects
 #'
 #' This function creates a read-only chain wrapper of DafReader objects, presenting them as a single DafReader.
-#' See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/chains.html#DataAxesFormats.Chains.chain_reader) for details.
+#' See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/chains.html#DataAxesFormats.Chains.chain_reader) for details.
 #'
 #' @param dsets List of Daf objects to chain
 #' @param name Optional name for the chained Daf object
@@ -64,7 +64,7 @@ chain_reader <- function(dsets, name = NULL) {
 #' Create a writable chain wrapper of DafReader objects
 #'
 #' This function creates a chain wrapper for a chain of DafReader data, presenting them as a single DafWriter.
-#' See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/chains.html#DataAxesFormats.Chains.chain_writer) for details.
+#' See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/chains.html#DataAxesFormats.Chains.chain_writer) for details.
 #'
 #' @param dsets List of Daf objects to chain
 #' @param name Optional name for the chained Daf object

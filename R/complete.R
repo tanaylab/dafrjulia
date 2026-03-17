@@ -11,7 +11,7 @@
 #' @details If mode is "r+", only the first (leaf) repository is opened in write mode.
 #'   The `base_daf_repository` path is relative to the directory containing the child repository.
 #'
-#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/complete.html) for details.
+#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/complete.html) for details.
 #' @export
 complete_daf <- function(leaf, mode = "r", name = NULL) {
     # Validate mode parameter
@@ -21,6 +21,58 @@ complete_daf <- function(leaf, mode = "r", name = NULL) {
 
     # Call the Julia implementation directly
     jl_obj <- julia_call("DataAxesFormats.complete_daf", leaf, mode, name = name)
+
+    return(Daf(jl_obj))
+}
+
+#' Create a persistent chain from a base Daf and a new Daf
+#'
+#' Immediately after creating an empty disk-based `new_daf`, chain it with a disk-based
+#' `base_daf` and return the new chain. If `axes` and/or `data` are specified, the `new_daf`
+#' will be chained on top of a view of the `base_daf`.
+#'
+#' This will set the `base_daf_repository` scalar property of the `new_daf` to point at the
+#' `base_daf`, and if view `axes` or `data` were specified, the `base_daf_view` as well.
+#' It should therefore be possible to recreate the chain by calling `complete_daf` in the future.
+#'
+#' @param base_daf A Daf object to use as the base (read-only) data
+#' @param new_daf A Daf object to use as the new (writable) data on top of the base
+#' @param name Optional name for the chained Daf object
+#' @param axes Optional named list specifying axes to expose from the base (same format as `viewer`)
+#' @param data Optional named list specifying data to expose from the base (same format as `viewer`)
+#' @param absolute If TRUE, store the absolute path to the base_daf. If FALSE (default),
+#'   store a relative path for portability.
+#' @return A writable Daf object chaining the base and new data
+#' @details By default, the stored base path in the `new_daf` will be the relative path to the
+#'   `base_daf`, for the common case where a group of repositories is stored under a common root.
+#'   This allows the root to be renamed or moved and still allow `complete_daf` to work.
+#'
+#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/chains.html#DataAxesFormats.Chains.complete_chain!) for details.
+#' @export
+complete_chain <- function(base_daf, new_daf, name = NULL, axes = NULL, data = NULL, absolute = FALSE) {
+    validate_daf_object(base_daf)
+    validate_daf_object(new_daf)
+
+    # Process axes
+    if (!is.null(axes)) {
+        axes <- jl_pairify_axes(axes)
+    }
+
+    # Process data
+    if (!is.null(data)) {
+        data <- jl_pairify_data(data)
+    }
+
+    # Call the Julia implementation
+    jl_obj <- julia_call("DataAxesFormats.complete_chain!",
+        base_daf = base_daf$jl_obj,
+        new_daf = new_daf$jl_obj,
+        name = name,
+        axes = axes,
+        data = data,
+        absolute = absolute,
+        need_return = "Julia"
+    )
 
     return(Daf(jl_obj))
 }
@@ -40,7 +92,7 @@ complete_daf <- function(leaf, mode = "r", name = NULL) {
 #'   As a shorthand, you can specify a path to a group within an HDF5 file by using a path
 #'   with a `.h5dfs` suffix, followed by `#` and the path of the group in the file.
 #'
-#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/complete.html) for details.
+#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/complete.html) for details.
 #' @export
 open_daf <- function(path, mode = "r", name = NULL) {
     # Determine the type of Daf repository based on the path

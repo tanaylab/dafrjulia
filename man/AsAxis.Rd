@@ -16,9 +16,9 @@ A query operation object that can be used in a query sequence
 }
 \description{
 A query operation that treats values in a vector property as names of entries in another axis.
-This operation is commonly used with three other operations: \code{Fetch}, \code{CountBy}, and \code{GroupBy},
+This operation is commonly used with \code{CountBy} and \code{GroupBy},
 where vector values need to be interpreted as axis entry names. If no axis is specified, values
 are treated as entries of a default axis based on context. See the Julia
-\href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Queries.AsAxis}{documentation} for
+\href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.AsAxis}{documentation} for
 details.
 }

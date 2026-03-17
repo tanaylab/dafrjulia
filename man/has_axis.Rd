@@ -20,5 +20,5 @@ Determines whether an axis with the specified name exists in the Daf data set.
 \details{
 Axes are fundamental dimensions in a Daf data set along which vector and matrix
 data are stored. Each axis has a collection of unique named entries.
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/readers.html#DataAxesFormats.Readers.has_axis}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.has_axis}{documentation} for details.
 }

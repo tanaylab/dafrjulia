@@ -18,7 +18,7 @@ A query operation object that can be used in a query sequence
 A query operation for filtering based on numeric comparison.
 This operation converts a vector property to a Boolean mask by comparing each value
 to the specified threshold using the less-than (\code{<}) operator. Only entries where the
-comparison returns true are included in the result. Typically used after a Lookup operation
+comparison returns true are included in the result. Typically used after a LookupVector operation
 to filter entries based on numeric values.
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Queries.IsLess}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.IsLess}{documentation} for details.
 }

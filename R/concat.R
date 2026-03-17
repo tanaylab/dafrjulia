@@ -13,21 +13,22 @@
 #' @param merge Optional named list mapping property keys to merge actions ("SkipProperty", "LastValue", or "CollectAxis")
 #' @param overwrite Whether to overwrite existing data
 #' @return The destination Daf object (invisibly)
-#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/concat.html) for details.
+#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/concat.html) for details.
 #' @export
 concatenate <- function(
-    destination,
-    axis,
-    sources,
-    names = NULL,
-    dataset_axis = "dataset",
-    dataset_property = TRUE,
-    prefix = FALSE,
-    prefixed = NULL,
-    empty = NULL,
-    sparse_if_saves_storage_fraction = 0.1,
-    merge = NULL,
-    overwrite = FALSE) {
+  destination,
+  axis,
+  sources,
+  names = NULL,
+  dataset_axis = "dataset",
+  dataset_property = TRUE,
+  prefix = FALSE,
+  prefixed = NULL,
+  empty = NULL,
+  sparse_if_saves_storage_fraction = 0.1,
+  merge = NULL,
+  overwrite = FALSE
+) {
     validate_daf_object(destination)
 
     # Validate sources is a list of Daf objects

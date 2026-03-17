@@ -25,5 +25,5 @@ Returns the names of all matrix properties for the specified pair of axes.
 This function provides the complete set of available matrix properties
 for specific axes that can be retrieved using \code{get_matrix()}.
 If \code{relayout} is TRUE, matrices stored with the axes flipped are also included.
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/readers.html#DataAxesFormats.Readers.matrices_set}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.matrices_set}{documentation} for details.
 }

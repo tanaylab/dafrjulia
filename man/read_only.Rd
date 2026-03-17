@@ -21,5 +21,5 @@ Creates a read-only view of a Daf object to protect it against accidental modifi
 This function wraps a Daf object with a read-only interface to protect against
 accidental modification. Any attempt to modify the data will result in an error.
 The read-only wrapper can be efficiently created as it shares data with the original object.
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/read_only.html#DataAxesFormats.ReadOnly.read_only}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/read_only.html#DataAxesFormats.ReadOnly.read_only}{documentation} for details.
 }

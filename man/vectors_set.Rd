@@ -21,5 +21,5 @@ Returns the names of all vector properties for the specified axis.
 This function provides the complete set of available vector properties
 for a specific axis that can be retrieved using \code{get_vector()}.
 Vector properties store one-dimensional data along a specific axis.
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/readers.html#DataAxesFormats.Readers.vectors_set}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.vectors_set}{documentation} for details.
 }

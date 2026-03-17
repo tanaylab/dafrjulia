@@ -1,3 +1,51 @@
+# dafr 0.1.0
+
+## Breaking Changes
+
+### Updated to DataAxesFormats.jl v0.2.0 API
+
+* Renamed query operations to match v0.2.0 naming:
+    - `Lookup` -> `LookupVector`
+    - `And` -> `AndMask`
+    - `AndNot` -> `AndNegatedMask`
+    - `Or` -> `OrMask`
+    - `OrNot` -> `OrNegatedMask`
+    - `Xor` -> `XorMask`
+    - `XorNot` -> `XorNegatedMask`
+    - `SquareMaskColumn` -> `SquareColumnIs`
+    - `SquareMaskRow` -> `SquareRowIs`
+* Removed `Fetch` and `MaskSlice` (deprecated wrappers still provided for backwards compatibility)
+* Deprecated wrappers provided for all renamed functions with deprecation warnings
+
+### Parameter Changes
+
+* `Names`: removed `kind` parameter
+* `IfMissing`: `missing_value` renamed to `default_value`, `type` parameter removed
+* `Axis`: now optional in queries
+
+## New Features
+
+### New Query Operations
+
+* Added `LookupScalar` for looking up scalar data
+* Added `LookupMatrix` for looking up matrix data
+* Added `BeginMask` for starting a mask combination
+* Added `BeginNegatedMask` for starting a negated mask combination
+* Added `EndMask` for ending a mask combination
+* Added `GroupColumnsBy` for grouping columns
+* Added `GroupRowsBy` for grouping rows
+* Added `ReduceToColumn` for reducing matrix to a column vector
+* Added `ReduceToRow` for reducing matrix to a row vector
+
+### New Functions
+
+* Added `complete_path` for constructing complete paths to Daf data
+* Added `complete_chain` for opening complete chain Daf repositories
+
+### Documentation
+
+* All documentation URLs updated to DataAxesFormats.jl v0.2.0
+
 # dafr 0.0.3
 
 ## New Functions

@@ -22,5 +22,5 @@ Removes a scalar property with the specified name from the Daf data set.
 \details{
 If \code{must_exist} is TRUE and the scalar doesn't exist, an error will be raised.
 Otherwise, the function will silently succeed even if the scalar doesn't exist.
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/writers.html#DataAxesFormats.Writers.delete_scalar!}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/writers.html#DataAxesFormats.Writers.delete_scalar!}{documentation} for details.
 }

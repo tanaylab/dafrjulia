@@ -18,5 +18,5 @@ This allows for a more concise syntax for creating complex queries. If you want 
 to the \code{q} prefix used in Julia, you can write \code{q <- parse_query} in your R code.
 }
 \details{
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html}{documentation} for details.
 }

@@ -4,9 +4,9 @@
 #'
 #' @param jl_obj The Julia DafReader object to wrap
 #' @return A Daf S3 object
-#' @details See the Julia documentation [here](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/index.html),
-#' [here](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/formats.html#Read-API)
-#' and [here](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/formats.html#Write-API) for details.
+#' @details See the Julia documentation [here](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/index.html),
+#' [here](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/formats.html#Read-API)
+#' and [here](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/formats.html#Write-API) for details.
 #' @export
 Daf <- function(jl_obj) {
     obj <- structure(list(jl_obj = jl_obj), class = "Daf")
@@ -20,7 +20,7 @@ Daf <- function(jl_obj) {
 #' @param x The Daf object to print
 #' @param ... Additional arguments passed to print
 #' @return The Daf object (invisibly)
-#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/readers.html#DataAxesFormats.Readers.description) for details.
+#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.description) for details.
 #' @export
 print.Daf <- function(x, ...) {
     description <- julia_call("DataAxesFormats.description", x$jl_obj)
@@ -35,7 +35,7 @@ print.Daf <- function(x, ...) {
 #' @param deep Whether to include detailed information about nested data
 #' @param tensors Whether to include tensor information (condensed list of tensor matrices)
 #' @return A string description of the Daf object
-#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/readers.html#DataAxesFormats.Readers.description) for details.
+#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.description) for details.
 #' @export
 description <- function(daf, cache = FALSE, deep = FALSE, tensors = TRUE) {
     validate_daf_object(daf)
@@ -71,7 +71,7 @@ validate_daf_object <- function(daf, call = parent.frame()) {
 #' @param ... Ignored. Present for compatibility with the `[` generic.
 #' @return The result of the query
 #' @details The expression `daf[query]` is equivalent to `get_query(daf, query, cache = FALSE)`.
-#' See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Operations.get_query) for details.
+#' See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Operations.get_query) for details.
 #' @export
 `[.Daf` <- function(x, i, ...) {
     get_query(x, i, cache = FALSE)

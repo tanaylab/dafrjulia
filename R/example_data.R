@@ -3,7 +3,7 @@
 #' @param name Name for the Daf object (default: "cells!")
 #' @return A Daf object containing example cells data
 #' @details This function loads example cells data from the DataAxesFormats.jl package.
-#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/example_data.html) for details.
+#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/example_data.html) for details.
 #' @export
 example_cells_daf <- function(name = "cells!") {
     if (!is.character(name)) {
@@ -19,7 +19,7 @@ example_cells_daf <- function(name = "cells!") {
 #' @param name Name for the Daf object (default: "metacells!")
 #' @return A Daf object containing example metacells data
 #' @details This function loads example metacells data from the DataAxesFormats.jl package.
-#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/example_data.html) for details.
+#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/example_data.html) for details.
 #' @export
 example_metacells_daf <- function(name = "metacells!") {
     if (!is.character(name)) {
@@ -35,7 +35,7 @@ example_metacells_daf <- function(name = "metacells!") {
 #' @param name Name for the Daf object (default: "chain!")
 #' @return A Daf object containing chained example cells and metacells data
 #' @details This function creates a chain of example cells and metacells data.
-#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/example_data.html) for details.
+#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/example_data.html) for details.
 #' @export
 example_chain_daf <- function(name = "chain!") {
     if (!is.character(name)) {

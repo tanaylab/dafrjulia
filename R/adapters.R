@@ -14,19 +14,20 @@
 #' @param relayout Whether to allow relayout when copying results (default: TRUE)
 #' @param overwrite Whether to overwrite existing data when copying results (default: FALSE)
 #' @return The result of the computation function
-#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/adapters.html#DataAxesFormats.Adapters.adapter) for details.
+#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/adapters.html#DataAxesFormats.Adapters.adapter) for details.
 #' @export
 adapter <- function(
-    daf,
-    computation,
-    input_axes = NULL,
-    input_data = NULL,
-    capture = memory_daf,
-    output_axes = NULL,
-    output_data = NULL,
-    empty = NULL,
-    relayout = TRUE,
-    overwrite = FALSE) {
+  daf,
+  computation,
+  input_axes = NULL,
+  input_data = NULL,
+  capture = memory_daf,
+  output_axes = NULL,
+  output_data = NULL,
+  empty = NULL,
+  relayout = TRUE,
+  overwrite = FALSE
+) {
     validate_daf_object(daf)
 
     # Set up base name for the components

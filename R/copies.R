@@ -12,17 +12,18 @@
 #' @param insist Whether to skip if the destination already has the scalar (FALSE) or to
 #'   attempt the copy regardless (TRUE, the default). Only relevant when overwrite=FALSE.
 #' @return The destination Daf object (invisibly)
-#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/copies.html#DataAxesFormats.Copies.copy_scalar!) for details.
+#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/copies.html#DataAxesFormats.Copies.copy_scalar!) for details.
 #' @export
 copy_scalar <- function(
-    destination,
-    source,
-    name,
-    rename = NULL,
-    default,
-    overwrite = FALSE,
-    type = NULL,
-    insist = TRUE) {
+  destination,
+  source,
+  name,
+  rename = NULL,
+  default,
+  overwrite = FALSE,
+  type = NULL,
+  insist = TRUE
+) {
     validate_daf_object(destination)
     validate_daf_object(source)
 
@@ -65,16 +66,17 @@ copy_scalar <- function(
 #' @param overwrite Whether to overwrite if axis already exists
 #' @param insist Whether to fail if the axis doesn't exist
 #' @return The destination Daf object (invisibly)
-#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/copies.html#DataAxesFormats.Copies.copy_axis!) for details.
+#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/copies.html#DataAxesFormats.Copies.copy_axis!) for details.
 #' @export
 copy_axis <- function(
-    destination,
-    source,
-    axis,
-    rename = NULL,
-    default,
-    overwrite = FALSE,
-    insist = TRUE) {
+  destination,
+  source,
+  axis,
+  rename = NULL,
+  default,
+  overwrite = FALSE,
+  insist = TRUE
+) {
     validate_daf_object(destination)
     validate_daf_object(source)
 
@@ -118,22 +120,23 @@ copy_axis <- function(
 #' @param min_sparse_saving_fraction Optional minimum sparse saving fraction. If NULL, the default is used.
 #' @param insist Whether to fail if the vector doesn't exist (TRUE by default)
 #' @return The destination Daf object (invisibly)
-#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/copies.html#DataAxesFormats.Copies.copy_vector!) for details.
+#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/copies.html#DataAxesFormats.Copies.copy_vector!) for details.
 #' @export
 copy_vector <- function(
-    destination,
-    source,
-    axis,
-    name,
-    reaxis = NULL,
-    rename = NULL,
-    default,
-    empty = NULL,
-    overwrite = FALSE,
-    eltype = NULL,
-    bestify = FALSE,
-    min_sparse_saving_fraction = NULL,
-    insist = TRUE) {
+  destination,
+  source,
+  axis,
+  name,
+  reaxis = NULL,
+  rename = NULL,
+  default,
+  empty = NULL,
+  overwrite = FALSE,
+  eltype = NULL,
+  bestify = FALSE,
+  min_sparse_saving_fraction = NULL,
+  insist = TRUE
+) {
     validate_daf_object(destination)
     validate_daf_object(source)
 
@@ -194,25 +197,26 @@ copy_vector <- function(
 #' @param min_sparse_saving_fraction Optional minimum sparse saving fraction. If NULL, the default is used.
 #' @param insist Whether to fail if the matrix doesn't exist (TRUE by default)
 #' @return The destination Daf object (invisibly)
-#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/copies.html#DataAxesFormats.Copies.copy_matrix!) for details.
+#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/copies.html#DataAxesFormats.Copies.copy_matrix!) for details.
 #' @export
 copy_matrix <- function(
-    destination,
-    source,
-    rows_axis,
-    columns_axis,
-    name,
-    rows_reaxis = NULL,
-    columns_reaxis = NULL,
-    rename = NULL,
-    default,
-    empty = NULL,
-    relayout = TRUE,
-    overwrite = FALSE,
-    eltype = NULL,
-    bestify = FALSE,
-    min_sparse_saving_fraction = NULL,
-    insist = TRUE) {
+  destination,
+  source,
+  rows_axis,
+  columns_axis,
+  name,
+  rows_reaxis = NULL,
+  columns_reaxis = NULL,
+  rename = NULL,
+  default,
+  empty = NULL,
+  relayout = TRUE,
+  overwrite = FALSE,
+  eltype = NULL,
+  bestify = FALSE,
+  min_sparse_saving_fraction = NULL,
+  insist = TRUE
+) {
     validate_daf_object(destination)
     validate_daf_object(source)
 
@@ -278,25 +282,26 @@ copy_matrix <- function(
 #' @param min_sparse_saving_fraction Optional minimum sparse saving fraction. If NULL, the default is used.
 #' @param insist Whether to fail if the tensor doesn't exist (TRUE by default)
 #' @return The destination Daf object (invisibly)
-#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/copies.html#DataAxesFormats.Copies.copy_tensor!) for details.
+#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/copies.html#DataAxesFormats.Copies.copy_tensor!) for details.
 #' @export
 copy_tensor <- function(
-    destination,
-    source,
-    main_axis,
-    rows_axis,
-    columns_axis,
-    name,
-    rows_reaxis = NULL,
-    columns_reaxis = NULL,
-    rename = NULL,
-    empty = NULL,
-    relayout = TRUE,
-    overwrite = FALSE,
-    eltype = NULL,
-    bestify = FALSE,
-    min_sparse_saving_fraction = NULL,
-    insist = TRUE) {
+  destination,
+  source,
+  main_axis,
+  rows_axis,
+  columns_axis,
+  name,
+  rows_reaxis = NULL,
+  columns_reaxis = NULL,
+  rename = NULL,
+  empty = NULL,
+  relayout = TRUE,
+  overwrite = FALSE,
+  eltype = NULL,
+  bestify = FALSE,
+  min_sparse_saving_fraction = NULL,
+  insist = TRUE
+) {
     validate_daf_object(destination)
     validate_daf_object(source)
 
@@ -347,16 +352,17 @@ copy_tensor <- function(
 #' @param types Optional named list mapping data keys to types for conversion. If NULL, the original types are preserved.
 #' @param insist Whether to fail if data doesn't exist (TRUE by default)
 #' @return The destination Daf object (invisibly)
-#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/copies.html#DataAxesFormats.Copies.copy_all!) for details.
+#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/copies.html#DataAxesFormats.Copies.copy_all!) for details.
 #' @export
 copy_all <- function(
-    destination,
-    source,
-    empty = NULL,
-    overwrite = FALSE,
-    relayout = TRUE,
-    types = NULL,
-    insist = TRUE) {
+  destination,
+  source,
+  empty = NULL,
+  overwrite = FALSE,
+  relayout = TRUE,
+  types = NULL,
+  insist = TRUE
+) {
     validate_daf_object(destination)
     validate_daf_object(source)
 

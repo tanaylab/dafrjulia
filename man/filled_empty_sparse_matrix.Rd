@@ -38,5 +38,5 @@ its column pointers, row values, and non-zero values, call this function to fina
 the matrix and store it in the Daf object.
 }
 \details{
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/writers.html#DataAxesFormats.Writers.filled_empty_sparse_matrix!}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/writers.html#DataAxesFormats.Writers.filled_empty_sparse_matrix!}{documentation} for details.
 }

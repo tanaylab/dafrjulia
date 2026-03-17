@@ -22,6 +22,6 @@ A query operation object that can be used in a query sequence
 Element-wise operation that converts every element to its logarithm.
 This operation preserves the shape of the data (scalar, vector, or matrix) but
 changes each value to its logarithm with the specified base. See the Julia
-\href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/operations.html#DataAxesFormats.Operations.Log}{documentation} for
+\href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/operations.html#DataAxesFormats.Operations.Log}{documentation} for
 details.
 }

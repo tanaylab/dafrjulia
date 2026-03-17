@@ -18,5 +18,5 @@ Returns the names of all axes in the Daf data set.
 \details{
 This function provides the complete set of available axes in the Daf data set.
 Common axis names might include "gene", "cell", "batch", etc., depending on the data.
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/readers.html#DataAxesFormats.Readers.axes_set}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.axes_set}{documentation} for details.
 }

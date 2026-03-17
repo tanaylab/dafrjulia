@@ -46,5 +46,5 @@ This function creates an adapter pattern that allows running a computation on a 
 and copying the results back to the original dataset.
 }
 \details{
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/adapters.html#DataAxesFormats.Adapters.adapter}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/adapters.html#DataAxesFormats.Adapters.adapter}{documentation} for details.
 }

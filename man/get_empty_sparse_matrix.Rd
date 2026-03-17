@@ -41,5 +41,5 @@ in-place. This is useful for efficiently constructing large sparse matrices.
 After filling with \code{filled_empty_sparse_matrix}, the matrix is stored in the Daf object.
 }
 \details{
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/writers.html#DataAxesFormats.Writers.get_empty_sparse_matrix!}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/writers.html#DataAxesFormats.Writers.get_empty_sparse_matrix!}{documentation} for details.
 }

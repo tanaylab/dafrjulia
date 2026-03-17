@@ -27,5 +27,5 @@ then it opens an HDF5 file (or a group in one). Otherwise, it opens a files-base
 As a shorthand, you can specify a path to a group within an HDF5 file by using a path
 with a \code{.h5dfs} suffix, followed by \verb{#} and the path of the group in the file.
 
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/complete.html}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/complete.html}{documentation} for details.
 }

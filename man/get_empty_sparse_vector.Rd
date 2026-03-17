@@ -38,5 +38,5 @@ in-place. This is useful for efficiently constructing large sparse vectors.
 After filling with \code{filled_empty_sparse_vector}, the vector is stored in the Daf object.
 }
 \details{
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/writers.html#DataAxesFormats.Writers.get_empty_sparse_vector!}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/writers.html#DataAxesFormats.Writers.get_empty_sparse_vector!}{documentation} for details.
 }
