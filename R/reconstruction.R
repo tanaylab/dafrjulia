@@ -2,7 +2,7 @@
 #'
 #' Given an existing axis with a property representing an implicit axis,
 #' create a new axis. See the Julia
-#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/reconstruction.html) for details.
+#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/reconstruction.html) for details.
 #'
 #' @param daf A Daf object
 #' @param existing_axis Name of the existing axis containing implicit axis data

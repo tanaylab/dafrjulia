@@ -16,5 +16,5 @@ The unescaped value as a character string
 Reverses the escaping done by \code{escape_value}, restoring the original value.
 }
 \details{
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Queries.unescape_value}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.unescape_value}{documentation} for details.
 }

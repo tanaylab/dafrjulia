@@ -58,7 +58,7 @@ define_julia_functions <- function() {
     ")
 
     julia_eval("
-    function _pairify_columns(items::Maybe{AbstractVector})::Maybe{DataAxesFormats.FrameColumns}
+    function _pairify_columns(items::Maybe{AbstractVector})::Maybe{DataAxesFormats.Queries.FrameColumns}
         if items == nothing
             return nothing
         else
@@ -190,7 +190,6 @@ jl_pairify_data <- function(data) {
     }
     return(julia_call("_pairify_data", data_list, need_return = "Julia"))
 }
-
 
 
 #' Convert R types to Julia types
@@ -328,7 +327,6 @@ create_julia_sparse_matrix <- function(sparse_matrix) {
         need_return = "Julia"
     ))
 }
-
 
 
 #' Convert an R vector to a Julia Vector, safely handling single-element vectors

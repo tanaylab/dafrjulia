@@ -22,5 +22,5 @@ A read-only Daf object
 Wrap a Daf data set with a read-only DafView
 }
 \details{
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/views.html#DataAxesFormats.Views.viewer}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/views.html#DataAxesFormats.Views.viewer}{documentation} for details.
 }

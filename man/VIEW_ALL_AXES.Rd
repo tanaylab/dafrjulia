@@ -15,6 +15,6 @@ A pair to use in the \code{axes} parameter of \code{viewer} to expose all base a
 See the Julia documentation for details.
 }
 \references{
-\url{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/views.html#DataAxesFormats.Views.VIEW_ALL_AXES}
+\url{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/views.html#DataAxesFormats.Views.VIEW_ALL_AXES}
 }
 \keyword{datasets}

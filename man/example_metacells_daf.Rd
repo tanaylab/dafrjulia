@@ -17,5 +17,5 @@ Load example metacells data into a Daf object
 }
 \details{
 This function loads example metacells data from the DataAxesFormats.jl package.
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/example_data.html}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/example_data.html}{documentation} for details.
 }

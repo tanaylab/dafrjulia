@@ -18,5 +18,5 @@ This is useful for understanding what kind of data structure to expect from a qu
 executing it, which can help with writing code that handles different result types.
 }
 \details{
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html}{documentation} for details.
 }

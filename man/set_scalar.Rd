@@ -25,5 +25,5 @@ Sets the value of a scalar property with the specified name in the Daf data set.
 This function creates or updates a scalar property in the Daf data set.
 If the scalar already exists and \code{overwrite} is FALSE, an error will be raised.
 NA values are not supported in Daf.
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/writers.html#DataAxesFormats.Writers.set_scalar!}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/writers.html#DataAxesFormats.Writers.set_scalar!}{documentation} for details.
 }

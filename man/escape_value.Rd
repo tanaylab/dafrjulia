@@ -18,5 +18,5 @@ This is needed when values contain characters that have special meaning in the q
 syntax (e.g., spaces, quotes, backslashes).
 }
 \details{
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Queries.escape_value}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.escape_value}{documentation} for details.
 }

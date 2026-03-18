@@ -26,8 +26,10 @@ test_that("open_daf correctly handles different file formats", {
     h5df_daf <- h5df(h5df_path, "w", name = "h5df_test")
     set_scalar(h5df_daf, "source", "h5df")
 
-    # Force garbage collection to release file handles before opening again
-    gc()
+    # Finalize writers to flush data to disk before reopening.
+    # R's gc() does not reliably trigger Julia finalizers on all platforms.
+    JuliaCall::julia_call("finalize", files_daf$jl_obj)
+    JuliaCall::julia_call("finalize", h5df_daf$jl_obj)
 
     # Test opening files-based Daf
     opened_files <- open_daf(files_dir, "r")
@@ -81,6 +83,12 @@ test_that("complete_daf correctly handles repository chains", {
     set_scalar(leaf_daf, "data", "leaf_data")
     set_scalar(leaf_daf, "base_daf_repository", "../base")
 
+    # Finalize writers to flush data to disk before reopening.
+    # R's gc() does not reliably trigger Julia finalizers on all platforms.
+    JuliaCall::julia_call("finalize", root_daf$jl_obj)
+    JuliaCall::julia_call("finalize", base_daf$jl_obj)
+    JuliaCall::julia_call("finalize", leaf_daf$jl_obj)
+
     # Test opening leaf only (no chain following)
     leaf_only <- files_daf(leaf_dir, "r")
     expect_equal(get_scalar(leaf_only, "level"), "leaf")
@@ -103,6 +111,9 @@ test_that("complete_daf correctly handles repository chains", {
 
     # We should be able to write to the leaf repository
     set_scalar(complete_rw, "new_data", "written_through_chain")
+    # Finalize the chain writer to flush data to disk before reopening.
+    # R's gc() does not reliably trigger Julia finalizers on all platforms (macOS).
+    JuliaCall::julia_call("finalize", complete_rw$jl_obj)
 
     # Verify the data was written to leaf, not base or root
     leaf_reopened <- files_daf(leaf_dir, "r")

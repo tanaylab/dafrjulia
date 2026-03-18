@@ -27,5 +27,5 @@ Creates or updates a matrix property with flipped axes for more efficient access
 This function creates a transposed version of an existing matrix property,
 allowing efficient access from either axis orientation.
 If a matrix with the flipped axes already exists and \code{overwrite} is FALSE, an error will be raised.
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/writers.html#DataAxesFormats.Writers.relayout_matrix!}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/writers.html#DataAxesFormats.Writers.relayout_matrix!}{documentation} for details.
 }

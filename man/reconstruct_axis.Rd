@@ -35,5 +35,5 @@ A named list of properties and their associated values
 \description{
 Given an existing axis with a property representing an implicit axis,
 create a new axis. See the Julia
-\href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/reconstruction.html}{documentation} for details.
+\href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/reconstruction.html}{documentation} for details.
 }

@@ -33,7 +33,7 @@ A Daf object
 View AnnData as a Daf data set, specifically using a MemoryDaf
 }
 \details{
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/anndata_format.html#anndata_as_daf}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/anndata_format.html#anndata_as_daf}{documentation} for details.
 Note that this function works with h5ad file paths, as the Julia AnnData object comes from the Muon.jl package
 and is not compatible with R/python anndata implementations.
 }

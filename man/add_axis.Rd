@@ -25,5 +25,5 @@ Creates a new axis with the specified name and entries in the Daf data set.
 This function creates a new axis with the specified unique entry names.
 If the axis already exists and \code{overwrite} is FALSE, an error will be raised.
 Entry names must be unique within the axis.
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/writers.html#DataAxesFormats.Writers.add_axis!}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/writers.html#DataAxesFormats.Writers.add_axis!}{documentation} for details.
 }

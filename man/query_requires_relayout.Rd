@@ -19,5 +19,5 @@ Determines whether executing a query on a Daf object would require a matrix rela
 operation. This is useful for performance optimization, as relayout can be expensive.
 }
 \details{
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Queries.query_requires_relayout}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.query_requires_relayout}{documentation} for details.
 }

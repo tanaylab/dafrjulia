@@ -23,5 +23,5 @@ Returns a vector of the unique names for all entries of the specified axis.
 Axis entries provide names for each position along an axis, such as gene names
 for a "gene" axis or cell barcodes for a "cell" axis. These entry names can be used
 to look up specific indices using the \code{axis_indices()} function.
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/readers.html#DataAxesFormats.Readers.axis_vector}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.axis_vector}{documentation} for details.
 }

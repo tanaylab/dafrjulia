@@ -6,7 +6,7 @@
 #' @param name Name of the scalar property to check
 #' @return TRUE if scalar exists, FALSE otherwise
 #' @details Scalar properties are global values associated with the entire Daf data set.
-#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/readers.html#DataAxesFormats.Readers.has_scalar) for details.
+#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.has_scalar) for details.
 #' @export
 has_scalar <- function(daf, name) {
     validate_daf_object(daf)
@@ -21,7 +21,7 @@ has_scalar <- function(daf, name) {
 #' @return A character vector of scalar property names
 #' @details This function provides the complete set of available scalar properties
 #'   that can be retrieved using `get_scalar()`.
-#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/readers.html#DataAxesFormats.Readers.scalars_set) for details.
+#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.scalars_set) for details.
 #' @export
 scalars_set <- function(daf) {
     validate_daf_object(daf)
@@ -39,7 +39,7 @@ scalars_set <- function(daf) {
 #' @return The scalar value or default if the property is not found
 #' @details Numeric scalars are returned as integers or doubles, regardless of the specific
 #'   data type they are stored as in the Daf data set.
-#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/readers.html#DataAxesFormats.Readers.get_scalar) for details.
+#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.get_scalar) for details.
 #' @export
 get_scalar <- function(daf, name, default = NULL) {
     validate_daf_object(daf)
@@ -59,7 +59,7 @@ get_scalar <- function(daf, name, default = NULL) {
 #' @return TRUE if the axis exists, FALSE otherwise
 #' @details Axes are fundamental dimensions in a Daf data set along which vector and matrix
 #'   data are stored. Each axis has a collection of unique named entries.
-#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/readers.html#DataAxesFormats.Readers.has_axis) for details.
+#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.has_axis) for details.
 #' @export
 has_axis <- function(daf, axis) {
     validate_daf_object(daf)
@@ -74,7 +74,7 @@ has_axis <- function(daf, axis) {
 #' @return A character vector of axis names
 #' @details This function provides the complete set of available axes in the Daf data set.
 #'   Common axis names might include "gene", "cell", "batch", etc., depending on the data.
-#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/readers.html#DataAxesFormats.Readers.axes_set) for details.
+#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.axes_set) for details.
 #' @export
 axes_set <- function(daf) {
     validate_daf_object(daf)
@@ -91,7 +91,7 @@ axes_set <- function(daf) {
 #' @return Length (number of entries) of the axis
 #' @details The axis length corresponds to the size of vector properties for this axis
 #'   and to one of the dimensions of matrix properties involving this axis.
-#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/readers.html#DataAxesFormats.Readers.axis_length) for details.
+#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.axis_length) for details.
 #' @export
 axis_length <- function(daf, axis) {
     validate_daf_object(daf)
@@ -109,7 +109,7 @@ axis_length <- function(daf, axis) {
 #' @details Axis entries provide names for each position along an axis, such as gene names
 #'   for a "gene" axis or cell barcodes for a "cell" axis. These entry names can be used
 #'   to look up specific indices using the `axis_indices()` function.
-#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/readers.html#DataAxesFormats.Readers.axis_vector) for details.
+#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.axis_vector) for details.
 #' @export
 axis_vector <- function(daf, axis, null_if_missing = FALSE) {
     validate_daf_object(daf)
@@ -131,7 +131,7 @@ axis_vector <- function(daf, axis, null_if_missing = FALSE) {
 #'   along the axis. This is useful for efficient lookups when you need to convert
 #'   between names and indices repeatedly.
 #'   In R, indices are 1-based (first element has index 1), consistent with R conventions.
-#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/readers.html#DataAxesFormats.Readers.axis_dict) for details.
+#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.axis_dict) for details.
 #' @export
 axis_dict <- function(daf, axis) {
     validate_daf_object(daf)
@@ -158,7 +158,7 @@ axis_dict <- function(daf, axis) {
 #' @details This function maps names to their position indices along the axis.
 #'   If `allow_empty` is TRUE, empty strings are converted to index -1.
 #'   Indices in R are 1-based (first element has index 1), consistent with R conventions.
-#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/readers.html#DataAxesFormats.Readers.axis_indices) for details.
+#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.axis_indices) for details.
 #' @export
 axis_indices <- function(daf, axis, entries, allow_empty = FALSE) {
     validate_daf_object(daf)
@@ -190,7 +190,7 @@ axis_indices <- function(daf, axis, entries, allow_empty = FALSE) {
 #'   If `indices` is NULL, returns all entries of the axis.
 #'   If `allow_empty` is TRUE and an invalid index is provided, an empty string is returned for that position.
 #'   Indices must be positive integers and within the bounds of the axis length.
-#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/readers.html#DataAxesFormats.Readers.axis_entries) for details.
+#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.axis_entries) for details.
 #' @export
 axis_entries <- function(daf, axis, indices = NULL, allow_empty = FALSE) {
     validate_daf_object(daf)
@@ -231,7 +231,7 @@ axis_entries <- function(daf, axis, indices = NULL, allow_empty = FALSE) {
 #' @return TRUE if vector exists, FALSE otherwise
 #' @details Vector properties store one-dimensional data along a specific axis.
 #'   Each entry in the axis has a corresponding value in the vector.
-#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/readers.html#DataAxesFormats.Readers.has_vector) for details.
+#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.has_vector) for details.
 #' @export
 has_vector <- function(daf, axis, name) {
     validate_daf_object(daf)
@@ -248,7 +248,7 @@ has_vector <- function(daf, axis, name) {
 #' @details This function provides the complete set of available vector properties
 #'   for a specific axis that can be retrieved using `get_vector()`.
 #'   Vector properties store one-dimensional data along a specific axis.
-#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/readers.html#DataAxesFormats.Readers.vectors_set) for details.
+#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.vectors_set) for details.
 #' @export
 vectors_set <- function(daf, axis) {
     validate_daf_object(daf)
@@ -269,7 +269,7 @@ vectors_set <- function(daf, axis) {
 #' @details Vector properties store one-dimensional data along an axis, with one value
 #'   for each entry in the axis. If the vector doesn't exist and default is NA,
 #'   a vector of NAs with appropriate length is returned.
-#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/readers.html#DataAxesFormats.Readers.get_vector) for details.
+#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.get_vector) for details.
 #' @export
 get_vector <- function(daf, axis, name, default = NULL) {
     validate_daf_object(daf)
@@ -300,7 +300,7 @@ get_vector <- function(daf, axis, name, default = NULL) {
 #' @details Matrix properties store two-dimensional data along two axes.
 #'   If `relayout` is TRUE, this function will also check if the matrix exists with
 #'   the axes flipped (i.e., rows as columns and columns as rows).
-#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/readers.html#DataAxesFormats.Readers.has_matrix) for details.
+#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.has_matrix) for details.
 #' @export
 has_matrix <- function(daf, rows_axis, columns_axis, name, relayout = TRUE) {
     validate_daf_object(daf)
@@ -326,7 +326,7 @@ has_matrix <- function(daf, rows_axis, columns_axis, name, relayout = TRUE) {
 #' @details This function provides the complete set of available matrix properties
 #'   for specific axes that can be retrieved using `get_matrix()`.
 #'   If `relayout` is TRUE, matrices stored with the axes flipped are also included.
-#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/readers.html#DataAxesFormats.Readers.matrices_set) for details.
+#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.matrices_set) for details.
 #' @export
 matrices_set <- function(daf, rows_axis, columns_axis, relayout = TRUE) {
     validate_daf_object(daf)
@@ -352,7 +352,7 @@ matrices_set <- function(daf, rows_axis, columns_axis, relayout = TRUE) {
 #' @details This function creates or updates a scalar property in the Daf data set.
 #'   If the scalar already exists and `overwrite` is FALSE, an error will be raised.
 #'   NA values are not supported in Daf.
-#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/writers.html#DataAxesFormats.Writers.set_scalar!) for details.
+#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/writers.html#DataAxesFormats.Writers.set_scalar!) for details.
 #' @export
 set_scalar <- function(daf, name, value, overwrite = FALSE) {
     validate_daf_object(daf)
@@ -373,7 +373,7 @@ set_scalar <- function(daf, name, value, overwrite = FALSE) {
 #' @return The Daf object (invisibly, for chaining operations)
 #' @details If `must_exist` is TRUE and the scalar doesn't exist, an error will be raised.
 #'   Otherwise, the function will silently succeed even if the scalar doesn't exist.
-#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/writers.html#DataAxesFormats.Writers.delete_scalar!) for details.
+#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/writers.html#DataAxesFormats.Writers.delete_scalar!) for details.
 #' @export
 delete_scalar <- function(daf, name, must_exist = TRUE) {
     validate_daf_object(daf)
@@ -393,7 +393,7 @@ delete_scalar <- function(daf, name, must_exist = TRUE) {
 #' @details This function creates a new axis with the specified unique entry names.
 #'   If the axis already exists and `overwrite` is FALSE, an error will be raised.
 #'   Entry names must be unique within the axis.
-#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/writers.html#DataAxesFormats.Writers.add_axis!) for details.
+#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/writers.html#DataAxesFormats.Writers.add_axis!) for details.
 #' @export
 add_axis <- function(daf, axis, entries, overwrite = FALSE) {
     validate_daf_object(daf)
@@ -412,7 +412,7 @@ add_axis <- function(daf, axis, entries, overwrite = FALSE) {
 #' @details This function deletes an axis and all vector and matrix properties
 #'   associated with it. If `must_exist` is TRUE and the axis doesn't exist,
 #'   an error will be raised.
-#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/writers.html#DataAxesFormats.Writers.delete_axis!) for details.
+#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/writers.html#DataAxesFormats.Writers.delete_axis!) for details.
 #' @export
 delete_axis <- function(daf, axis, must_exist = TRUE) {
     validate_daf_object(daf)
@@ -434,7 +434,7 @@ delete_axis <- function(daf, axis, must_exist = TRUE) {
 #'   The length of the vector must match the length of the axis.
 #'   If the vector already exists and `overwrite` is FALSE, an error will be raised.
 #'   NA values are not supported in Daf.
-#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/writers.html#DataAxesFormats.Writers.set_vector!) for details.
+#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/writers.html#DataAxesFormats.Writers.set_vector!) for details.
 #' @export
 set_vector <- function(daf, axis, name, value, overwrite = FALSE) {
     validate_daf_object(daf)
@@ -456,7 +456,7 @@ set_vector <- function(daf, axis, name, value, overwrite = FALSE) {
 #' @return The Daf object (invisibly, for chaining operations)
 #' @details If `must_exist` is TRUE and the vector doesn't exist, an error will be raised.
 #'   Otherwise, the function will silently succeed even if the vector doesn't exist.
-#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/writers.html#DataAxesFormats.Writers.delete_vector!) for details.
+#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/writers.html#DataAxesFormats.Writers.delete_vector!) for details.
 #' @export
 delete_vector <- function(daf, axis, name, must_exist = TRUE) {
     validate_daf_object(daf)
@@ -481,7 +481,7 @@ delete_vector <- function(daf, axis, name, must_exist = TRUE) {
 #'   If the matrix already exists and `overwrite` is FALSE, an error will be raised.
 #'   If `relayout` is TRUE, the matrix will also be stored with axes flipped for faster access.
 #'   NA values are not supported in Daf.
-#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/writers.html#DataAxesFormats.Writers.set_matrix!) for details.
+#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/writers.html#DataAxesFormats.Writers.set_matrix!) for details.
 #' @export
 set_matrix <- function(daf, rows_axis, columns_axis, name, value, overwrite = FALSE, relayout = TRUE) {
     validate_daf_object(daf)
@@ -517,7 +517,7 @@ set_matrix <- function(daf, rows_axis, columns_axis, name, value, overwrite = FA
 #' @details Matrix properties store two-dimensional data along two axes.
 #'   If the matrix doesn't exist and default is NA, a matrix of NAs with appropriate dimensions is returned.
 #'   If `relayout` is TRUE and the matrix exists with flipped axes, it will be transposed automatically.
-#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/readers.html#DataAxesFormats.Readers.get_matrix) for details.
+#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.get_matrix) for details.
 #' @export
 get_matrix <- function(daf, rows_axis, columns_axis, name, default = NULL, relayout = TRUE) {
     validate_daf_object(daf)
@@ -558,7 +558,7 @@ get_matrix <- function(daf, rows_axis, columns_axis, name, default = NULL, relay
 #' @details This function creates a transposed version of an existing matrix property,
 #'   allowing efficient access from either axis orientation.
 #'   If a matrix with the flipped axes already exists and `overwrite` is FALSE, an error will be raised.
-#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/writers.html#DataAxesFormats.Writers.relayout_matrix!) for details.
+#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/writers.html#DataAxesFormats.Writers.relayout_matrix!) for details.
 #' @export
 relayout_matrix <- function(daf, rows_axis, columns_axis, name, overwrite = FALSE) {
     validate_daf_object(daf)
@@ -585,7 +585,7 @@ relayout_matrix <- function(daf, rows_axis, columns_axis, name, overwrite = FALS
 #' @return The Daf object (invisibly, for chaining operations)
 #' @details If `must_exist` is TRUE and the matrix doesn't exist, an error will be raised.
 #'   Otherwise, the function will silently succeed even if the matrix doesn't exist.
-#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/writers.html#DataAxesFormats.Writers.delete_matrix!) for details.
+#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/writers.html#DataAxesFormats.Writers.delete_matrix!) for details.
 #' @export
 delete_matrix <- function(daf, rows_axis, columns_axis, name, must_exist = TRUE) {
     validate_daf_object(daf)
@@ -625,7 +625,7 @@ name <- function(x, ...) {
 #' @param columns Vector of column specifications or named list / vector mapping column names to queries
 #' @param cache Whether to cache the query results
 #' @return A data.frame containing the specified columns for the axis. If columns is NULL, all columns are returned, with an additional column "name" containing the axis entries.
-#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Queries.get_frame) for more details.
+#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.get_frame) for more details.
 #' @export
 get_frame <- function(daf, axis, columns = NULL, cache = FALSE) {
     validate_daf_object(daf)
@@ -660,7 +660,7 @@ get_frame <- function(daf, axis, columns = NULL, cache = FALSE) {
 #' @details This function allows retrieving multiple vectors for the same axis in a single operation.
 #'   The `columns` parameter can be a vector of vector names, or a named list mapping output column names
 #'   to vector names or query strings.
-#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Queries.get_frame) for more details.
+#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.get_frame) for more details.
 #' @export
 get_dataframe <- function(daf, axis, columns = NULL, cache = FALSE) {
     result <- get_frame(daf, axis, columns, cache)
@@ -700,7 +700,7 @@ get_tidy <- function(daf, axis, columns = NULL, cache = FALSE, ...) {
 #' @details This function wraps a Daf object with a read-only interface to protect against
 #'   accidental modification. Any attempt to modify the data will result in an error.
 #'   The read-only wrapper can be efficiently created as it shares data with the original object.
-#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/read_only.html#DataAxesFormats.ReadOnly.read_only) for details.
+#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/read_only.html#DataAxesFormats.ReadOnly.read_only) for details.
 #' @export
 read_only <- function(daf, name = NULL) {
     validate_daf_object(daf)
@@ -754,7 +754,7 @@ vector_version_counter <- function(daf, axis, name) {
 #' @param eltype Element type for the vector (e.g., "Float64", "Int32")
 #' @param overwrite Whether to overwrite if vector already exists (FALSE by default)
 #' @return A Julia vector object that can be filled in-place
-#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/writers.html#DataAxesFormats.Writers.get_empty_dense_vector!) for details.
+#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/writers.html#DataAxesFormats.Writers.get_empty_dense_vector!) for details.
 #' @export
 get_empty_dense_vector <- function(daf, axis, name, eltype, overwrite = FALSE) {
     validate_daf_object(daf)
@@ -785,7 +785,7 @@ get_empty_dense_vector <- function(daf, axis, name, eltype, overwrite = FALSE) {
 #' @param indtype Optional index type (e.g., "Int32"). If NULL, the default is used.
 #' @param overwrite Whether to overwrite if vector already exists (FALSE by default)
 #' @return A Julia sparse vector object that can be filled in-place
-#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/writers.html#DataAxesFormats.Writers.get_empty_sparse_vector!) for details.
+#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/writers.html#DataAxesFormats.Writers.get_empty_sparse_vector!) for details.
 #' @export
 get_empty_sparse_vector <- function(daf, axis, name, eltype, nnz, indtype = "Int64", overwrite = FALSE) {
     validate_daf_object(daf)
@@ -818,7 +818,7 @@ get_empty_sparse_vector <- function(daf, axis, name, eltype, nnz, indtype = "Int
 #' @param eltype Element type for the matrix (e.g., "Float64", "Int32")
 #' @param overwrite Whether to overwrite if matrix already exists (FALSE by default)
 #' @return A Julia matrix object that can be filled in-place
-#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/writers.html#DataAxesFormats.Writers.get_empty_dense_matrix!) for details.
+#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/writers.html#DataAxesFormats.Writers.get_empty_dense_matrix!) for details.
 #' @export
 get_empty_dense_matrix <- function(daf, rows_axis, columns_axis, name, eltype, overwrite = FALSE) {
     validate_daf_object(daf)
@@ -851,7 +851,7 @@ get_empty_dense_matrix <- function(daf, rows_axis, columns_axis, name, eltype, o
 #' @param indtype Optional index type (e.g., "Int32"). If NULL, the default is used.
 #' @param overwrite Whether to overwrite if matrix already exists (FALSE by default)
 #' @return A Julia sparse matrix object that can be filled in-place
-#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/writers.html#DataAxesFormats.Writers.get_empty_sparse_matrix!) for details.
+#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/writers.html#DataAxesFormats.Writers.get_empty_sparse_matrix!) for details.
 #' @export
 get_empty_sparse_matrix <- function(daf, rows_axis, columns_axis, name, eltype, nnz, indtype = "Int64", overwrite = FALSE) {
     validate_daf_object(daf)
@@ -884,7 +884,7 @@ get_empty_sparse_matrix <- function(daf, rows_axis, columns_axis, name, eltype, 
 #' @param nzind Vector of non-zero indices (1-based)
 #' @param nzval Vector of non-zero values
 #' @return The Daf object (invisibly, for chaining operations)
-#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/writers.html#DataAxesFormats.Writers.filled_empty_sparse_vector!) for details.
+#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/writers.html#DataAxesFormats.Writers.filled_empty_sparse_vector!) for details.
 #' @export
 filled_empty_sparse_vector <- function(daf, axis, name, nzind, nzval) {
     validate_daf_object(daf)
@@ -917,7 +917,7 @@ filled_empty_sparse_vector <- function(daf, axis, name, nzind, nzval) {
 #' @param rowval Vector of row indices for non-zero values (1-based)
 #' @param nzval Vector of non-zero values
 #' @return The Daf object (invisibly, for chaining operations)
-#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/writers.html#DataAxesFormats.Writers.filled_empty_sparse_matrix!) for details.
+#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/writers.html#DataAxesFormats.Writers.filled_empty_sparse_matrix!) for details.
 #' @export
 filled_empty_sparse_matrix <- function(daf, rows_axis, columns_axis, name, colptr, rowval, nzval) {
     validate_daf_object(daf)
@@ -955,4 +955,22 @@ filled_empty_sparse_matrix <- function(daf, rows_axis, columns_axis, name, colpt
 matrix_version_counter <- function(daf, rows_axis, columns_axis, name) {
     validate_daf_object(daf)
     julia_call("DataAxesFormats.matrix_version_counter", daf$jl_obj, rows_axis, columns_axis, name)
+}
+
+#' Get the complete filesystem path of a persistent Daf repository
+#'
+#' If the Daf repository is persistent (resides on disk), returns the absolute path leading to it.
+#' If the repository is (at least partially) in-memory, returns NULL.
+#'
+#' @param daf A Daf object
+#' @return A character string with the absolute path to the persistent Daf repository,
+#'   or NULL if the repository is in-memory.
+#' @details The returned path can be given to `complete_daf` to access the repository
+#'   after the current process is terminated. Note that for H5df format, the path may
+#'   end with `#...` to identify a specific group inside an HDF5 file.
+#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.complete_path) for details.
+#' @export
+complete_path <- function(daf) {
+    validate_daf_object(daf)
+    julia_call("DataAxesFormats.complete_path", daf$jl_obj)
 }

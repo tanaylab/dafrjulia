@@ -6,12 +6,15 @@
 #'
 #' @param daf A Daf object
 #' @param query Query string or object. Can be created using query operations such as
-#'   Axis(), Lookup(), IsGreater(), etc.
+#'   Axis(), LookupVector(), IsGreater(), etc.
 #' @return TRUE if query can be applied, FALSE otherwise
-#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Operations.has_query) for details.
-#' @seealso Axis, Lookup, Names, AsAxis, Fetch, IfMissing, IfNot, MaskSlice, SquareMaskColumn, SquareMaskRow,
-#'   And, AndNot, Or, OrNot, Xor, XorNot, IsEqual, IsNotEqual, IsLess, IsLessEqual, IsGreater, IsGreaterEqual,
-#'   IsMatch, IsNotMatch, CountBy, GroupBy and other query operations.
+#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Operations.has_query) for details.
+#' @seealso Axis, LookupVector, LookupScalar, LookupMatrix, Names, AsAxis, IfMissing, IfNot,
+#'   BeginMask, BeginNegatedMask, EndMask, SquareColumnIs, SquareRowIs,
+#'   AndMask, AndNegatedMask, OrMask, OrNegatedMask, XorMask, XorNegatedMask,
+#'   IsEqual, IsNotEqual, IsLess, IsLessEqual, IsGreater, IsGreaterEqual,
+#'   IsMatch, IsNotMatch, CountBy, GroupBy, GroupColumnsBy, GroupRowsBy,
+#'   ReduceToColumn, ReduceToRow and other query operations.
 #' @export
 has_query <- function(daf, query) {
     validate_daf_object(daf)
@@ -26,14 +29,17 @@ has_query <- function(daf, query) {
 #'
 #' @param daf A Daf object
 #' @param query Query string or object. Can be created using query operations such as
-#'   Axis(), Lookup(), IsGreater(), etc.
+#'   Axis(), LookupVector(), IsGreater(), etc.
 #' In order to support the use of pipe operators, the query can also be a Daf object and vice versa, see examples below.
 #' @param cache Whether to cache the query result
 #' @return The result of the query, which could be a scalar, vector, matrix, or set of names depending on the query
-#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Operations.get_query) for details.
-#' @seealso Axis, Lookup, Names, AsAxis, Fetch, IfMissing, IfNot, MaskSlice, SquareMaskColumn, SquareMaskRow,
-#'   And, AndNot, Or, OrNot, Xor, XorNot, IsEqual, IsNotEqual, IsLess, IsLessEqual, IsGreater, IsGreaterEqual,
-#'   IsMatch, IsNotMatch, CountBy, GroupBy and other query operations.
+#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Operations.get_query) for details.
+#' @seealso Axis, LookupVector, LookupScalar, LookupMatrix, Names, AsAxis, IfMissing, IfNot,
+#'   BeginMask, BeginNegatedMask, EndMask, SquareColumnIs, SquareRowIs,
+#'   AndMask, AndNegatedMask, OrMask, OrNegatedMask, XorMask, XorNegatedMask,
+#'   IsEqual, IsNotEqual, IsLess, IsLessEqual, IsGreater, IsGreaterEqual,
+#'   IsMatch, IsNotMatch, CountBy, GroupBy, GroupColumnsBy, GroupRowsBy,
+#'   ReduceToColumn, ReduceToRow and other query operations.
 #' @export
 get_query <- function(daf = NULL, query = NULL, cache = TRUE) {
     if (is.null(daf) || is.null(query)) {
@@ -61,7 +67,7 @@ get_query <- function(daf = NULL, query = NULL, cache = TRUE) {
 #'
 #' @param daf A Daf object
 #' @param query Query string or object. Can be created using query operations such as
-#'   Axis(), Lookup(), IsGreater(), etc.
+#'   Axis(), LookupVector(), IsGreater(), etc.
 #' In order to support the use of pipe operators, the query can also be a Daf object and vice versa.
 #' @param cache Whether to cache the query result
 #' @return A data.frame representation of the query result. If the query result is a matrix, row names and column names are the axis entries. If the query result is a scalar, a data.frame with one row and one column is returned. If the query result is a vector, a data.frame with a column "value" is returned.
@@ -144,10 +150,10 @@ get_dataframe_query <- function(daf = NULL, query = NULL, cache = TRUE) {
 #'
 #' @param query_string String containing the query
 #' @return A query object that can be used with get_query and has_query
-#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html) for details.
+#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html) for details.
 #' @export
 parse_query <- function(query_string) {
-    julia_call("DataAxesFormats.Queries.Query", query_string)
+    julia_call("DataAxesFormats.Queries.parse_query", query_string)
 }
 
 #' Get the number of dimensions of a query result
@@ -158,7 +164,7 @@ parse_query <- function(query_string) {
 #'
 #' @param query Query string or object
 #' @return Number of dimensions (-1 - names, 0 - scalar, 1 - vector, 2 - matrix)
-#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html) for details.
+#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html) for details.
 #' @export
 query_result_dimensions <- function(query) {
     julia_call("DataAxesFormats.Queries.query_result_dimensions", query)
@@ -168,18 +174,15 @@ query_result_dimensions <- function(query) {
 #' @description A query operation for specifying a result axis in a query sequence.
 #' This is typically the first operation in a query sequence and determines which axis
 #' the query will operate on. It sets the context for subsequent operations in the query.
-#' See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Queries.Axis) for details.
-#' @param axis String specifying the axis name
+#' See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.Axis) for details.
+#' @param axis Optional string specifying the axis name (NULL for unspecified)
 #' @param ... Additional arguments needed to support usage of pipe operator
 #' @return A query operation object that can be used in a query sequence
 #' @export
-Axis <- function(axis, ...) {
-    res <- extract_query_and_value(axis, missing(axis), list(...), required = TRUE)
-    if (!res$provided) {
-        cli::cli_abort("{.field axis} is missing with no default")
-    }
-    if (!is.character(res$value)) {
-        cli::cli_abort("{.field axis} must be a character string")
+Axis <- function(axis = NULL, ...) {
+    res <- extract_query_and_value(axis, missing(axis), list(...), required = FALSE, default = NULL)
+    if (!is.null(res$value) && !is.character(res$value)) {
+        cli::cli_abort("{.field axis} must be a character string or NULL")
     }
 
     ans <- julia_call("DataAxesFormats.Queries.Axis", res$value)
@@ -189,17 +192,59 @@ Axis <- function(axis, ...) {
     ans
 }
 
-#' @title Lookup query operation
-#' @description A query operation for looking up the value of a property with a specific name.
+#' @title LookupVector query operation
+#' @description A query operation for looking up the value of a vector property with a specific name.
 #' This operation retrieves the data associated with the specified property for the current axis context.
-#' It is typically used after an `Axis` operation to select a property from that axis.
-#' See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Queries.Lookup)
+#' It is typically used after an `Axis` operation to select a vector property from that axis.
+#' See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.LookupVector)
 #' for details.
 #' @param property String specifying the property name to look up
 #' @param ... Additional arguments needed to support usage of pipe operator
 #' @return A query operation object that can be used in a query sequence
 #' @export
-Lookup <- function(property, ...) {
+LookupVector <- function(property = NULL, ...) {
+    res <- extract_query_and_value(property, missing(property), list(...), required = FALSE, default = NULL)
+    if (!is.null(res$value) && !is.character(res$value)) {
+        cli::cli_abort("{.field property} must be a character string or NULL")
+    }
+
+    ans <- julia_call("DataAxesFormats.Queries.LookupVector", res$value)
+    if (!is.null(res$query)) {
+        ans <- julia_call("|>", res$query, ans)
+    }
+    ans
+}
+
+#' @title LookupScalar query operation
+#' @description A query operation for looking up the value of a scalar property.
+#' See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.LookupScalar)
+#' for details.
+#' @param property String specifying the scalar property name to look up
+#' @param ... Additional arguments needed to support usage of pipe operator
+#' @return A query operation object that can be used in a query sequence
+#' @export
+LookupScalar <- function(property = NULL, ...) {
+    res <- extract_query_and_value(property, missing(property), list(...), required = FALSE, default = NULL)
+    if (!is.null(res$value) && !is.character(res$value)) {
+        cli::cli_abort("{.field property} must be a character string or NULL")
+    }
+
+    ans <- julia_call("DataAxesFormats.Queries.LookupScalar", res$value)
+    if (!is.null(res$query)) {
+        ans <- julia_call("|>", res$query, ans)
+    }
+    ans
+}
+
+#' @title LookupMatrix query operation
+#' @description A query operation for looking up the value of a matrix property.
+#' See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.LookupMatrix)
+#' for details.
+#' @param property String specifying the matrix property name to look up
+#' @param ... Additional arguments needed to support usage of pipe operator
+#' @return A query operation object that can be used in a query sequence
+#' @export
+LookupMatrix <- function(property, ...) {
     res <- extract_query_and_value(property, missing(property), list(...), required = TRUE)
     if (!res$provided) {
         cli::cli_abort("{.field property} is missing with no default")
@@ -208,7 +253,7 @@ Lookup <- function(property, ...) {
         cli::cli_abort("{.field property} must be a character string")
     }
 
-    ans <- julia_call("DataAxesFormats.Queries.Lookup", res$value)
+    ans <- julia_call("DataAxesFormats.Queries.LookupMatrix", res$value)
     if (!is.null(res$query)) {
         ans <- julia_call("|>", res$query, ans)
     }
@@ -217,50 +262,15 @@ Lookup <- function(property, ...) {
 
 #' @title Names query operation
 #' @description A query operation for looking up a set of names in a Daf object.
-#' This operation retrieves metadata names such as axis names, property names, or scalar names.
-#' It is often used to discover what data is available in a Daf object.
-#' See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Queries.Names)
+#' This operation retrieves the entry names of the current axis.
+#' See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.Names)
 #' for details.
-#' @param kind Optional string specifying the kind of names to look up (e.g., "axes", "scalars")
 #' @param ... Additional arguments needed to support usage of pipe operator
 #' @return A query operation object that can be used in a query sequence
 #' @export
-Names <- function(kind = NULL, ...) {
-    res <- extract_query_and_value(kind, missing(kind), list(...),
-        required = FALSE, default = NULL
-    )
-    if (!is.null(res$value) && !is.character(res$value)) {
-        cli::cli_abort("{.field kind} must be a character string or NULL")
-    }
-
-    ans <- julia_call("DataAxesFormats.Queries.Names", res$value)
-    if (!is.null(res$query)) {
-        ans <- julia_call("|>", res$query, ans)
-    }
-    ans
-}
-
-#' @title Fetch query operation
-#' @description A query operation for fetching the value of a property from another axis.
-#' This operation is typically used after a `Lookup` operation that returns a vector whose values
-#' are entry names of another axis. The `Fetch` operation will then retrieve a property from
-#' that other axis based on these entry names. See the Julia
-#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Queries.Fetch) for
-#' details.
-#' @param property String specifying the property name to fetch from the target axis
-#' @param ... Additional arguments needed to support usage of pipe operator
-#' @return A query operation object that can be used in a query sequence
-#' @export
-Fetch <- function(property, ...) {
-    res <- extract_query_and_value(property, missing(property), list(...), required = TRUE)
-    if (!res$provided) {
-        cli::cli_abort("{.field property} is missing with no default")
-    }
-    if (!is.character(res$value)) {
-        cli::cli_abort("{.field property} must be a character string")
-    }
-
-    ans <- julia_call("DataAxesFormats.Queries.Fetch", res$value)
+Names <- function(...) {
+    res <- extract_query_and_value(NULL, TRUE, list(...), required = FALSE)
+    ans <- julia_call("DataAxesFormats.Queries.Names")
     if (!is.null(res$query)) {
         ans <- julia_call("|>", res$query, ans)
     }
@@ -271,97 +281,34 @@ Fetch <- function(property, ...) {
 #' @description A query operation providing a default value to use if the data is missing some property.
 #' This is useful when querying for properties that might not exist for all entries, allowing you to
 #' provide a fallback value instead of getting an error. See the Julia
-#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Queries.IfMissing)
+#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.IfMissing)
 #' for details.
-#' @param missing_value Value to use when data is missing the property
-#' @param type Optional type specification for the missing value (e.g., "Int64", "Float64", "Bool")
+#' @param default_value Value to use when data is missing the property
 #' @param ... Additional arguments needed to support usage of pipe operator
 #' @return A query operation object that can be used in a query sequence
 #' @export
-IfMissing <- function(missing_value, type = NULL, ...) {
-    dots <- list(...)
-    query <- NULL
-    # Assign initial values from args, handle defaults later
-    real_missing_value <- missing_value
-    real_type <- type
-    mv_missing <- missing(missing_value)
-
-    # --- Pipe Handling ---
-    mv_is_query <- !mv_missing && inherits(missing_value, "JuliaObject")
-    dots_non_empty <- length(dots) > 0
-    dots_has_value <- dots_non_empty && !inherits(dots[[1]], "JuliaObject")
-    dots_has_query <- dots_non_empty && inherits(dots[[1]], "JuliaObject")
-
-    if (mv_is_query) {
-        query <- missing_value
-        if (dots_has_value) {
-            # Option 2: query=mv, real_mv=dots[[1]], real_type=type
-            real_missing_value <- dots[[1]]
-            # real_type remains `type` from args
-        } else {
-            # Option 1: query=mv, real_mv=type, real_type=NULL
-            # (Covers cases: dots empty, or dots[[1]] is query)
-            real_missing_value <- type # Assign value from type arg
-            real_type <- NULL # No explicit type anymore
-        }
-    } else if (dots_has_query) {
-        # Option 3: query=dots[[1]], real_mv=mv, real_type=type
-        query <- dots[[1]]
-        # real_missing_value remains `missing_value` from args
-        # real_type remains `type` from args
-    } else {
-        # Options 4 & 5: No query involved via pipe.
-        # real_missing_value remains `missing_value` from args
-        # real_type remains `type` from args
+IfMissing <- function(default_value, ...) {
+    res <- extract_query_and_value(default_value, missing(default_value), list(...), required = TRUE)
+    if (!res$provided) {
+        cli::cli_abort("argument {.field default_value} is missing with no default")
     }
 
-    # --- Validation --- Check if real_missing_value is missing
-    # This happens in Option 1 if `type` was NULL, or Option 3/4/5 if `missing_value` was missing
-    # Or Option 2 if dots[[1]] was NULL? Let's refine.
-    value_is_missing <- FALSE
-    if (mv_is_query && !dots_has_value && is.null(type)) {
-        # Option 1 case where type (the source for real_mv) was NULL
-        value_is_missing <- TRUE
-    } else if (!mv_is_query && mv_missing) {
-        # Option 3/4/5 case where the required missing_value argument wasn't provided
-        value_is_missing <- TRUE
+    if (identical(res$value, NA)) {
+        cli::cli_abort("{.field default_value} cannot be NA. See the Julia documentation for details.")
     }
 
-    if (value_is_missing) {
-        cli::cli_abort("argument {.field missing_value} is missing with no default")
+    ans <- julia_call("DataAxesFormats.Queries.IfMissing", res$value)
+    if (!is.null(res$query)) {
+        ans <- julia_call("|>", res$query, ans)
     }
-
-    # Check for NA (as per original code)
-    # Use identical() to distinguish NA from NA_real_, NA_integer_ etc.
-    if (identical(real_missing_value, NA)) {
-        cli::cli_abort("{.field missing_value} cannot be NA. See the Julia documentation for details.")
-    }
-
-    # --- Call Julia --- Call with appropriate parameters
-    if (is.null(real_type)) {
-        result <- julia_call("DataAxesFormats.Queries.IfMissing", real_missing_value)
-    } else {
-        # Check type validity before calling helper?
-        if (!is.character(real_type) || length(real_type) != 1) {
-            cli::cli_abort("{.field type} must be a single string (e.g., \"Int64\")")
-        }
-        julia_type_obj <- jl_R_to_julia_type(real_type) # Assumes this helper exists and works
-        result <- julia_call("DataAxesFormats.Queries.IfMissing", real_missing_value, julia_type_obj)
-    }
-
-    # --- Apply Pipe ---
-    if (!is.null(query)) {
-        result <- julia_call("|>", query, result)
-    }
-
-    return(result)
+    ans
 }
 
 #' @title IfNot query operation
 #' @description A query operation providing a value to use for "false-ish" values in a vector.
 #' This replaces empty strings, zero numeric values, or false Boolean values with the specified value.
 #' This is useful for handling default or missing values in data without completely replacing the property.
-#' See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Queries.IfNot) for
+#' See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.IfNot) for
 #' details.
 #' @param value Optional value to use for replacement. If NULL, uses the default replacement value.
 #' @param ... Additional arguments needed to support usage of pipe operator
@@ -382,10 +329,10 @@ IfNot <- function(value = NULL, ...) {
 
 #' @title AsAxis query operation
 #' @description A query operation that treats values in a vector property as names of entries in another axis.
-#' This operation is commonly used with three other operations: `Fetch`, `CountBy`, and `GroupBy`,
+#' This operation is commonly used with `CountBy` and `GroupBy`,
 #' where vector values need to be interpreted as axis entry names. If no axis is specified, values
 #' are treated as entries of a default axis based on context. See the Julia
-#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Queries.AsAxis) for
+#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.AsAxis) for
 #' details.
 #' @param axis Optional string specifying the axis name to use for interpreting the values
 #' @param ... Additional arguments needed to support usage of pipe operator
@@ -407,41 +354,80 @@ AsAxis <- function(axis = NULL, ...) {
     return(result)
 }
 
-#' @title MaskSlice query operation
-#' @description A query operation for using a slice of a matrix as a mask, when the other axis of the matrix is different from the
-#' mask axis. See the Julia
-#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Queries.MaskSlice) for
-#' details.
-#' @param axis String specifying the axis
+#' @title BeginMask query operation
+#' @description Start specifying a mask to apply to an axis of the result.
+#' Must be accompanied by an EndMask. See the Julia
+#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.BeginMask) for details.
+#' @param property String specifying the property name for the initial mask
 #' @param ... Additional arguments needed to support usage of pipe operator
 #' @return A query operation object
 #' @export
-MaskSlice <- function(axis, ...) {
-    res <- extract_query_and_value(axis, missing(axis), list(...), required = TRUE)
+BeginMask <- function(property, ...) {
+    res <- extract_query_and_value(property, missing(property), list(...), required = TRUE)
     if (!res$provided) {
-        cli::cli_abort("{.field axis} is missing with no default")
+        cli::cli_abort("{.field property} is missing with no default")
     }
     if (!is.character(res$value)) {
-        cli::cli_abort("{.field axis} must be a character string")
+        cli::cli_abort("{.field property} must be a character string")
     }
 
-    ans <- julia_call("DataAxesFormats.Queries.MaskSlice", res$value)
+    ans <- julia_call("DataAxesFormats.Queries.BeginMask", res$value)
     if (!is.null(res$query)) {
         ans <- julia_call("|>", res$query, ans)
     }
     ans
 }
 
-#' @title SquareMaskColumn query operation
-#' @description Similar to `MaskSlice` but is used when the mask matrix is square and we'd like to use a column as a mask. See the
+#' @title BeginNegatedMask query operation
+#' @description Start specifying a negated mask to apply to an axis of the result.
+#' Must be accompanied by an EndMask. See the Julia
+#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.BeginNegatedMask) for details.
+#' @param property String specifying the property name for the initial negated mask
+#' @param ... Additional arguments needed to support usage of pipe operator
+#' @return A query operation object
+#' @export
+BeginNegatedMask <- function(property, ...) {
+    res <- extract_query_and_value(property, missing(property), list(...), required = TRUE)
+    if (!res$provided) {
+        cli::cli_abort("{.field property} is missing with no default")
+    }
+    if (!is.character(res$value)) {
+        cli::cli_abort("{.field property} must be a character string")
+    }
+
+    ans <- julia_call("DataAxesFormats.Queries.BeginNegatedMask", res$value)
+    if (!is.null(res$query)) {
+        ans <- julia_call("|>", res$query, ans)
+    }
+    ans
+}
+
+#' @title EndMask query operation
+#' @description Finish specifying a mask to apply to an axis, following BeginMask or BeginNegatedMask.
+#' See the Julia
+#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.EndMask) for details.
+#' @param ... Additional arguments needed to support usage of pipe operator
+#' @return A query operation object
+#' @export
+EndMask <- function(...) {
+    res <- extract_query_and_value(NULL, TRUE, list(...), required = FALSE)
+    ans <- julia_call("DataAxesFormats.Queries.EndMask")
+    if (!is.null(res$query)) {
+        ans <- julia_call("|>", res$query, ans)
+    }
+    ans
+}
+
+#' @title SquareColumnIs query operation
+#' @description Used when the mask matrix is square and we'd like to use a column as a mask. See the
 #' Julia
-#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Queries.SquareMaskColumn)
+#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.SquareColumnIs)
 #' for details.
 #' @param value String specifying the value
 #' @param ... Additional arguments needed to support usage of pipe operator
 #' @return A query operation object
 #' @export
-SquareMaskColumn <- function(value, ...) {
+SquareColumnIs <- function(value, ...) {
     res <- extract_query_and_value(value, missing(value), list(...), required = TRUE)
     if (!res$provided) {
         cli::cli_abort("{.field value} is missing with no default")
@@ -450,23 +436,23 @@ SquareMaskColumn <- function(value, ...) {
         cli::cli_abort("{.field value} must be a character string")
     }
 
-    ans <- julia_call("DataAxesFormats.Queries.SquareMaskColumn", res$value)
+    ans <- julia_call("DataAxesFormats.Queries.SquareColumnIs", res$value)
     if (!is.null(res$query)) {
         ans <- julia_call("|>", res$query, ans)
     }
     ans
 }
 
-#' @title SquareMaskRow query operation
-#' @description Similar to `MaskSlice` but is used when the mask matrix is square and we'd like to use a row as a mask. See the
+#' @title SquareRowIs query operation
+#' @description Used when the mask matrix is square and we'd like to use a row as a mask. See the
 #' Julia
-#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Queries.SquareMaskRow) for
+#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.SquareRowIs) for
 #' details.
 #' @param value String specifying the value
 #' @param ... Additional arguments needed to support usage of pipe operator
 #' @return A query operation object
 #' @export
-SquareMaskRow <- function(value, ...) {
+SquareRowIs <- function(value, ...) {
     res <- extract_query_and_value(value, missing(value), list(...), required = TRUE)
     if (!res$provided) {
         cli::cli_abort("{.field value} is missing with no default")
@@ -475,25 +461,25 @@ SquareMaskRow <- function(value, ...) {
         cli::cli_abort("{.field value} must be a character string")
     }
 
-    ans <- julia_call("DataAxesFormats.Queries.SquareMaskRow", res$value)
+    ans <- julia_call("DataAxesFormats.Queries.SquareRowIs", res$value)
     if (!is.null(res$query)) {
         ans <- julia_call("|>", res$query, ans)
     }
     ans
 }
 
-#' @title And query operation
+#' @title AndMask query operation
 #' @description A query operation for filtering axis entries using a Boolean mask.
 #' This operation restricts the set of entries of an axis to only those where the specified
 #' property contains true values (or non-zero/non-empty values). It essentially performs
 #' a logical AND between the current selection and the specified property, treating the
 #' property as a Boolean mask.
-#' See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Queries.And) for details.
+#' See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.AndMask) for details.
 #' @param property String specifying the property to use as a filter mask
 #' @param ... Additional arguments needed to support usage of pipe operator
 #' @return A query operation object that can be used in a query sequence
 #' @export
-And <- function(property, ...) {
+AndMask <- function(property, ...) {
     res <- extract_query_and_value(property, missing(property), list(...), required = TRUE)
     if (!res$provided) {
         cli::cli_abort("{.field property} is missing with no default")
@@ -502,22 +488,22 @@ And <- function(property, ...) {
         cli::cli_abort("{.field property} must be a character string")
     }
 
-    ans <- julia_call("DataAxesFormats.Queries.And", res$value)
+    ans <- julia_call("DataAxesFormats.Queries.AndMask", res$value)
     if (!is.null(res$query)) {
         ans <- julia_call("|>", res$query, ans)
     }
     ans
 }
 
-#' @title AndNot query operation
-#' @description Same as `And` but use the inverse of the mask. See the Julia
-#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Queries.AndNot) for
+#' @title AndNegatedMask query operation
+#' @description Same as `AndMask` but use the inverse of the mask. See the Julia
+#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.AndNegatedMask) for
 #' details.
 #' @param property String specifying the property
 #' @param ... Additional arguments needed to support usage of pipe operator
 #' @return A query operation object
 #' @export
-AndNot <- function(property, ...) {
+AndNegatedMask <- function(property, ...) {
     res <- extract_query_and_value(property, missing(property), list(...), required = TRUE)
     if (!res$provided) {
         cli::cli_abort("{.field property} is missing with no default")
@@ -526,25 +512,25 @@ AndNot <- function(property, ...) {
         cli::cli_abort("{.field property} must be a character string")
     }
 
-    ans <- julia_call("DataAxesFormats.Queries.AndNot", res$value)
+    ans <- julia_call("DataAxesFormats.Queries.AndNegatedMask", res$value)
     if (!is.null(res$query)) {
         ans <- julia_call("|>", res$query, ans)
     }
     ans
 }
 
-#' @title Or query operation
+#' @title OrMask query operation
 #' @description A query operation for expanding the set of entries of an axis.
 #' This operation adds entries to the current selection where the specified property
 #' contains true values (or non-zero/non-empty values). It performs a logical OR
 #' between the current selection and the specified property, treating the property
 #' as a Boolean mask.
-#' See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Queries.Or) for details.
+#' See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.OrMask) for details.
 #' @param property String specifying the property to use for expanding the selection
 #' @param ... Additional arguments needed to support usage of pipe operator
 #' @return A query operation object that can be used in a query sequence
 #' @export
-Or <- function(property, ...) {
+OrMask <- function(property, ...) {
     res <- extract_query_and_value(property, missing(property), list(...), required = TRUE)
     if (!res$provided) {
         cli::cli_abort("{.field property} is missing with no default")
@@ -553,21 +539,21 @@ Or <- function(property, ...) {
         cli::cli_abort("{.field property} must be a character string")
     }
 
-    ans <- julia_call("DataAxesFormats.Queries.Or", res$value)
+    ans <- julia_call("DataAxesFormats.Queries.OrMask", res$value)
     if (!is.null(res$query)) {
         ans <- julia_call("|>", res$query, ans)
     }
     ans
 }
 
-#' @title OrNot query operation
-#' @description Same as `Or` but use the inverse of the mask. See the Julia
-#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Queries.OrNot) for details.
+#' @title OrNegatedMask query operation
+#' @description Same as `OrMask` but use the inverse of the mask. See the Julia
+#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.OrNegatedMask) for details.
 #' @param property String specifying the property
 #' @param ... Additional arguments needed to support usage of pipe operator
 #' @return A query operation object
 #' @export
-OrNot <- function(property, ...) {
+OrNegatedMask <- function(property, ...) {
     res <- extract_query_and_value(property, missing(property), list(...), required = TRUE)
     if (!res$provided) {
         cli::cli_abort("{.field property} is missing with no default")
@@ -576,21 +562,21 @@ OrNot <- function(property, ...) {
         cli::cli_abort("{.field property} must be a character string")
     }
 
-    ans <- julia_call("DataAxesFormats.Queries.OrNot", res$value)
+    ans <- julia_call("DataAxesFormats.Queries.OrNegatedMask", res$value)
     if (!is.null(res$query)) {
         ans <- julia_call("|>", res$query, ans)
     }
     ans
 }
 
-#' @title Xor query operation
+#' @title XorMask query operation
 #' @description A query operation for flipping the set of entries of an `Axis`. See the Julia
-#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Queries.Xor) for details.
+#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.XorMask) for details.
 #' @param property String specifying the property
 #' @param ... Additional arguments needed to support usage of pipe operator
 #' @return A query operation object
 #' @export
-Xor <- function(property, ...) {
+XorMask <- function(property, ...) {
     res <- extract_query_and_value(property, missing(property), list(...), required = TRUE)
     if (!res$provided) {
         cli::cli_abort("{.field property} is missing with no default")
@@ -599,21 +585,21 @@ Xor <- function(property, ...) {
         cli::cli_abort("{.field property} must be a character string")
     }
 
-    ans <- julia_call("DataAxesFormats.Queries.Xor", res$value)
+    ans <- julia_call("DataAxesFormats.Queries.XorMask", res$value)
     if (!is.null(res$query)) {
         ans <- julia_call("|>", res$query, ans)
     }
     ans
 }
 
-#' @title XorNot query operation
-#' @description Same as `Xor` but use the inverse of the mask. See the Julia
-#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Queries.XorNot) for details.
+#' @title XorNegatedMask query operation
+#' @description Same as `XorMask` but use the inverse of the mask. See the Julia
+#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.XorNegatedMask) for details.
 #' @param property String specifying the property
 #' @param ... Additional arguments needed to support usage of pipe operator
 #' @return A query operation object
 #' @export
-XorNot <- function(property, ...) {
+XorNegatedMask <- function(property, ...) {
     res <- extract_query_and_value(property, missing(property), list(...), required = TRUE)
     if (!res$provided) {
         cli::cli_abort("{.field property} is missing with no default")
@@ -622,7 +608,7 @@ XorNot <- function(property, ...) {
         cli::cli_abort("{.field property} must be a character string")
     }
 
-    ans <- julia_call("DataAxesFormats.Queries.XorNot", res$value)
+    ans <- julia_call("DataAxesFormats.Queries.XorNegatedMask", res$value)
     if (!is.null(res$query)) {
         ans <- julia_call("|>", res$query, ans)
     }
@@ -633,9 +619,9 @@ XorNot <- function(property, ...) {
 #' @description A query operation for filtering based on numeric comparison.
 #' This operation converts a vector property to a Boolean mask by comparing each value
 #' to the specified threshold using the less-than (`<`) operator. Only entries where the
-#' comparison returns true are included in the result. Typically used after a Lookup operation
+#' comparison returns true are included in the result. Typically used after a LookupVector operation
 #' to filter entries based on numeric values.
-#' See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Queries.IsLess) for details.
+#' See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.IsLess) for details.
 #' @param value Threshold value to compare against
 #' @param ... Additional arguments needed to support usage of pipe operator
 #' @return A query operation object that can be used in a query sequence
@@ -656,7 +642,7 @@ IsLess <- function(value, ...) {
 
 #' @title IsLessEqual query operation
 #' @description Similar to `IsLess` except that uses `<=` instead of `<` for the comparison. See the Julia
-#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Queries.IsLessEqual) for
+#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.IsLessEqual) for
 #' details.
 #' @param value Value to compare against
 #' @param ... Additional arguments needed to support usage of pipe operator
@@ -679,7 +665,7 @@ IsLessEqual <- function(value, ...) {
 #' @title IsEqual query operation
 #' @description Equality is used for two purposes: As a comparison operator, similar to `IsLess` except that uses `=` instead of
 #' `<` for the comparison; and To select a single entry from a vector. See the Julia
-#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Queries.IsEqual) for
+#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.IsEqual) for
 #' details.
 #' @param value Value to compare against
 #' @param ... Additional arguments needed to support usage of pipe operator
@@ -701,7 +687,7 @@ IsEqual <- function(value, ...) {
 
 #' @title IsNotEqual query operation
 #' @description Similar to `IsLess` except that uses `!=` instead of `<` for the comparison. See the Julia
-#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Queries.IsNotEqual) for
+#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.IsNotEqual) for
 #' details.
 #' @param value Value to compare against
 #' @param ... Additional arguments needed to support usage of pipe operator
@@ -723,7 +709,7 @@ IsNotEqual <- function(value, ...) {
 
 #' @title IsGreater query operation
 #' @description Similar to `IsLess` except that uses `>` instead of `<` for the comparison. See the Julia
-#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Queries.IsGreater) for
+#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.IsGreater) for
 #' details.
 #' @param value Value to compare against
 #' @param ... Additional arguments needed to support usage of pipe operator
@@ -745,7 +731,7 @@ IsGreater <- function(value, ...) {
 
 #' @title IsGreaterEqual query operation
 #' @description Similar to `IsLess` except that uses `>=` instead of `<` for the comparison. See the Julia
-#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Queries.IsGreaterEqual) for
+#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.IsGreaterEqual) for
 #' details.
 #' @param value Value to compare against
 #' @param ... Additional arguments needed to support usage of pipe operator
@@ -768,7 +754,7 @@ IsGreaterEqual <- function(value, ...) {
 #' @title IsMatch query operation
 #' @description Similar to `IsLess` except that the compared values must be strings, and the mask
 #' is of the values that match the given regular expression. See the Julia
-#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Queries.IsMatch) for
+#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.IsMatch) for
 #' details.
 #' @param value Regular expression pattern to match against
 #' @param ... Additional arguments needed to support usage of pipe operator
@@ -792,7 +778,7 @@ IsMatch <- function(value, ...) {
 
 #' @title IsNotMatch query operation
 #' @description Similar to `IsMatch` except that looks for entries that do not match the pattern. See the Julia
-#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Queries.IsNotMatch) for
+#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.IsNotMatch) for
 #' details.
 #' @param value Regular expression pattern to not match against
 #' @param ... Additional arguments needed to support usage of pipe operator
@@ -820,7 +806,7 @@ IsNotMatch <- function(value, ...) {
 #' between the current property and the specified property, for the same entries of an axis.
 #' The result is a matrix whose rows are the values of the first property, columns are the values
 #' of the second property, and entries are the counts of occurrences of each combination.
-#' See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Queries.CountBy) for
+#' See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.CountBy) for
 #' details.
 #' @param property String specifying the property to count combinations with
 #' @param ... Additional arguments needed to support usage of pipe operator
@@ -849,7 +835,7 @@ CountBy <- function(property, ...) {
 #' If applied to a vector, the result is a vector with one entry per group. If applied to a matrix,
 #' the result is a matrix with one row per group. This is typically followed by a reduction
 #' operation that specifies how to aggregate the grouped values.
-#' See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Queries.GroupBY) for
+#' See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.GroupBy) for
 #' details.
 #' @param property String specifying the property to group by
 #' @param ... Additional arguments needed to support usage of pipe operator
@@ -871,6 +857,120 @@ GroupBy <- function(property, ...) {
     ans
 }
 
+#' @title GroupColumnsBy query operation
+#' @description Specify value per matrix column to group the columns by. Must be followed
+#' by a ReduceToColumn to reduce each group of columns to a single column.
+#' See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.GroupColumnsBy) for details.
+#' @param property String specifying the property to group columns by
+#' @param ... Additional arguments needed to support usage of pipe operator
+#' @return A query operation object
+#' @export
+GroupColumnsBy <- function(property, ...) {
+    res <- extract_query_and_value(property, missing(property), list(...), required = TRUE)
+    if (!res$provided) {
+        cli::cli_abort("{.field property} is missing with no default")
+    }
+    if (!is.character(res$value)) {
+        cli::cli_abort("{.field property} must be a character string")
+    }
+
+    ans <- julia_call("DataAxesFormats.Queries.GroupColumnsBy", res$value)
+    if (!is.null(res$query)) {
+        ans <- julia_call("|>", res$query, ans)
+    }
+    ans
+}
+
+#' @title GroupRowsBy query operation
+#' @description Specify value per matrix row to group the rows by. Must be followed
+#' by a ReduceToRow to reduce each group of rows to a single row.
+#' See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.GroupRowsBy) for details.
+#' @param property String specifying the property to group rows by
+#' @param ... Additional arguments needed to support usage of pipe operator
+#' @return A query operation object
+#' @export
+GroupRowsBy <- function(property, ...) {
+    res <- extract_query_and_value(property, missing(property), list(...), required = TRUE)
+    if (!res$provided) {
+        cli::cli_abort("{.field property} is missing with no default")
+    }
+    if (!is.character(res$value)) {
+        cli::cli_abort("{.field property} must be a character string")
+    }
+
+    ans <- julia_call("DataAxesFormats.Queries.GroupRowsBy", res$value)
+    if (!is.null(res$query)) {
+        ans <- julia_call("|>", res$query, ans)
+    }
+    ans
+}
+
+#' @title ReduceToColumn query operation
+#' @description Specify a reduction operation to convert each row of a matrix to a single value,
+#' reducing the matrix to a single column.
+#' See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.ReduceToColumn) for details.
+#' @param reduction A reduction operation (e.g., from Mean(), Sum(), etc.) or a string describing the reduction
+#' @param ... Additional arguments needed to support usage of pipe operator
+#' @return A query operation object
+#' @export
+ReduceToColumn <- function(reduction, ...) {
+    dots <- list(...)
+
+    if (missing(reduction)) {
+        cli::cli_abort("{.field reduction} is missing with no default")
+    }
+
+    # When piped, reduction gets the query and actual reduction is in ...
+    if (inherits(reduction, "JuliaObject") && length(dots) > 0 && inherits(dots[[1]], "JuliaObject")) {
+        query <- reduction
+        actual_reduction <- dots[[1]]
+    } else if (inherits(reduction, "JuliaObject")) {
+        query <- NULL
+        actual_reduction <- reduction
+    } else {
+        cli::cli_abort("{.field reduction} must be a query operation object")
+    }
+
+    ans <- julia_call("DataAxesFormats.Queries.ReduceToColumn", actual_reduction)
+    if (!is.null(query)) {
+        ans <- julia_call("|>", query, ans)
+    }
+    ans
+}
+
+#' @title ReduceToRow query operation
+#' @description Specify a reduction operation to convert each column of a matrix to a single value,
+#' reducing the matrix to a single row.
+#' See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.ReduceToRow) for details.
+#' @param reduction A reduction operation (e.g., from Mean(), Sum(), etc.) or a string describing the reduction
+#' @param ... Additional arguments needed to support usage of pipe operator
+#' @return A query operation object
+#' @export
+ReduceToRow <- function(reduction, ...) {
+    dots <- list(...)
+
+    if (missing(reduction)) {
+        cli::cli_abort("{.field reduction} is missing with no default")
+    }
+
+    # When piped, reduction gets the query and actual reduction is in ...
+    if (inherits(reduction, "JuliaObject") && length(dots) > 0 && inherits(dots[[1]], "JuliaObject")) {
+        query <- reduction
+        actual_reduction <- dots[[1]]
+    } else if (inherits(reduction, "JuliaObject")) {
+        query <- NULL
+        actual_reduction <- reduction
+    } else {
+        cli::cli_abort("{.field reduction} must be a query operation object")
+    }
+
+    ans <- julia_call("DataAxesFormats.Queries.ReduceToRow", actual_reduction)
+    if (!is.null(query)) {
+        ans <- julia_call("|>", query, ans)
+    }
+    ans
+}
+
 #' Check if a query returns axis entries
 #'
 #' Determines whether a query will return axis entries (names) as opposed to
@@ -883,10 +983,6 @@ GroupBy <- function(property, ...) {
 #'   for other queries.
 #' @export
 is_axis_query <- function(query) {
-    # Convert string to Query object if needed
-    if (is.character(query)) {
-        query <- parse_query(query)
-    }
     julia_call("DataAxesFormats.Queries.is_axis_query", query)
 }
 
@@ -900,10 +996,6 @@ is_axis_query <- function(query) {
 #'   or for building compound queries programmatically.
 #' @export
 query_axis_name <- function(query) {
-    # Convert string to Query object if needed
-    if (is.character(query)) {
-        query <- parse_query(query)
-    }
     julia_call("DataAxesFormats.Queries.query_axis_name", query)
 }
 
@@ -915,7 +1007,7 @@ query_axis_name <- function(query) {
 #'
 #' @param value A character string value to escape
 #' @return The escaped value as a character string
-#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Queries.escape_value) for details.
+#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.escape_value) for details.
 #' @export
 escape_value <- function(value) {
     julia_call("DataAxesFormats.Queries.escape_value", value)
@@ -927,7 +1019,7 @@ escape_value <- function(value) {
 #'
 #' @param value A character string value to unescape
 #' @return The unescaped value as a character string
-#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Queries.unescape_value) for details.
+#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.unescape_value) for details.
 #' @export
 unescape_value <- function(value) {
     julia_call("DataAxesFormats.Queries.unescape_value", value)
@@ -941,7 +1033,7 @@ unescape_value <- function(value) {
 #' @param daf A Daf object
 #' @param query Query string or query object
 #' @return TRUE if the query requires relayout, FALSE otherwise
-#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Queries.query_requires_relayout) for details.
+#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.query_requires_relayout) for details.
 #' @export
 query_requires_relayout <- function(daf, query) {
     validate_daf_object(daf)

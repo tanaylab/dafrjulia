@@ -16,5 +16,5 @@ A writable Daf object chaining the input Daf objects
 }
 \description{
 This function creates a chain wrapper for a chain of DafReader data, presenting them as a single DafWriter.
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/chains.html#DataAxesFormats.Chains.chain_writer}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/chains.html#DataAxesFormats.Chains.chain_writer}{documentation} for details.
 }

@@ -22,5 +22,5 @@ This function returns the mapping between entry names and their positions
 along the axis. This is useful for efficient lookups when you need to convert
 between names and indices repeatedly.
 In R, indices are 1-based (first element has index 1), consistent with R conventions.
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/readers.html#DataAxesFormats.Readers.axis_dict}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.axis_dict}{documentation} for details.
 }

@@ -4,7 +4,7 @@
 #' @param clear Cache group to clear. Can be one of "MappedData", "MemoryData", or "QueryData".
 #' @param keep Cache group to keep. Can be one of "MappedData", "MemoryData", or "QueryData".
 #' @return The Daf object
-#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Data.empty_cache!) for details.
+#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Data.empty_cache!) for details.
 #' @export
 empty_cache <- function(daf, clear = NULL, keep = NULL) {
     validate_daf_object(daf)

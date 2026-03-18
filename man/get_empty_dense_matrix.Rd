@@ -35,5 +35,5 @@ in-place. This is useful for efficiently constructing large matrices without all
 temporary storage. After filling, the matrix is automatically stored in the Daf object.
 }
 \details{
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/writers.html#DataAxesFormats.Writers.get_empty_dense_matrix!}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/writers.html#DataAxesFormats.Writers.get_empty_dense_matrix!}{documentation} for details.
 }

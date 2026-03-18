@@ -33,6 +33,6 @@ Invisibly returns the input Daf object
 View the Daf data set as AnnData and save it to an h5ad file
 }
 \details{
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/anndata_format.html#DataAxesFormats.AnnDataFormat.daf_as_anndata}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/anndata_format.html#DataAxesFormats.AnnDataFormat.daf_as_anndata}{documentation} for details.
 Note this just creates the h5ad file. The Julia (Muon.jl) AnnData object is not returned or exposed to R.
 }

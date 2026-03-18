@@ -4,10 +4,10 @@
 \alias{Axis}
 \title{Axis query operation}
 \usage{
-Axis(axis, ...)
+Axis(axis = NULL, ...)
 }
 \arguments{
-\item{axis}{String specifying the axis name}
+\item{axis}{Optional string specifying the axis name (NULL for unspecified)}
 
 \item{...}{Additional arguments needed to support usage of pipe operator}
 }
@@ -18,5 +18,5 @@ A query operation object that can be used in a query sequence
 A query operation for specifying a result axis in a query sequence.
 This is typically the first operation in a query sequence and determines which axis
 the query will operate on. It sets the context for subsequent operations in the query.
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Queries.Axis}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.Axis}{documentation} for details.
 }

@@ -19,5 +19,5 @@ Determines whether a scalar property with the specified name exists in the Daf d
 }
 \details{
 Scalar properties are global values associated with the entire Daf data set.
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/readers.html#DataAxesFormats.Readers.has_scalar}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.has_scalar}{documentation} for details.
 }

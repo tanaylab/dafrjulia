@@ -22,5 +22,5 @@ Retrieves the value of a scalar property with the given name from the Daf data s
 \details{
 Numeric scalars are returned as integers or doubles, regardless of the specific
 data type they are stored as in the Daf data set.
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/readers.html#DataAxesFormats.Readers.get_scalar}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.get_scalar}{documentation} for details.
 }

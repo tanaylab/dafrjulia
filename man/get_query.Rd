@@ -10,7 +10,7 @@ get_query(daf = NULL, query = NULL, cache = TRUE)
 \item{daf}{A Daf object}
 
 \item{query}{Query string or object. Can be created using query operations such as
-Axis(), Lookup(), IsGreater(), etc.
+Axis(), LookupVector(), IsGreater(), etc.
 In order to support the use of pipe operators, the query can also be a Daf object and vice versa, see examples below.}
 
 \item{cache}{Whether to cache the query result}
@@ -24,10 +24,13 @@ filter, and manipulate data from a Daf object using a composable syntax. Queries
 scalars, vectors, matrices, or sets of names depending on the operations used.
 }
 \details{
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Operations.get_query}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Operations.get_query}{documentation} for details.
 }
 \seealso{
-Axis, Lookup, Names, AsAxis, Fetch, IfMissing, IfNot, MaskSlice, SquareMaskColumn, SquareMaskRow,
-And, AndNot, Or, OrNot, Xor, XorNot, IsEqual, IsNotEqual, IsLess, IsLessEqual, IsGreater, IsGreaterEqual,
-IsMatch, IsNotMatch, CountBy, GroupBy and other query operations.
+Axis, LookupVector, LookupScalar, LookupMatrix, Names, AsAxis, IfMissing, IfNot,
+BeginMask, BeginNegatedMask, EndMask, SquareColumnIs, SquareRowIs,
+AndMask, AndNegatedMask, OrMask, OrNegatedMask, XorMask, XorNegatedMask,
+IsEqual, IsNotEqual, IsLess, IsLessEqual, IsGreater, IsGreaterEqual,
+IsMatch, IsNotMatch, CountBy, GroupBy, GroupColumnsBy, GroupRowsBy,
+ReduceToColumn, ReduceToRow and other query operations.
 }

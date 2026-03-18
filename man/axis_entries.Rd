@@ -26,5 +26,5 @@ This function maps position indices to their names along the axis.
 If \code{indices} is NULL, returns all entries of the axis.
 If \code{allow_empty} is TRUE and an invalid index is provided, an empty string is returned for that position.
 Indices must be positive integers and within the bounds of the axis length.
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/readers.html#DataAxesFormats.Readers.axis_entries}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.axis_entries}{documentation} for details.
 }

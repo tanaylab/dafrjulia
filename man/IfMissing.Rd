@@ -4,12 +4,10 @@
 \alias{IfMissing}
 \title{IfMissing query operation}
 \usage{
-IfMissing(missing_value, type = NULL, ...)
+IfMissing(default_value, ...)
 }
 \arguments{
-\item{missing_value}{Value to use when data is missing the property}
-
-\item{type}{Optional type specification for the missing value (e.g., "Int64", "Float64", "Bool")}
+\item{default_value}{Value to use when data is missing the property}
 
 \item{...}{Additional arguments needed to support usage of pipe operator}
 }
@@ -20,6 +18,6 @@ A query operation object that can be used in a query sequence
 A query operation providing a default value to use if the data is missing some property.
 This is useful when querying for properties that might not exist for all entries, allowing you to
 provide a fallback value instead of getting an error. See the Julia
-\href{https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html#DataAxesFormats.Queries.IfMissing}{documentation}
+\href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.IfMissing}{documentation}
 for details.
 }
