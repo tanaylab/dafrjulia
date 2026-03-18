@@ -1164,14 +1164,12 @@ test_that("SquareRowIs operation works correctly", {
     expect_error(SquareRowIs(), "is missing with no default")
 
     # Test string representation
-    # Note: Julia's show() for SquareRowIs prints @| (same as SquareColumnIs),
-    # though the parser uses @- for SquareRowIs. This is a known Julia bug.
     square_row_is <- SquareRowIs("A")
-    expect_match(as.character(square_row_is), "@| A", fixed = TRUE)
+    expect_match(as.character(square_row_is), "@- A", fixed = TRUE)
 
     # Test with pipe operator
     query <- Axis("cell") |> SquareRowIs("A")
-    expect_match(as.character(query), "@ cell @| A", fixed = TRUE)
+    expect_match(as.character(query), "@ cell @- A", fixed = TRUE)
 
     # Test with actual data
     daf <- memory_daf(name = "test_square_row_is")
