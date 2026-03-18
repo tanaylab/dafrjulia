@@ -19,6 +19,11 @@ complete_daf <- function(leaf, mode = "r", name = NULL) {
         cli::cli_abort("Mode must be one of 'r' or 'r+'")
     }
 
+    # Normalize the path to resolve symlinks (e.g. /var -> /private/var on macOS).
+    # This matches how files_daf() normalizes paths, ensuring the ispath cache
+    # uses consistent keys across different Daf handles on the same directory.
+    leaf <- normalizePath(leaf, mustWork = FALSE)
+
     # Call the Julia implementation directly
     jl_obj <- julia_call("DataAxesFormats.complete_daf", leaf, mode, name = name)
 
