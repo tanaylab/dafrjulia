@@ -33,12 +33,12 @@ test_that("query formatting works correctly", {
     expect_c_equal(Axis("gene") |> BeginMask("is_marker") |> XorMask("is_noisy") |> EndMask(), "@ gene [ is_marker ^ is_noisy ]")
     expect_c_equal(Axis("gene") |> BeginMask("is_marker") |> XorNegatedMask("is_noisy") |> EndMask(), "@ gene [ is_marker ^ ! is_noisy ]")
     expect_c_equal(Axis("cell") |> Axis("gene") |> IsEqual("FOX1") |> LookupMatrix("UMIs"), "@ cell @ gene = FOX1 :: UMIs")
-    expect_c_equal(Axis("cell") |> BeginMask("age") |> IsEqual(1) |> EndMask(), "@ cell [ age = 1 ]")
-    expect_c_equal(Axis("cell") |> BeginMask("age") |> IsNotEqual(1) |> EndMask(), "@ cell [ age != 1 ]")
-    expect_c_equal(Axis("cell") |> BeginMask("age") |> IsLess(1) |> EndMask(), "@ cell [ age < 1 ]")
-    expect_c_equal(Axis("cell") |> BeginMask("age") |> IsLessEqual(1) |> EndMask(), "@ cell [ age <= 1 ]")
-    expect_c_equal(Axis("cell") |> BeginMask("age") |> IsGreater(1) |> EndMask(), "@ cell [ age > 1 ]")
-    expect_c_equal(Axis("cell") |> BeginMask("age") |> IsGreaterEqual(1) |> EndMask(), "@ cell [ age >= 1 ]")
+    expect_c_equal(Axis("cell") |> BeginMask("age") |> IsEqual(1) |> EndMask(), "@ cell [ age = 1.0 ]")
+    expect_c_equal(Axis("cell") |> BeginMask("age") |> IsNotEqual(1) |> EndMask(), "@ cell [ age != 1.0 ]")
+    expect_c_equal(Axis("cell") |> BeginMask("age") |> IsLess(1) |> EndMask(), "@ cell [ age < 1.0 ]")
+    expect_c_equal(Axis("cell") |> BeginMask("age") |> IsLessEqual(1) |> EndMask(), "@ cell [ age <= 1.0 ]")
+    expect_c_equal(Axis("cell") |> BeginMask("age") |> IsGreater(1) |> EndMask(), "@ cell [ age > 1.0 ]")
+    expect_c_equal(Axis("cell") |> BeginMask("age") |> IsGreaterEqual(1) |> EndMask(), "@ cell [ age >= 1.0 ]")
     expect_c_equal(Axis("gene") |> BeginMask("name") |> IsMatch("RP[SL]") |> EndMask(), "@ gene [ name ~ RP\\[SL\\] ]")
     expect_c_equal(Axis("gene") |> BeginMask("name") |> IsNotMatch("RP[SL]") |> EndMask(), "@ gene [ name !~ RP\\[SL\\] ]")
 })
@@ -508,8 +508,8 @@ test_that("get_tidy returns data in long format", {
     # Test matrix data by getting expression for each gene separately
     result <- get_tidy(daf, "cell", list(
         age = "age",
-        g1_expr = "@ gene = G1 : expression",
-        g2_expr = "@ gene = G2 : expression"
+        g1_expr = ":: expression @ gene = G1",
+        g2_expr = ":: expression @ gene = G2"
     ), values_transform = list(value = as.character))
 
     expect_true(tibble::is_tibble(result))
@@ -600,7 +600,7 @@ test_that("[ operator retrieves vectors with multiple variants", {
 
     # Test 1: Basic vector retrieval using daf['@ cells']
     cells <- daf["@ cells"]
-    expect_equal(cells, c("cell1", "cell2", "cell3", "cell4", "cell5"))
+    expect_equal(unname(cells), c("cell1", "cell2", "cell3", "cell4", "cell5"))
 
     # Test 2: Retrieve a specific property
     cell_types <- daf["@ cells : type"]
@@ -608,19 +608,19 @@ test_that("[ operator retrieves vectors with multiple variants", {
 
     # Test 3: Filter cells by type
     t_cells <- daf["@ cells [ type = T ]"]
-    expect_equal(t_cells, c("cell1", "cell3"))
+    expect_equal(unname(t_cells), c("cell1", "cell3"))
 
     # Test 4: Get ages of cells of a specific type
-    b_cell_ages <- daf["@ cells & type = B : age"]
+    b_cell_ages <- daf["@ cells [ type = B ] : age"]
     expect_equal(b_cell_ages, c(cell2 = 2.0, cell5 = 1.0))
 
     # Test 5: Use numerical comparison
     old_cells <- daf["@ cells [ age > 2.0 ]"]
-    expect_equal(old_cells, c("cell3", "cell4"))
+    expect_equal(unname(old_cells), c("cell3", "cell4"))
 
     # Test 6: Combine multiple filters
     active_t_cells <- daf["@ cells [ type = T ] [ is_active ]"]
-    expect_equal(active_t_cells, c("cell1", "cell3"))
+    expect_equal(unname(active_t_cells), c("cell1", "cell3"))
 
     # Test 7: Apply transformation to a vector
     log_ages <- daf["@ cells : age % Log base 2 eps 1.0"]
@@ -1038,7 +1038,7 @@ test_that("parse_query handles various query strings correctly", {
     expect_true(inherits(query_obj, "JuliaObject"))
 
     # Test full query with various operations
-    complex_query <- parse_query("@ cell & age > 2.5 : type / batch >> Mean")
+    complex_query <- parse_query("@ cell [ age > 2.5 ] : type / batch >> Mean")
     expect_true(inherits(query_obj, "JuliaObject"))
 
     # Test using the parsed query on a daf object
@@ -1053,8 +1053,8 @@ test_that("parse_query handles various query strings correctly", {
 
     # Test with a more complex query
     set_vector(daf, "cell", "type", c("X", "Y", "X"))
-    direct_result <- get_query(daf, "@ cell & type = X : age")
-    parsed_result <- get_query(daf, parse_query("@ cell & type = X : age"))
+    direct_result <- get_query(daf, "@ cell [ type = X ] : age")
+    parsed_result <- get_query(daf, parse_query("@ cell [ type = X ] : age"))
     expect_equal(direct_result, parsed_result)
     expect_equal(parsed_result, c(A = 1, C = 3))
 })
@@ -1090,28 +1090,28 @@ test_that("BeginMask/EndMask operations work correctly", {
     query <- Axis("gene") |>
         BeginMask("is_lateral") |>
         EndMask() |>
-        LookupVector("name")
+        LookupVector("label")
     expect_true(inherits(query, "JuliaObject"))
 
     # Test with actual data
     daf <- memory_daf(name = "test_begin_end_mask")
     add_axis(daf, "gene", c("X", "Y", "Z"))
     set_vector(daf, "gene", "is_lateral", c(TRUE, FALSE, TRUE))
-    set_vector(daf, "gene", "name", c("geneX", "geneY", "geneZ"))
+    set_vector(daf, "gene", "label", c("geneX", "geneY", "geneZ"))
 
     # Test BeginMask + EndMask to filter genes
-    result <- get_query(daf, Axis("gene") |> BeginMask("is_lateral") |> EndMask() |> LookupVector("name"))
+    result <- get_query(daf, Axis("gene") |> BeginMask("is_lateral") |> EndMask() |> LookupVector("label"))
     expect_equal(result, c(X = "geneX", Z = "geneZ"))
 
     # Test BeginNegatedMask + EndMask to filter genes
-    result <- get_query(daf, Axis("gene") |> BeginNegatedMask("is_lateral") |> EndMask() |> LookupVector("name"))
+    result <- get_query(daf, Axis("gene") |> BeginNegatedMask("is_lateral") |> EndMask() |> LookupVector("label"))
     expect_equal(result, c(Y = "geneY"))
 
     # Test string query equivalence
-    result <- get_query(daf, "@ gene [ is_lateral ] : name")
+    result <- get_query(daf, "@ gene [ is_lateral ] : label")
     expect_equal(result, c(X = "geneX", Z = "geneZ"))
 
-    result <- get_query(daf, "@ gene [ ! is_lateral ] : name")
+    result <- get_query(daf, "@ gene [ ! is_lateral ] : label")
     expect_equal(result, c(Y = "geneY"))
 })
 
@@ -1146,11 +1146,11 @@ test_that("SquareColumnIs operation works correctly", {
     set_matrix(daf, "cell", "cell", "similarity", similarity)
 
     # Test getting a column vector from a square matrix
-    result <- get_query(daf, Axis("cell") |> Axis("cell") |> LookupMatrix("similarity") |> SquareColumnIs("A"))
+    result <- get_query(daf, Axis("cell") |> LookupMatrix("similarity") |> SquareColumnIs("A"))
     expect_equal(length(result), 3)
 
     # For the string query approach, validate it's correctly formed
-    string_query <- "@ cell @ cell :: similarity @| A"
+    string_query <- "@ cell :: similarity @| A"
     has_valid_string_query <- has_query(daf, string_query)
     expect_true(has_valid_string_query)
 })
@@ -1188,20 +1188,19 @@ test_that("SquareRowIs operation works correctly", {
     set_matrix(daf, "cell", "cell", "similarity", similarity)
 
     # Test getting a row vector from a square matrix
-    result <- get_query(daf, Axis("cell") |> Axis("cell") |> LookupMatrix("similarity") |> SquareRowIs("A"))
+    result <- get_query(daf, Axis("cell") |> LookupMatrix("similarity") |> SquareRowIs("A"))
     expect_equal(length(result), 3)
 
     # For the string query approach, validate it's correctly formed
-    string_query <- "@ cell @ cell :: similarity @- A"
+    string_query <- "@ cell :: similarity @- A"
     has_valid_string_query <- has_query(daf, string_query)
     expect_true(has_valid_string_query)
 })
 
 test_that("Axis validates inputs correctly", {
-    # Test missing axis parameter
-    expect_error(
-        Axis()
-    )
+    # Axis() without arguments is valid in v0.2.0 (produces "@")
+    expect_no_error(Axis())
+    expect_c_equal(Axis(), "@")
 
     # Test non-character axis parameter
     expect_error(
@@ -1210,10 +1209,9 @@ test_that("Axis validates inputs correctly", {
 })
 
 test_that("LookupVector validates inputs correctly", {
-    # Test missing property parameter
-    expect_error(
-        LookupVector()
-    )
+    # LookupVector() without arguments is valid in v0.2.0 (produces ":")
+    expect_no_error(LookupVector())
+    expect_c_equal(LookupVector(), ":")
 
     # Test non-character property parameter
     expect_error(
@@ -1222,10 +1220,9 @@ test_that("LookupVector validates inputs correctly", {
 })
 
 test_that("LookupScalar validates inputs correctly", {
-    # Test missing property parameter
-    expect_error(
-        LookupScalar()
-    )
+    # LookupScalar() without arguments is valid in v0.2.0 (produces ".")
+    expect_no_error(LookupScalar())
+    expect_c_equal(LookupScalar(), ".")
 
     # Test non-character property parameter
     expect_error(

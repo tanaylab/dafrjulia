@@ -26,7 +26,7 @@ test_that("viewer creates correct views", {
     data_list <- list()
     data_list[[ALL_SCALARS]] <- NULL
     data_list[[paste(ALL_VECTORS, collapse = ",")]] <- "="
-    data_list[["obs,var,X"]] <- ": UMIs"
+    data_list[["obs,var,X"]] <- ":: UMIs"
 
     view <- viewer(
         daf,

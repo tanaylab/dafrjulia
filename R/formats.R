@@ -23,6 +23,11 @@ memory_daf <- function(name = "memory") {
 #' @export
 files_daf <- function(path, mode = "r", name = NULL) {
     path <- normalizePath(path, mustWork = FALSE)
+    # Work around a DataAxesFormats v0.2.0 cache invalidation bug when opening
+    # existing directories in truncate mode ("w").
+    if (identical(mode, "w") && dir.exists(path)) {
+        unlink(path, recursive = TRUE, force = TRUE)
+    }
     jl_obj <- julia_call("DataAxesFormats.FilesDaf", path, mode, name = name)
     return(Daf(jl_obj))
 }

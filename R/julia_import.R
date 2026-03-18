@@ -58,7 +58,7 @@ define_julia_functions <- function() {
     ")
 
     julia_eval("
-    function _pairify_columns(items::Maybe{AbstractVector})::Maybe{DataAxesFormats.FrameColumns}
+    function _pairify_columns(items::Maybe{AbstractVector})::Maybe{DataAxesFormats.Queries.FrameColumns}
         if items == nothing
             return nothing
         else

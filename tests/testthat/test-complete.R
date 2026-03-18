@@ -103,6 +103,8 @@ test_that("complete_daf correctly handles repository chains", {
 
     # We should be able to write to the leaf repository
     set_scalar(complete_rw, "new_data", "written_through_chain")
+    # Force finalizers/flush before reopening disk repositories.
+    gc()
 
     # Verify the data was written to leaf, not base or root
     leaf_reopened <- files_daf(leaf_dir, "r")

@@ -5,6 +5,7 @@ dafr.code-workspace
 # Local agent/editor state
 .a5c/
 .claude/
+AGENTS.md
 
 # R package build/check artifacts
 *.Rcheck/

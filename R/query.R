@@ -202,13 +202,10 @@ Axis <- function(axis = NULL, ...) {
 #' @param ... Additional arguments needed to support usage of pipe operator
 #' @return A query operation object that can be used in a query sequence
 #' @export
-LookupVector <- function(property, ...) {
-    res <- extract_query_and_value(property, missing(property), list(...), required = TRUE)
-    if (!res$provided) {
-        cli::cli_abort("{.field property} is missing with no default")
-    }
-    if (!is.character(res$value)) {
-        cli::cli_abort("{.field property} must be a character string")
+LookupVector <- function(property = NULL, ...) {
+    res <- extract_query_and_value(property, missing(property), list(...), required = FALSE, default = NULL)
+    if (!is.null(res$value) && !is.character(res$value)) {
+        cli::cli_abort("{.field property} must be a character string or NULL")
     }
 
     ans <- julia_call("DataAxesFormats.Queries.LookupVector", res$value)
@@ -226,13 +223,10 @@ LookupVector <- function(property, ...) {
 #' @param ... Additional arguments needed to support usage of pipe operator
 #' @return A query operation object that can be used in a query sequence
 #' @export
-LookupScalar <- function(property, ...) {
-    res <- extract_query_and_value(property, missing(property), list(...), required = TRUE)
-    if (!res$provided) {
-        cli::cli_abort("{.field property} is missing with no default")
-    }
-    if (!is.character(res$value)) {
-        cli::cli_abort("{.field property} must be a character string")
+LookupScalar <- function(property = NULL, ...) {
+    res <- extract_query_and_value(property, missing(property), list(...), required = FALSE, default = NULL)
+    if (!is.null(res$value) && !is.character(res$value)) {
+        cli::cli_abort("{.field property} must be a character string or NULL")
     }
 
     ans <- julia_call("DataAxesFormats.Queries.LookupScalar", res$value)
@@ -920,14 +914,26 @@ GroupRowsBy <- function(property, ...) {
 #' @return A query operation object
 #' @export
 ReduceToColumn <- function(reduction, ...) {
-    res <- extract_query_and_value(reduction, missing(reduction), list(...), required = TRUE)
-    if (!res$provided) {
+    dots <- list(...)
+
+    if (missing(reduction)) {
         cli::cli_abort("{.field reduction} is missing with no default")
     }
 
-    ans <- julia_call("DataAxesFormats.Queries.ReduceToColumn", res$value)
-    if (!is.null(res$query)) {
-        ans <- julia_call("|>", res$query, ans)
+    # When piped, reduction gets the query and actual reduction is in ...
+    if (inherits(reduction, "JuliaObject") && length(dots) > 0 && inherits(dots[[1]], "JuliaObject")) {
+        query <- reduction
+        actual_reduction <- dots[[1]]
+    } else if (inherits(reduction, "JuliaObject")) {
+        query <- NULL
+        actual_reduction <- reduction
+    } else {
+        cli::cli_abort("{.field reduction} must be a query operation object")
+    }
+
+    ans <- julia_call("DataAxesFormats.Queries.ReduceToColumn", actual_reduction)
+    if (!is.null(query)) {
+        ans <- julia_call("|>", query, ans)
     }
     ans
 }
@@ -941,14 +947,26 @@ ReduceToColumn <- function(reduction, ...) {
 #' @return A query operation object
 #' @export
 ReduceToRow <- function(reduction, ...) {
-    res <- extract_query_and_value(reduction, missing(reduction), list(...), required = TRUE)
-    if (!res$provided) {
+    dots <- list(...)
+
+    if (missing(reduction)) {
         cli::cli_abort("{.field reduction} is missing with no default")
     }
 
-    ans <- julia_call("DataAxesFormats.Queries.ReduceToRow", res$value)
-    if (!is.null(res$query)) {
-        ans <- julia_call("|>", res$query, ans)
+    # When piped, reduction gets the query and actual reduction is in ...
+    if (inherits(reduction, "JuliaObject") && length(dots) > 0 && inherits(dots[[1]], "JuliaObject")) {
+        query <- reduction
+        actual_reduction <- dots[[1]]
+    } else if (inherits(reduction, "JuliaObject")) {
+        query <- NULL
+        actual_reduction <- reduction
+    } else {
+        cli::cli_abort("{.field reduction} must be a query operation object")
+    }
+
+    ans <- julia_call("DataAxesFormats.Queries.ReduceToRow", actual_reduction)
+    if (!is.null(query)) {
+        ans <- julia_call("|>", query, ans)
     }
     ans
 }

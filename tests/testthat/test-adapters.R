@@ -90,8 +90,8 @@ test_that("adapter with scalar renaming works", {
     }
 
     # Run the adapter with scalar renaming
-    input_data <- list("input" = ": INPUT")
-    output_data <- list("OUTPUT" = ": output")
+    input_data <- list("input" = "INPUT")
+    output_data <- list("OUTPUT" = "output")
 
     result <- adapter(
         daf,
