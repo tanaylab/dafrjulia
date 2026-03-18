@@ -7,7 +7,7 @@
 \usage{
 Lookup(property, ...)
 
-LookupVector(property, ...)
+LookupVector(property = NULL, ...)
 }
 \arguments{
 \item{property}{String specifying the property name to look up}

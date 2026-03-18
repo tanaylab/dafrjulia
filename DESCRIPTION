@@ -26,8 +26,9 @@ Depends:
     R (>= 4.1.0)
 SystemRequirements: Julia (>= 1.10), DataAxesFormats.jl, TanayLabUtilities.jl,
     Muon.jl, NamedArrays.jl
-Imports: 
+Imports:
     cli,
+    jlview,
     JuliaCall,
     Matrix,
     methods,

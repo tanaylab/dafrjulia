@@ -4,7 +4,7 @@
 \alias{LookupScalar}
 \title{LookupScalar query operation}
 \usage{
-LookupScalar(property, ...)
+LookupScalar(property = NULL, ...)
 }
 \arguments{
 \item{property}{String specifying the scalar property name to look up}
