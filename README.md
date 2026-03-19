@@ -98,52 +98,53 @@ set_matrix(daf, "cell", "gene", "counts", matrix(1:9, nrow = 3, ncol = 3))
 
 # Basic queries using the [ operator
 # Get scalar values
-daf[": version"] # Get a scalar
+daf[". version"] # Get a scalar
 #> [1] "1.0"
 
 # Access axes and properties
-daf["? axes"] # List all axes
+daf["@ ?"] # List all axes
 #> [1] "gene" "cell"
-daf["/ cell ?"] # List properties of the "cell" axis
+daf["@ cell : ?"] # List properties of the "cell" axis
 #> [1] "type" "age"
 
 # Access vector data
-daf["/ cell : age"] # Get the "age" vector for all cells
+daf["@ cell : age"] # Get the "age" vector for all cells
 #>  A  B  C 
 #>  1  5 10
 
 # Access matrix data
-daf["/ cell / gene : counts"] # Get the full counts matrix
+daf["@ cell @ gene :: counts"] # Get the full counts matrix
 #>   X Y Z
 #> A 1 4 7
 #> B 2 5 8
 #> C 3 6 9
 
 # Filter data
-daf["/ cell & age > 2 : type"] # Get types of cells with age > 2
+daf["@ cell [ age > 2 ] : type"] # Get types of cells with age > 2
 #>    B    C 
 #>  "B" "NK"
 
 # Transform data
-daf["/ cell : age % Abs"] # Get absolute values of ages
+daf["@ cell : age % Abs"] # Get absolute values of ages
 #>  A  B  C 
 #>  1  5 10
-daf["/ cell : age % Log base 2"] # Get log2 of ages
+daf["@ cell : age % Log base 2"] # Get log2 of ages
 #>        A        B        C 
 #> 0.000000 2.321928 3.321928
 
 # Aggregations
-daf["/ cell : age %> Max"] # Get maximum age
+daf["@ cell : age >> Max"] # Get maximum age
 #> [1] 10
-daf["/ cell : age %> Mean"] # Get mean age
+daf["@ cell : age >> Mean"] # Get mean age
 #> [1] 5.333333
 
 # Complex operations can be built using the pipe operator or query functions
 # Get types of cells with age > 2
 Axis("cell") |>
-    And("age") |>
+    BeginMask("age") |>
     IsGreater(2) |>
-    Lookup("type") |>
+    EndMask() |>
+    LookupVector("type") |>
     get_query(daf)
 #>    B    C 
 #>  "B" "NK"
@@ -151,26 +152,26 @@ Axis("cell") |>
 
 The query syntax follows a simple pattern:
 
-- `/ axis` selects an axis
-- `: property` retrieves a property
+- `@ axis` selects an axis
+- `. property` retrieves a scalar
+- `: property` retrieves a vector property
+- `:: property` retrieves a matrix property
 - `% operation` applies an element-wise operation
-- `%> reduction` applies a reduction operation
-- `& property` filters by a property
-- `= value`, `> value`, etc. apply comparison operations
+- `>> reduction` applies a reduction operation
+- `[ property comparison value ]` filters by a property
 
 See the Julia
-[documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.1.2/queries.html)
+[documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html)
 for more details about the query language.
 
-### Important Note About Data Copying
+### Note on Data Transfer
 
-Due to limitations in JuliaCall, data is copied between R and Julia
-during function calls. This means that operations involving large
-matrices or vectors will incur memory overhead. For large datasets,
-consider performing more operations directly on the Julia side to
-minimize data transfers. This also means that creating properties with
-`empty_dense_vector` or `empty_sparse_vector` are not supported in the R
-version.
+The dafr package uses [jlview](https://github.com/tanaylab/jlview) for
+zero-copy transfer of arrays from Julia to R. However, writing data from
+R to Julia (e.g., via `set_vector` or `set_matrix`) still involves
+copying through JuliaCall. This means that `get_empty_dense_vector`,
+`get_empty_sparse_vector` and their matrix equivalents do not provide
+the in-place filling benefit they offer in Julia.
 
 ## Key Features
 
