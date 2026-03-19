@@ -387,7 +387,7 @@ from_julia_array <- function(julia_array) {
     if (is_julia_type(julia_array, "SparseArrays.SparseMatrixCSC")) {
         # Check if jlview_sparse supports this element type
         sparse_eltype <- julia_call("string", julia_call("eltype", julia_array), need_return = "R")
-        sparse_zero_copy_types <- c("Float64", "Float32", "Int64", "Int32", "Int16", "UInt8")
+        sparse_zero_copy_types <- c("Float64", "Float32", "Int64", "Int32", "Int16", "UInt8", "UInt16", "UInt32", "UInt64")
 
         if (sparse_eltype %in% sparse_zero_copy_types) {
             sp <- jlview::jlview_sparse(julia_array)
@@ -436,11 +436,9 @@ from_julia_array <- function(julia_array) {
         return(sp)
     }
 
-    # Check element type for zero-copy support
-    # Note: UInt8 is excluded because jlview's ALTREP layer doesn't support it yet
-    # (pin reports eltype_code=3 but select_class has no ALTREP class for it)
+    # Check element type for zero-copy support via jlview
     eltype_str <- julia_call("string", julia_call("eltype", julia_array), need_return = "R")
-    zero_copy_types <- c("Float64", "Float32", "Int64", "Int32", "Int16")
+    zero_copy_types <- c("Float64", "Float32", "Int64", "Int32", "Int16", "UInt8", "UInt16", "UInt32", "UInt64")
 
     # jlview only supports dense (contiguous) arrays; skip for sparse types
     is_sparse <- is_julia_type(julia_array, "SparseArrays.AbstractSparseArray")
