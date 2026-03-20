@@ -117,7 +117,7 @@ axis_vector <- function(daf, axis, null_if_missing = FALSE) {
     # Cache path
     cache_key <- paste0("axis_vec:", axis)
     vc <- tryCatch(
-        julia_call("string", julia_call("DataAxesFormats.axis_version_counter", daf$jl_obj, axis), need_return = "R"),
+        julia_call("string", julia_call("DataAxesFormats.axis_version_counter", daf$jl_obj, axis, need_return = "Julia"), need_return = "R"),
         error = function(e) NULL
     )
 
@@ -293,7 +293,7 @@ get_vector <- function(daf, axis, name, default = NULL) {
 
     # Cache path: check cache, fetch if miss
     cache_key <- paste0("vec:", axis, ":", name)
-    vc <- julia_call("string", julia_call("DataAxesFormats.vector_version_counter", daf$jl_obj, axis, name), need_return = "R")
+    vc <- julia_call("string", julia_call("DataAxesFormats.vector_version_counter", daf$jl_obj, axis, name, need_return = "Julia"), need_return = "R")
     cached <- cache_lookup(daf, cache_key, vc)
     if (!is.null(cached)) {
         return(cached)
@@ -550,7 +550,7 @@ get_matrix <- function(daf, rows_axis, columns_axis, name, default = NULL, relay
     # Cache path (only when no default)
     if (is.null(default)) {
         cache_key <- paste0("mat:", rows_axis, ":", columns_axis, ":", name)
-        vc <- julia_call("string", julia_call("DataAxesFormats.matrix_version_counter", daf$jl_obj, rows_axis, columns_axis, name), need_return = "R")
+        vc <- julia_call("string", julia_call("DataAxesFormats.matrix_version_counter", daf$jl_obj, rows_axis, columns_axis, name, need_return = "Julia"), need_return = "R")
         cached <- cache_lookup(daf, cache_key, vc)
         if (!is.null(cached)) {
             return(cached)
@@ -762,7 +762,7 @@ read_only <- function(daf, name = NULL) {
 #' @export
 axis_version_counter <- function(daf, axis) {
     validate_daf_object(daf)
-    julia_call("string", julia_call("DataAxesFormats.axis_version_counter", daf$jl_obj, axis), need_return = "R")
+    julia_call("string", julia_call("DataAxesFormats.axis_version_counter", daf$jl_obj, axis, need_return = "Julia"), need_return = "R")
 }
 
 #' Get vector version counter
@@ -779,7 +779,7 @@ axis_version_counter <- function(daf, axis) {
 #' @export
 vector_version_counter <- function(daf, axis, name) {
     validate_daf_object(daf)
-    julia_call("string", julia_call("DataAxesFormats.vector_version_counter", daf$jl_obj, axis, name), need_return = "R")
+    julia_call("string", julia_call("DataAxesFormats.vector_version_counter", daf$jl_obj, axis, name, need_return = "Julia"), need_return = "R")
 }
 
 #' Get an empty dense vector for filling
@@ -994,7 +994,7 @@ filled_empty_sparse_matrix <- function(daf, rows_axis, columns_axis, name, colpt
 #' @export
 matrix_version_counter <- function(daf, rows_axis, columns_axis, name) {
     validate_daf_object(daf)
-    julia_call("string", julia_call("DataAxesFormats.matrix_version_counter", daf$jl_obj, rows_axis, columns_axis, name), need_return = "R")
+    julia_call("string", julia_call("DataAxesFormats.matrix_version_counter", daf$jl_obj, rows_axis, columns_axis, name, need_return = "Julia"), need_return = "R")
 }
 
 #' Get the complete filesystem path of a persistent Daf repository

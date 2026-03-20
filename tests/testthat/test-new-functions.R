@@ -18,30 +18,30 @@ test_that("version counters work", {
     daf <- memory_daf(name = "version_test!")
     add_axis(daf, "cell", c("A", "B", "C"))
 
-    # Initial version
+    # Initial version (returned as string to avoid UInt32 overflow)
     v1 <- axis_version_counter(daf, "cell")
-    expect_true(is.numeric(v1))
+    expect_true(is.character(v1))
 
     # Add a vector and check its version
     set_vector(daf, "cell", "score", c(1.0, 2.0, 3.0))
     vec_v1 <- vector_version_counter(daf, "cell", "score")
-    expect_true(is.numeric(vec_v1))
+    expect_true(is.character(vec_v1))
 
-    # Update vector
+    # Update vector - version should change
     set_vector(daf, "cell", "score", c(4.0, 5.0, 6.0), overwrite = TRUE)
     vec_v2 <- vector_version_counter(daf, "cell", "score")
-    expect_true(vec_v2 > vec_v1)
+    expect_true(vec_v2 != vec_v1)
 
     # Add matrix and check version
     add_axis(daf, "gene", c("X", "Y"))
     set_matrix(daf, "cell", "gene", "expr", matrix(1:6, nrow = 3, ncol = 2))
     mat_v1 <- matrix_version_counter(daf, "cell", "gene", "expr")
-    expect_true(is.numeric(mat_v1))
+    expect_true(is.character(mat_v1))
 
-    # Update matrix
+    # Update matrix - version should change
     set_matrix(daf, "cell", "gene", "expr", matrix(7:12, nrow = 3, ncol = 2), overwrite = TRUE)
     mat_v2 <- matrix_version_counter(daf, "cell", "gene", "expr")
-    expect_true(mat_v2 > mat_v1)
+    expect_true(mat_v2 != mat_v1)
 })
 
 test_that("is_axis_query works", {

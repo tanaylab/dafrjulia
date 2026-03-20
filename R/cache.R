@@ -15,7 +15,7 @@ get_daf_cache <- function(daf) {
 #' Get a stable identifier for a Daf object
 #' @noRd
 get_daf_id <- function(daf) {
-    JuliaCall::julia_call("string", JuliaCall::julia_call("objectid", daf$jl_obj), need_return = "R")
+    JuliaCall::julia_call("string", JuliaCall::julia_call("objectid", daf$jl_obj, need_return = "Julia"), need_return = "R")
 }
 
 #' Look up a cached value, checking version counter
