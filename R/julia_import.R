@@ -1,3 +1,6 @@
+# Package-level environment for caching Julia type maps and other state
+dafr_env <- new.env(parent = emptyenv())
+
 #' Check if Julia is initialized
 #'
 #' @return TRUE if Julia has been initialized via setup_daf(), FALSE otherwise
@@ -27,10 +30,9 @@ is_julia_initialized <- function() {
 use_default_julia_environment <- function(env_path = "default") {
     if (env_path == "default") {
         default_env <- JuliaCall::julia_eval('joinpath(DEPOT_PATH[1], "environments", "v$(VERSION.major).$(VERSION.minor)")')
-        JuliaCall::julia_eval(paste0('using Pkg; Pkg.activate("', default_env, '")'))
+        JuliaCall::julia_call("Pkg.activate", default_env)
     } else {
-        # Use the custom environment path provided
-        JuliaCall::julia_eval(paste0('using Pkg; Pkg.activate("', env_path, '")'))
+        JuliaCall::julia_call("Pkg.activate", env_path)
     }
 }
 
@@ -151,6 +153,19 @@ define_julia_functions <- function() {
         return array
     end
     ")
+
+    julia_eval("
+    function _classify_object(obj)
+        obj isa AbstractArray && return \"array\"
+        obj isa Base.KeySet && return \"keyset\"
+        obj isa AbstractSet && return \"set\"
+        obj isa DataFrames.AbstractDataFrame && return \"dataframe\"
+        obj isa AbstractString && return \"string\"
+        obj isa Bool && return \"bool\"
+        obj isa Number && return \"number\"
+        return \"unknown\"
+    end
+    ")
 }
 
 get_julia_field <- function(julia_object, field_name, need_return = "Julia") {
@@ -192,17 +207,15 @@ jl_pairify_data <- function(data) {
 }
 
 
-#' Convert R types to Julia types
+#' Initialize the Julia type cache
 #'
-#' This function converts R types or values to their appropriate Julia type equivalents.
-#' It maps R data types to Julia data types using a lookup table.
+#' Builds the R-to-Julia type mapping and stores it in dafr_env$JULIA_TYPE_OF_R_TYPE.
+#' Should be called once during setup, after Julia is initialized.
 #'
-#' @param value An R value or type to convert to a Julia type
-#' @return The equivalent Julia type or the value unchanged if no conversion is needed
+#' @return No return value, called for side effects.
 #' @noRd
-jl_R_to_julia_type <- function(value) {
-    # Define mapping from R types to Julia types
-    JULIA_TYPE_OF_R_TYPE <- list(
+init_julia_type_cache <- function() {
+    dafr_env$JULIA_TYPE_OF_R_TYPE <- list(
         "logical" = julia_eval("Bool"),
         "integer" = julia_eval("Int64"),
         "double" = julia_eval("Float64"),
@@ -217,24 +230,37 @@ jl_R_to_julia_type <- function(value) {
         "float32" = julia_eval("Float32"),
         "float64" = julia_eval("Float64")
     )
+    dafr_env$JULIA_NOTHING_TYPE <- julia_eval("Nothing")
+}
+
+#' Convert R types to Julia types
+#'
+#' This function converts R types or values to their appropriate Julia type equivalents.
+#' It maps R data types to Julia data types using a cached lookup table.
+#'
+#' @param value An R value or type to convert to a Julia type
+#' @return The equivalent Julia type or the value unchanged if no conversion is needed
+#' @noRd
+jl_R_to_julia_type <- function(value) {
+    type_map <- dafr_env$JULIA_TYPE_OF_R_TYPE
 
     # If value is a string that represents a type name
     if (is.character(value) && length(value) == 1) {
-        if (value %in% names(JULIA_TYPE_OF_R_TYPE)) {
-            return(JULIA_TYPE_OF_R_TYPE[[value]])
+        if (value %in% names(type_map)) {
+            return(type_map[[value]])
         }
     }
 
     # Determine the type of the actual value
     if (!is.null(value) && !is.function(value)) {
         r_type <- typeof(value)
-        if (r_type %in% names(JULIA_TYPE_OF_R_TYPE)) {
-            return(JULIA_TYPE_OF_R_TYPE[[r_type]])
+        if (r_type %in% names(type_map)) {
+            return(type_map[[r_type]])
         }
     }
 
     if (is.null(value)) {
-        return(julia_eval("Nothing"))
+        return(dafr_env$JULIA_NOTHING_TYPE)
     }
 
     # Return the value unchanged if no conversion is needed or possible
@@ -247,56 +273,26 @@ jl_R_to_julia_type <- function(value) {
 #' @return An R object of appropriate type
 #' @noRd
 from_julia_object <- function(julia_object) {
-    # Handle NULL
     if (is.null(julia_object)) {
         return(NULL)
     }
 
-    # Check for specific Julia types
-    if (inherits(julia_object, "JuliaObject")) {
-        # Check for KeySet or other set types
-        is_keyset <- is_julia_type(julia_object, "Base.KeySet")
-        is_set <- is_julia_type(julia_object, "AbstractSet")
-
-        if (is_keyset || is_set) {
-            return(as.character(julia_call("collect", julia_object)))
-        }
-
-        # Check for arrays
-        is_array <- is_julia_type(julia_object, "AbstractArray")
-
-        if (is_array) {
-            return(from_julia_array(julia_object))
-        }
-
-        # Check for DataFrames
-        is_dataframe <- is_julia_type(julia_object, "DataFrames.AbstractDataFrame")
-
-        if (is_dataframe) {
-            return(as.data.frame(julia_object))
-        }
-
-        is_string <- is_julia_type(julia_object, "AbstractString")
-        if (is_string) {
-            return(as.character(julia_object))
-        }
-
-        is_numeric <- is_julia_type(julia_object, "Number")
-        if (is_numeric) {
-            return(as.numeric(julia_object))
-        }
-
-        is_logical <- is_julia_type(julia_object, "Bool")
-        if (is_logical) {
-            return(as.logical(julia_object))
-        }
-
-        # Default fallback - convert to R
-        return(julia_eval(julia_object, need_return = "R"))
+    if (!inherits(julia_object, "JuliaObject")) {
+        return(julia_object)
     }
 
-    # Default fallback - return as is
-    return(julia_object)
+    obj_type <- julia_call("_classify_object", julia_object, need_return = "R")
+
+    switch(obj_type,
+        "array" = from_julia_array(julia_object),
+        "keyset" = ,
+        "set" = as.character(julia_call("collect", julia_object)),
+        "dataframe" = as.data.frame(julia_object),
+        "string" = as.character(julia_object),
+        "bool" = as.logical(julia_object),
+        "number" = as.numeric(julia_object),
+        "unknown" = julia_eval(julia_object, need_return = "R")
+    )
 }
 
 create_julia_sparse_matrix <- function(sparse_matrix) {
@@ -304,26 +300,19 @@ create_julia_sparse_matrix <- function(sparse_matrix) {
         sparse_matrix <- as(sparse_matrix, "CsparseMatrix")
     }
 
-    # Column-oriented sparse matrix (CSC format)
-    # Extract components of sparse matrix
-    # For dgCMatrix, Matrix package uses 0-based indexing internally, but Julia uses 1-based
-    colptr <- sparse_matrix@p + 1 # Convert to 1-indexed for Julia
-    rowval <- sparse_matrix@i + 1 # Convert to 1-indexed for Julia
+    # Extract and convert to 1-indexed integers for Julia
+    colptr <- as.integer(sparse_matrix@p + 1L)
+    rowval <- as.integer(sparse_matrix@i + 1L)
     nzval <- sparse_matrix@x
-
-    # Create vectors in Julia
-    jl_colptr <- julia_call("Vector", colptr)
-    jl_rowval <- julia_call("Vector", rowval)
-    jl_nzval <- julia_call("Vector", nzval)
 
     nrows <- sparse_matrix@Dim[1]
     ncols <- sparse_matrix@Dim[2]
 
-    # Create Julia sparse matrix
+    # Create Julia sparse matrix directly from R vectors
     return(julia_call(
         "SparseArrays.SparseMatrixCSC",
         as.integer(nrows), as.integer(ncols),
-        as.integer(jl_colptr), as.integer(jl_rowval), jl_nzval,
+        colptr, rowval, nzval,
         need_return = "Julia"
     ))
 }

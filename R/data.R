@@ -165,13 +165,9 @@ axis_indices <- function(daf, axis, entries, allow_empty = FALSE) {
     if (!is.character(entries)) {
         cli::cli_abort("{.field entries} must be a character vector")
     }
-    single_entry <- length(entries) == 1
-    if (single_entry) {
-        # For some reason, JuliaCall cannot convert a single string to a vector of length 2, hence this ugly workaround
-        entries <- c(entries, entries)
-    }
-    result <- julia_call("DataAxesFormats.axis_indices", daf$jl_obj, axis, entries, allow_empty = allow_empty)
-    if (single_entry) {
+    jl_entries <- to_julia_vector(entries)
+    result <- julia_call("DataAxesFormats.axis_indices", daf$jl_obj, axis, jl_entries, allow_empty = allow_empty)
+    if (length(entries) == 1) {
         result <- result[1]
     }
     result
@@ -199,7 +195,6 @@ axis_entries <- function(daf, axis, indices = NULL, allow_empty = FALSE) {
         if (!is.numeric(indices)) {
             cli::cli_abort("Indices must be a numeric vector")
         }
-
         axis_size <- axis_length(daf, axis)
         if (any(indices > axis_size)) {
             cli::cli_abort("Indices must be less than or equal to the size of the axis {.val ({axis_size})}")
@@ -207,12 +202,7 @@ axis_entries <- function(daf, axis, indices = NULL, allow_empty = FALSE) {
         if (any(indices < 1)) {
             cli::cli_abort("Indices must be positive integers")
         }
-
-        if (single_index) {
-            # For some reason, JuliaCall cannot convert a single integer to a vector of length 2, hence this ugly workaround
-            indices <- c(indices, indices)
-        }
-        indices <- as.integer(indices)
+        indices <- to_julia_vector(as.integer(indices))
     }
     result <- julia_call("DataAxesFormats.axis_entries", daf$jl_obj, axis, indices, allow_empty = allow_empty)
     if (single_index) {
@@ -276,7 +266,7 @@ get_vector <- function(daf, axis, name, default = NULL) {
     if (!is.null(default)) {
         if (length(default) == 1 && is.na(default)) {
             result <- rep(NA, axis_length(daf, axis))
-            names(result) <- axis_entries(daf, axis)
+            names(result) <- axis_vector(daf, axis)
             return(result)
         }
         result <- julia_call("DataAxesFormats.get_vector", daf$jl_obj, axis, name, default = default, need_return = "Julia")
@@ -524,8 +514,8 @@ get_matrix <- function(daf, rows_axis, columns_axis, name, default = NULL, relay
     if (!is.null(default)) {
         if (length(default) == 1 && is.na(default)) {
             result <- matrix(NA, nrow = axis_length(daf, rows_axis), ncol = axis_length(daf, columns_axis))
-            rownames(result) <- axis_entries(daf, rows_axis)
-            colnames(result) <- axis_entries(daf, columns_axis)
+            rownames(result) <- axis_vector(daf, rows_axis)
+            colnames(result) <- axis_vector(daf, columns_axis)
             return(result)
         }
     }
@@ -610,9 +600,17 @@ delete_matrix <- function(daf, rows_axis, columns_axis, name, must_exist = TRUE)
 #' @details Each Daf data set has a unique name used in error messages and for identification.
 #'   This is typically set when creating the object or derived from its contents.
 #' @export
-name <- function(x, ...) {
+daf_name <- function(x, ...) {
     validate_daf_object(x)
     x$jl_obj$name
+}
+
+#' @rdname daf_name
+#' @description `name()` is deprecated in favor of `daf_name()` to avoid name conflicts with other packages.
+#' @export
+name <- function(x, ...) {
+    .Deprecated("daf_name")
+    daf_name(x, ...)
 }
 
 #' Get a dataframe from a Daf object (Julia-style)
@@ -704,7 +702,7 @@ get_tidy <- function(daf, axis, columns = NULL, cache = FALSE, ...) {
 #' @export
 read_only <- function(daf, name = NULL) {
     validate_daf_object(daf)
-    name <- name %||% name(daf)
+    name <- name %||% daf_name(daf)
     readonly_obj <- julia_call("DataAxesFormats.read_only", daf$jl_obj, name = name)
     return(Daf(readonly_obj))
 }

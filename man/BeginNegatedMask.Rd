@@ -4,10 +4,10 @@
 \alias{BeginNegatedMask}
 \title{BeginNegatedMask query operation}
 \usage{
-BeginNegatedMask(property, ...)
+BeginNegatedMask(value, ...)
 }
 \arguments{
-\item{property}{String specifying the property name for the initial negated mask}
+\item{value}{String specifying the property name for the initial negated mask}
 
 \item{...}{Additional arguments needed to support usage of pipe operator}
 }

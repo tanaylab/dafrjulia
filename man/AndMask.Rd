@@ -7,12 +7,14 @@
 \usage{
 And(property, ...)
 
-AndMask(property, ...)
+AndMask(value, ...)
 }
 \arguments{
-\item{property}{String specifying the property to use as a filter mask}
+\item{property}{String specifying the property}
 
 \item{...}{Additional arguments needed to support usage of pipe operator}
+
+\item{value}{String specifying the property to use as a filter mask}
 }
 \value{
 A query operation object that can be used in a query sequence
@@ -25,3 +27,8 @@ a logical AND between the current selection and the specified property, treating
 property as a Boolean mask.
 See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.AndMask}{documentation} for details.
 }
+\section{Functions}{
+\itemize{
+\item \code{And()}: Deprecated: use \code{\link[=AndMask]{AndMask()}} instead.
+
+}}

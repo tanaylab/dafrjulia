@@ -44,3 +44,28 @@ Encoding: UTF-8
 Language: en-US
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
+Collate: 
+    'Daf.R'
+    'adapters.R'
+    'anndata_format.R'
+    'cache.R'
+    'complete.R'
+    'concat.R'
+    'contracts.R'
+    'copies.R'
+    'dafr-package.R'
+    'data.R'
+    'deprecated.R'
+    'example_data.R'
+    'formats.R'
+    'groups.R'
+    'handlers.R'
+    'julia_import.R'
+    'log.R'
+    'query_factories.R'
+    'operations.R'
+    'query.R'
+    'reconstruction.R'
+    'setup.R'
+    'utils.R'
+    'views.R'

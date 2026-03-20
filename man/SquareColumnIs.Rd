@@ -23,3 +23,8 @@ Julia
 \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.SquareColumnIs}{documentation}
 for details.
 }
+\section{Functions}{
+\itemize{
+\item \code{SquareMaskColumn()}: Deprecated: use \code{\link[=SquareColumnIs]{SquareColumnIs()}} instead.
+
+}}

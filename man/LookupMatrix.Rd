@@ -4,10 +4,10 @@
 \alias{LookupMatrix}
 \title{LookupMatrix query operation}
 \usage{
-LookupMatrix(property, ...)
+LookupMatrix(value, ...)
 }
 \arguments{
-\item{property}{String specifying the matrix property name to look up}
+\item{value}{String specifying the matrix property name to look up}
 
 \item{...}{Additional arguments needed to support usage of pipe operator}
 }

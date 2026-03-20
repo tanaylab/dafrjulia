@@ -7,12 +7,14 @@
 \usage{
 Lookup(property, ...)
 
-LookupVector(property = NULL, ...)
+LookupVector(value = NULL, ...)
 }
 \arguments{
-\item{property}{String specifying the property name to look up}
+\item{property}{String specifying the property}
 
 \item{...}{Additional arguments needed to support usage of pipe operator}
+
+\item{value}{String specifying the property name to look up}
 }
 \value{
 A query operation object that can be used in a query sequence
@@ -24,3 +26,8 @@ It is typically used after an \code{Axis} operation to select a vector property 
 See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.LookupVector}{documentation}
 for details.
 }
+\section{Functions}{
+\itemize{
+\item \code{Lookup()}: Deprecated: use \code{\link[=LookupVector]{LookupVector()}} instead.
+
+}}

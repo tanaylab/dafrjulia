@@ -6,64 +6,82 @@
 #' @name deprecated-queries
 NULL
 
+#' @describeIn LookupVector Deprecated: use [LookupVector()] instead.
+#' @param property String specifying the property
+#' @param ... Additional arguments
 #' @export
-#' @rdname LookupVector
 Lookup <- function(property, ...) {
     .Deprecated("LookupVector")
     LookupVector(property, ...)
 }
 
+#' @describeIn AndMask Deprecated: use [AndMask()] instead.
+#' @param property String specifying the property
+#' @param ... Additional arguments
 #' @export
-#' @rdname AndMask
 And <- function(property, ...) {
     .Deprecated("AndMask")
     AndMask(property, ...)
 }
 
+#' @describeIn AndNegatedMask Deprecated: use [AndNegatedMask()] instead.
+#' @param property String specifying the property
+#' @param ... Additional arguments
 #' @export
-#' @rdname AndNegatedMask
 AndNot <- function(property, ...) {
     .Deprecated("AndNegatedMask")
     AndNegatedMask(property, ...)
 }
 
+#' @describeIn OrMask Deprecated: use [OrMask()] instead.
+#' @param property String specifying the property
+#' @param ... Additional arguments
 #' @export
-#' @rdname OrMask
 Or <- function(property, ...) {
     .Deprecated("OrMask")
     OrMask(property, ...)
 }
 
+#' @describeIn OrNegatedMask Deprecated: use [OrNegatedMask()] instead.
+#' @param property String specifying the property
+#' @param ... Additional arguments
 #' @export
-#' @rdname OrNegatedMask
 OrNot <- function(property, ...) {
     .Deprecated("OrNegatedMask")
     OrNegatedMask(property, ...)
 }
 
+#' @describeIn XorMask Deprecated: use [XorMask()] instead.
+#' @param property String specifying the property
+#' @param ... Additional arguments
 #' @export
-#' @rdname XorMask
 Xor <- function(property, ...) {
     .Deprecated("XorMask")
     XorMask(property, ...)
 }
 
+#' @describeIn XorNegatedMask Deprecated: use [XorNegatedMask()] instead.
+#' @param property String specifying the property
+#' @param ... Additional arguments
 #' @export
-#' @rdname XorNegatedMask
 XorNot <- function(property, ...) {
     .Deprecated("XorNegatedMask")
     XorNegatedMask(property, ...)
 }
 
+#' @describeIn SquareColumnIs Deprecated: use [SquareColumnIs()] instead.
+#' @param value String specifying the value
+#' @param ... Additional arguments
 #' @export
-#' @rdname SquareColumnIs
 SquareMaskColumn <- function(value, ...) {
     .Deprecated("SquareColumnIs")
     SquareColumnIs(value, ...)
 }
 
+#' @describeIn SquareRowIs Deprecated: use [SquareRowIs()] instead.
+#' @param value String specifying the value
+#' @param ... Additional arguments
 #' @export
-#' @rdname SquareRowIs
 SquareMaskRow <- function(value, ...) {
     .Deprecated("SquareRowIs")
     SquareRowIs(value, ...)

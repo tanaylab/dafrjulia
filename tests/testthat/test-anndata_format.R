@@ -44,7 +44,7 @@ test_that("h5ad conversion works", {
     )
 
     # Verify the converted data
-    expect_equal(name(back), "anndata!")
+    expect_equal(daf_name(back), "anndata!")
     expect_equal(get_scalar(back, "version"), 1)
     expect_equal(get_scalar(back, "obs_is"), "cell")
     expect_equal(get_scalar(back, "var_is"), "gene")
@@ -142,7 +142,7 @@ test_that("daf_as_h5ad with X_eltype parameter works", {
         name = "anndata_eltype!"
     )
 
-    expect_equal(name(back), "anndata_eltype!")
+    expect_equal(daf_name(back), "anndata_eltype!")
     expect_true(has_axis(back, "cell"))
     expect_true(has_axis(back, "gene"))
 

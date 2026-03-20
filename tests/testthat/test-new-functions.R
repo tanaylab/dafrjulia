@@ -3,7 +3,7 @@
 test_that("example_chain_daf works", {
     chain <- example_chain_daf()
     expect_true(is_daf(chain))
-    expect_equal(name(chain), "chain!")
+    expect_equal(daf_name(chain), "chain!")
 
     # Should contain data from both cells and metacells
     expect_true(has_axis(chain, "cell"))
@@ -11,7 +11,7 @@ test_that("example_chain_daf works", {
     expect_true(has_axis(chain, "gene"))
 
     chain_named <- example_chain_daf(name = "my_chain!")
-    expect_equal(name(chain_named), "my_chain!")
+    expect_equal(daf_name(chain_named), "my_chain!")
 })
 
 test_that("version counters work", {

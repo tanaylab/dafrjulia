@@ -7,12 +7,14 @@
 \usage{
 Xor(property, ...)
 
-XorMask(property, ...)
+XorMask(value, ...)
 }
 \arguments{
 \item{property}{String specifying the property}
 
 \item{...}{Additional arguments needed to support usage of pipe operator}
+
+\item{value}{String specifying the property}
 }
 \value{
 A query operation object
@@ -21,3 +23,8 @@ A query operation object
 A query operation for flipping the set of entries of an \code{Axis}. See the Julia
 \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.XorMask}{documentation} for details.
 }
+\section{Functions}{
+\itemize{
+\item \code{Xor()}: Deprecated: use \code{\link[=XorMask]{XorMask()}} instead.
+
+}}

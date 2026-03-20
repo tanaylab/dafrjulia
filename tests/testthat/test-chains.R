@@ -9,7 +9,7 @@ test_that("chain_reader with one daf works", {
     chain <- chain_reader(list(source), name = "chain!")
 
     # Test basic operations
-    expect_equal(name(chain), "chain!")
+    expect_equal(daf_name(chain), "chain!")
     expect_equal(axes_set(chain), "cell")
     expect_equal(axis_length(chain, "cell"), 2)
     expect_equal(get_scalar(chain, "version"), 1.0)
@@ -64,7 +64,7 @@ test_that("chain_writer works correctly", {
     chain <- chain_writer(list(readonly_source, source2), name = "chain!")
 
     # Test basic properties
-    expect_equal(name(chain), "chain!")
+    expect_equal(daf_name(chain), "chain!")
 
     # Test reading data from the chain
     expect_equal(get_scalar(chain, "version"), 1.0) # From source1

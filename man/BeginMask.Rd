@@ -4,10 +4,10 @@
 \alias{BeginMask}
 \title{BeginMask query operation}
 \usage{
-BeginMask(property, ...)
+BeginMask(value, ...)
 }
 \arguments{
-\item{property}{String specifying the property name for the initial mask}
+\item{value}{String specifying the property name for the initial mask}
 
 \item{...}{Additional arguments needed to support usage of pipe operator}
 }

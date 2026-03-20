@@ -4,10 +4,10 @@
 \alias{CountBy}
 \title{CountBy query operation}
 \usage{
-CountBy(property, ...)
+CountBy(value, ...)
 }
 \arguments{
-\item{property}{String specifying the property to count combinations with}
+\item{value}{String specifying the property to count combinations with}
 
 \item{...}{Additional arguments needed to support usage of pipe operator}
 }

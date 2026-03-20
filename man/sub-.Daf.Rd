@@ -20,6 +20,6 @@ The result of the query
 Extract results from a Daf object using a query
 }
 \details{
-The expression \code{daf[query]} is equivalent to \code{get_query(daf, query, cache = FALSE)}.
+The expression \code{daf[query]} is equivalent to \code{get_query(daf, query, cache = TRUE)}.
 See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Operations.get_query}{documentation} for details.
 }

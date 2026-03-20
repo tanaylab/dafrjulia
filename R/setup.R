@@ -87,6 +87,7 @@ load_daf_packages <- function() {
 
     import_julia_packages()
     define_julia_functions()
+    init_julia_type_cache()
 }
 
 #' Set up of the Julia environment needed for DataAxesFormats and TanayLabUtilities

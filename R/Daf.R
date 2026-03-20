@@ -9,6 +9,13 @@
 #' and [here](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/formats.html#Write-API) for details.
 #' @export
 Daf <- function(jl_obj) {
+    if (inherits(jl_obj, "JuliaObject")) {
+        is_daf_type <- julia_call("isa", jl_obj, julia_eval("DafReader"), need_return = "R")
+        if (!isTRUE(is_daf_type)) {
+            obj_type <- julia_call("string", julia_call("typeof", jl_obj), need_return = "R")
+            cli::cli_abort("Expected a Julia DafReader object but got {.val {obj_type}}")
+        }
+    }
     obj <- structure(list(jl_obj = jl_obj), class = "Daf")
     return(obj)
 }
@@ -70,9 +77,9 @@ validate_daf_object <- function(daf, call = parent.frame()) {
 #' @param i A query string or object
 #' @param ... Ignored. Present for compatibility with the `[` generic.
 #' @return The result of the query
-#' @details The expression `daf[query]` is equivalent to `get_query(daf, query, cache = FALSE)`.
+#' @details The expression `daf[query]` is equivalent to `get_query(daf, query, cache = TRUE)`.
 #' See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Operations.get_query) for details.
 #' @export
 `[.Daf` <- function(x, i, ...) {
-    get_query(x, i, cache = FALSE)
+    get_query(x, i, cache = TRUE)
 }

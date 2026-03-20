@@ -4,10 +4,10 @@
 \alias{GroupBy}
 \title{GroupBy query operation}
 \usage{
-GroupBy(property, ...)
+GroupBy(value, ...)
 }
 \arguments{
-\item{property}{String specifying the property to group by}
+\item{value}{String specifying the property to group by}
 
 \item{...}{Additional arguments needed to support usage of pipe operator}
 }

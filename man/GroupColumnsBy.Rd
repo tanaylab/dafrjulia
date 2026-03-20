@@ -4,10 +4,10 @@
 \alias{GroupColumnsBy}
 \title{GroupColumnsBy query operation}
 \usage{
-GroupColumnsBy(property, ...)
+GroupColumnsBy(value, ...)
 }
 \arguments{
-\item{property}{String specifying the property to group columns by}
+\item{value}{String specifying the property to group columns by}
 
 \item{...}{Additional arguments needed to support usage of pipe operator}
 }

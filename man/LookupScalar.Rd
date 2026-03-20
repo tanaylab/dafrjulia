@@ -4,10 +4,10 @@
 \alias{LookupScalar}
 \title{LookupScalar query operation}
 \usage{
-LookupScalar(property = NULL, ...)
+LookupScalar(value = NULL, ...)
 }
 \arguments{
-\item{property}{String specifying the scalar property name to look up}
+\item{value}{String specifying the scalar property name to look up}
 
 \item{...}{Additional arguments needed to support usage of pipe operator}
 }

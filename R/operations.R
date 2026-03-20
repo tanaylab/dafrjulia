@@ -5,6 +5,7 @@
 #' the shape of the data, and Reduction operations that reduce a matrix to a vector, or a vector to a scalar.
 #' See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/operations.html) for details.
 #'
+#' @include query_factories.R
 
 #' Validate that dots only contains at most one JuliaObject (the piped query)
 #' @noRd
@@ -28,24 +29,7 @@ validate_dots <- function(dots, fname) {
 #' @param ... Additional arguments needed to support usage of pipe operator
 #' @return A query operation object that can be used in a query sequence
 #' @export
-Abs <- function(type = NULL, ...) {
-    validate_dots(list(...), "Abs")
-    res <- extract_query_and_value(type, missing(type), list(...), required = FALSE)
-
-    query <- res$query
-    type_val <- res$value
-
-    if (!is.null(type_val)) {
-        julia_type <- jl_R_to_julia_type(type_val)
-        ans <- julia_call("DataAxesFormats.Operations.Abs", type = julia_type)
-    } else {
-        ans <- julia_call("DataAxesFormats.Operations.Abs")
-    }
-    if (!is.null(query)) {
-        ans <- julia_call("|>", query, ans)
-    }
-    ans
-}
+Abs <- make_typed_reduction_op("DataAxesFormats.Operations.Abs")
 
 #' @title Clamp query operation
 #' @description
@@ -148,24 +132,7 @@ Convert <- function(type, ...) {
 #' @param ... Additional arguments needed to support usage of pipe operator
 #' @return A query operation object that can be used in a query sequence
 #' @export
-Fraction <- function(type = NULL, ...) {
-    validate_dots(list(...), "Fraction")
-    res <- extract_query_and_value(type, missing(type), list(...), required = FALSE)
-
-    query <- res$query
-    type_val <- res$value
-
-    if (!is.null(type_val)) {
-        julia_type <- jl_R_to_julia_type(type_val)
-        ans <- julia_call("DataAxesFormats.Operations.Fraction", type = julia_type)
-    } else {
-        ans <- julia_call("DataAxesFormats.Operations.Fraction")
-    }
-    if (!is.null(query)) {
-        ans <- julia_call("|>", query, ans)
-    }
-    ans
-}
+Fraction <- make_typed_reduction_op("DataAxesFormats.Operations.Fraction")
 
 #' @title Log query operation
 #' @description
@@ -234,24 +201,7 @@ Log <- function(base = exp(1), eps = 0, type = NULL, ...) {
 #' @param ... Additional arguments needed to support usage of pipe operator
 #' @return A query operation object that can be used in a query sequence
 #' @export
-Round <- function(type = NULL, ...) {
-    validate_dots(list(...), "Round")
-    res <- extract_query_and_value(type, missing(type), list(...), required = FALSE)
-
-    query <- res$query
-    type_val <- res$value
-
-    if (!is.null(type_val)) {
-        julia_type <- jl_R_to_julia_type(type_val)
-        ans <- julia_call("DataAxesFormats.Operations.Round", type = julia_type)
-    } else {
-        ans <- julia_call("DataAxesFormats.Operations.Round")
-    }
-    if (!is.null(query)) {
-        ans <- julia_call("|>", query, ans)
-    }
-    ans
-}
+Round <- make_typed_reduction_op("DataAxesFormats.Operations.Round")
 
 #' @title Significant query operation
 #' @description
@@ -325,18 +275,7 @@ Significant <- function(high, low = NULL, ...) {
 #' @param ... Additional arguments needed to support usage of pipe operator
 #' @return A query operation object that can be used in a query sequence
 #' @export
-Max <- function(...) {
-    res <- extract_query_and_value(NULL, TRUE, list(...), required = FALSE)
-    if (length(list(...)) > 1 || (!is.null(res$query) && length(list(...)) > 1)) {
-        cli::cli_abort("{.code Max} expects zero arguments or one query object")
-    }
-
-    ans <- julia_call("DataAxesFormats.Operations.Max")
-    if (!is.null(res$query)) {
-        ans <- julia_call("|>", res$query, ans)
-    }
-    ans
-}
+Max <- make_nullary_query_op("DataAxesFormats.Operations.Max")
 
 #' @title Min query operation
 #' @description
@@ -348,18 +287,7 @@ Max <- function(...) {
 #' @param ... Additional arguments needed to support usage of pipe operator
 #' @return A query operation object that can be used in a query sequence
 #' @export
-Min <- function(...) {
-    res <- extract_query_and_value(NULL, TRUE, list(...), required = FALSE)
-    if (length(list(...)) > 1 || (!is.null(res$query) && length(list(...)) > 1)) {
-        cli::cli_abort("{.code Min} expects zero arguments or one query object")
-    }
-
-    ans <- julia_call("DataAxesFormats.Operations.Min")
-    if (!is.null(res$query)) {
-        ans <- julia_call("|>", res$query, ans)
-    }
-    ans
-}
+Min <- make_nullary_query_op("DataAxesFormats.Operations.Min")
 
 #' @title Mean query operation
 #' @description
@@ -372,24 +300,7 @@ Min <- function(...) {
 #' @param ... Additional arguments needed to support usage of pipe operator
 #' @return A query operation object that can be used in a query sequence
 #' @export
-Mean <- function(type = NULL, ...) {
-    validate_dots(list(...), "Mean")
-    res <- extract_query_and_value(type, missing(type), list(...), required = FALSE)
-
-    query <- res$query
-    type_val <- res$value
-
-    if (!is.null(type_val)) {
-        julia_type <- jl_R_to_julia_type(type_val)
-        ans <- julia_call("DataAxesFormats.Operations.Mean", type = julia_type)
-    } else {
-        ans <- julia_call("DataAxesFormats.Operations.Mean")
-    }
-    if (!is.null(query)) {
-        ans <- julia_call("|>", query, ans)
-    }
-    ans
-}
+Mean <- make_typed_reduction_op("DataAxesFormats.Operations.Mean")
 
 #' @title Median query operation
 #' @description
@@ -402,24 +313,7 @@ Mean <- function(type = NULL, ...) {
 #' @param ... Additional arguments needed to support usage of pipe operator
 #' @return A query operation object that can be used in a query sequence
 #' @export
-Median <- function(type = NULL, ...) {
-    validate_dots(list(...), "Median")
-    res <- extract_query_and_value(type, missing(type), list(...), required = FALSE)
-
-    query <- res$query
-    type_val <- res$value
-
-    if (!is.null(type_val)) {
-        julia_type <- jl_R_to_julia_type(type_val)
-        ans <- julia_call("DataAxesFormats.Operations.Median", type = julia_type)
-    } else {
-        ans <- julia_call("DataAxesFormats.Operations.Median")
-    }
-    if (!is.null(query)) {
-        ans <- julia_call("|>", query, ans)
-    }
-    ans
-}
+Median <- make_typed_reduction_op("DataAxesFormats.Operations.Median")
 
 #' @title Quantile query operation
 #' @description
@@ -481,24 +375,7 @@ Quantile <- function(p = 0.5, type = NULL, ...) {
 #' @param ... Additional arguments needed to support usage of pipe operator
 #' @return A query operation object that can be used in a query sequence
 #' @export
-Sum <- function(type = NULL, ...) {
-    validate_dots(list(...), "Sum")
-    res <- extract_query_and_value(type, missing(type), list(...), required = FALSE)
-
-    query <- res$query
-    type_val <- res$value
-
-    if (!is.null(type_val)) {
-        julia_type <- jl_R_to_julia_type(type_val)
-        ans <- julia_call("DataAxesFormats.Operations.Sum", type = julia_type)
-    } else {
-        ans <- julia_call("DataAxesFormats.Operations.Sum")
-    }
-    if (!is.null(query)) {
-        ans <- julia_call("|>", query, ans)
-    }
-    ans
-}
+Sum <- make_typed_reduction_op("DataAxesFormats.Operations.Sum")
 
 #' @title Std query operation
 #' @description
@@ -512,24 +389,7 @@ Sum <- function(type = NULL, ...) {
 #' @param ... Additional arguments needed to support usage of pipe operator
 #' @return A query operation object that can be used in a query sequence
 #' @export
-Std <- function(type = NULL, ...) {
-    validate_dots(list(...), "Std")
-    res <- extract_query_and_value(type, missing(type), list(...), required = FALSE)
-
-    query <- res$query
-    type_val <- res$value
-
-    if (!is.null(type_val)) {
-        julia_type <- jl_R_to_julia_type(type_val)
-        ans <- julia_call("DataAxesFormats.Operations.Std", type = julia_type)
-    } else {
-        ans <- julia_call("DataAxesFormats.Operations.Std")
-    }
-    if (!is.null(query)) {
-        ans <- julia_call("|>", query, ans)
-    }
-    ans
-}
+Std <- make_typed_reduction_op("DataAxesFormats.Operations.Std")
 
 #' @title StdN query operation
 #' @description
@@ -598,24 +458,7 @@ StdN <- function(type = NULL, eps = NULL, ...) {
 #' @param ... Additional arguments needed to support usage of pipe operator
 #' @return A query operation object that can be used in a query sequence
 #' @export
-Var <- function(type = NULL, ...) {
-    validate_dots(list(...), "Var")
-    res <- extract_query_and_value(type, missing(type), list(...), required = FALSE)
-
-    query <- res$query
-    type_val <- res$value
-
-    if (!is.null(type_val)) {
-        julia_type <- jl_R_to_julia_type(type_val)
-        ans <- julia_call("DataAxesFormats.Operations.Var", type = julia_type)
-    } else {
-        ans <- julia_call("DataAxesFormats.Operations.Var")
-    }
-    if (!is.null(query)) {
-        ans <- julia_call("|>", query, ans)
-    }
-    ans
-}
+Var <- make_typed_reduction_op("DataAxesFormats.Operations.Var")
 
 #' @title VarN query operation
 #' @description
@@ -684,23 +527,7 @@ VarN <- function(type = NULL, eps = NULL, ...) {
 #' @param ... Additional arguments needed to support usage of pipe operator
 #' @return A query operation object that can be used in a query sequence
 #' @export
-Count <- function(type = NULL, ...) {
-    res <- extract_query_and_value(type, missing(type), list(...), required = FALSE)
-
-    query <- res$query
-    type_val <- res$value
-
-    if (!is.null(type_val)) {
-        julia_type <- jl_R_to_julia_type(type_val)
-        ans <- julia_call("DataAxesFormats.Operations.Count", type = julia_type)
-    } else {
-        ans <- julia_call("DataAxesFormats.Operations.Count")
-    }
-    if (!is.null(query)) {
-        ans <- julia_call("|>", query, ans)
-    }
-    ans
-}
+Count <- make_typed_reduction_op("DataAxesFormats.Operations.Count")
 
 #' @title GeoMean query operation
 #' @description
@@ -760,15 +587,4 @@ GeoMean <- function(type = NULL, eps = NULL, ...) {
 #' @param ... Additional arguments needed to support usage of pipe operator
 #' @return A query operation object that can be used in a query sequence
 #' @export
-Mode <- function(...) {
-    res <- extract_query_and_value(NULL, TRUE, list(...), required = FALSE)
-    if (length(list(...)) > 1 || (!is.null(res$query) && length(list(...)) > 1)) {
-        cli::cli_abort("{.code Mode} expects zero arguments or one query object")
-    }
-
-    ans <- julia_call("DataAxesFormats.Operations.Mode")
-    if (!is.null(res$query)) {
-        ans <- julia_call("|>", res$query, ans)
-    }
-    ans
-}
+Mode <- make_nullary_query_op("DataAxesFormats.Operations.Mode")

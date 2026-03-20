@@ -6,7 +6,7 @@ test_that("example_cells_daf returns expected structure", {
     expect_error(example_cells_daf(name = NULL))
     # Test that it returns a proper Daf object
     expect_true(is_daf(daf))
-    expect_equal(name(daf), "cells!")
+    expect_equal(daf_name(daf), "cells!")
 
     # Test axes
     expect_setequal(axes_set(daf), c("cell", "donor", "experiment", "gene"))
@@ -70,7 +70,7 @@ test_that("example_metacells_daf returns expected structure", {
 
     # Test that it returns a proper Daf object
     expect_true(is_daf(daf))
-    expect_equal(name(daf), "metacells!")
+    expect_equal(daf_name(daf), "metacells!")
 
     # Test axes
     expect_equal(sort(axes_set(daf)), sort(c("cell", "gene", "metacell", "type")))
@@ -123,10 +123,10 @@ test_that("example_metacells_daf returns expected structure", {
 
 test_that("example_cells_daf accepts custom name", {
     daf <- example_cells_daf(name = "custom_cells!")
-    expect_equal(name(daf), "custom_cells!")
+    expect_equal(daf_name(daf), "custom_cells!")
 })
 
 test_that("example_metacells_daf accepts custom name", {
     daf <- example_metacells_daf(name = "custom_metacells!")
-    expect_equal(name(daf), "custom_metacells!")
+    expect_equal(daf_name(daf), "custom_metacells!")
 })

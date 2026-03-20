@@ -24,10 +24,5 @@ attempting to execute the query.
 See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Operations.has_query}{documentation} for details.
 }
 \seealso{
-Axis, LookupVector, LookupScalar, LookupMatrix, Names, AsAxis, IfMissing, IfNot,
-BeginMask, BeginNegatedMask, EndMask, SquareColumnIs, SquareRowIs,
-AndMask, AndNegatedMask, OrMask, OrNegatedMask, XorMask, XorNegatedMask,
-IsEqual, IsNotEqual, IsLess, IsLessEqual, IsGreater, IsGreaterEqual,
-IsMatch, IsNotMatch, CountBy, GroupBy, GroupColumnsBy, GroupRowsBy,
-ReduceToColumn, ReduceToRow and other query operations.
+\code{\link[=get_query]{get_query()}}, \code{\link[=parse_query]{parse_query()}}, and the query operations documentation.
 }

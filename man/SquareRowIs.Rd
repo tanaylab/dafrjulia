@@ -23,3 +23,8 @@ Julia
 \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.SquareRowIs}{documentation} for
 details.
 }
+\section{Functions}{
+\itemize{
+\item \code{SquareMaskRow()}: Deprecated: use \code{\link[=SquareRowIs]{SquareRowIs()}} instead.
+
+}}

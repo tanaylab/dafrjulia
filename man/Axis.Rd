@@ -4,10 +4,10 @@
 \alias{Axis}
 \title{Axis query operation}
 \usage{
-Axis(axis = NULL, ...)
+Axis(value = NULL, ...)
 }
 \arguments{
-\item{axis}{Optional string specifying the axis name (NULL for unspecified)}
+\item{value}{Optional string specifying the axis name (NULL for unspecified)}
 
 \item{...}{Additional arguments needed to support usage of pipe operator}
 }

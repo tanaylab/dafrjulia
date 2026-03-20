@@ -7,12 +7,14 @@
 \usage{
 AndNot(property, ...)
 
-AndNegatedMask(property, ...)
+AndNegatedMask(value, ...)
 }
 \arguments{
 \item{property}{String specifying the property}
 
 \item{...}{Additional arguments needed to support usage of pipe operator}
+
+\item{value}{String specifying the property}
 }
 \value{
 A query operation object
@@ -22,3 +24,8 @@ Same as \code{AndMask} but use the inverse of the mask. See the Julia
 \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.AndNegatedMask}{documentation} for
 details.
 }
+\section{Functions}{
+\itemize{
+\item \code{AndNot()}: Deprecated: use \code{\link[=AndNegatedMask]{AndNegatedMask()}} instead.
+
+}}

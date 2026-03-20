@@ -4,10 +4,10 @@
 \alias{GroupRowsBy}
 \title{GroupRowsBy query operation}
 \usage{
-GroupRowsBy(property, ...)
+GroupRowsBy(value, ...)
 }
 \arguments{
-\item{property}{String specifying the property to group rows by}
+\item{value}{String specifying the property to group rows by}
 
 \item{...}{Additional arguments needed to support usage of pipe operator}
 }

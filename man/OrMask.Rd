@@ -7,12 +7,14 @@
 \usage{
 Or(property, ...)
 
-OrMask(property, ...)
+OrMask(value, ...)
 }
 \arguments{
-\item{property}{String specifying the property to use for expanding the selection}
+\item{property}{String specifying the property}
 
 \item{...}{Additional arguments needed to support usage of pipe operator}
+
+\item{value}{String specifying the property to use for expanding the selection}
 }
 \value{
 A query operation object that can be used in a query sequence
@@ -25,3 +27,8 @@ between the current selection and the specified property, treating the property
 as a Boolean mask.
 See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Queries.OrMask}{documentation} for details.
 }
+\section{Functions}{
+\itemize{
+\item \code{Or()}: Deprecated: use \code{\link[=OrMask]{OrMask()}} instead.
+
+}}

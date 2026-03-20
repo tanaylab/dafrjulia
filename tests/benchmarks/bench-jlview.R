@@ -23,13 +23,14 @@ gc()
 cat("Created 10000 x 1000 Float64 matrix (~76.3 MB raw)\n\n")
 
 # Test 1: Zero-copy path (jlview with atomic names)
-gc(); gc()
+gc()
+gc()
 mem_before <- gc(reset = TRUE)
 mat <- get_matrix(daf, "cell", "gene", "UMIs")
 mem_after <- gc()
 
 is_altrep <- jlview::is_jlview(mat)
-heap_mb <- (mem_after[2,2] - mem_before[2,2])
+heap_mb <- (mem_after[2, 2] - mem_before[2, 2])
 
 cat("Zero-copy path:\n")
 cat("  is_jlview (ALTREP):", is_altrep, "\n")
@@ -44,13 +45,14 @@ cat("\n")
 
 # Test 2: Copy path for comparison
 rm(mat)
-gc(); gc()
+gc()
+gc()
 mem_before2 <- gc(reset = TRUE)
 jl_mat <- julia_call("DataAxesFormats.get_matrix", daf$jl_obj, "cell", "gene", "UMIs", need_return = "Julia")
 jl_unwrapped <- julia_call("_strip_wrappers", jl_mat, need_return = "Julia")
 mat_copy <- julia_call("collect", jl_unwrapped, need_return = "R")
 mem_after2 <- gc()
-heap_mb2 <- (mem_after2[2,2] - mem_before2[2,2])
+heap_mb2 <- (mem_after2[2, 2] - mem_before2[2, 2])
 
 cat("Copy path:\n")
 cat("  R heap delta:", round(heap_mb2, 1), "MB\n")

@@ -42,7 +42,7 @@ test_that("scalar operations work for different formats", {
         daf <- result$daf
         extra <- result$extra
 
-        expect_equal(name(daf), "test!")
+        expect_equal(daf_name(daf), "test!")
 
         expect_equal(length(scalars_set(daf)), 0)
         expect_false(has_scalar(daf, "foo"))
@@ -444,12 +444,12 @@ test_that("chain operations work", {
     first <- memory_daf(name = "first!")
     set_scalar(first, "version", 1.0)
     first_read <- read_only(first)
-    expect_equal(name(first_read), "first!")
-    expect_equal(name(read_only(first_read)), "first!")
+    expect_equal(daf_name(first_read), "first!")
+    expect_equal(daf_name(read_only(first_read)), "first!")
 
     # Create a renamed read-only
     renamed <- read_only(first, name = "renamed!")
-    expect_equal(name(renamed), "renamed!")
+    expect_equal(daf_name(renamed), "renamed!")
 
     # Create second daf object
     second <- memory_daf(name = "second!")
@@ -457,7 +457,7 @@ test_that("chain operations work", {
 
     # Test chain reader
     read_chain <- chain_reader(list(first_read, second), name = "chain!")
-    expect_equal(name(read_chain), "chain!")
+    expect_equal(daf_name(read_chain), "chain!")
     expect_equal(get_scalar(read_chain, "version"), 2.0)
 
     # Test chain writer
