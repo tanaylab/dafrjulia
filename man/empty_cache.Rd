@@ -2,7 +2,7 @@
 % Please edit documentation in R/cache.R
 \name{empty_cache}
 \alias{empty_cache}
-\title{Empty cache in a Daf object}
+\title{Empty cache of a Daf object}
 \usage{
 empty_cache(daf, clear = NULL, keep = NULL)
 }
@@ -14,10 +14,10 @@ empty_cache(daf, clear = NULL, keep = NULL)
 \item{keep}{Cache group to keep. Can be one of "MappedData", "MemoryData", or "QueryData".}
 }
 \value{
-The Daf object
+The Daf object (invisibly, for chaining operations)
 }
 \description{
-Empty cache in a Daf object
+Clears both the Julia-side cache and the R-side cache for a Daf object.
 }
 \details{
 See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Data.empty_cache!}{documentation} for details.

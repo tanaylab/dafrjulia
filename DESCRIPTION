@@ -32,6 +32,7 @@ Imports:
     JuliaCall,
     Matrix,
     methods,
+    R6,
     tibble,
     tidyr
 Suggests: 
@@ -47,6 +48,7 @@ RoxygenNote: 7.3.3
 Collate: 
     'Daf.R'
     'adapters.R'
+    'anndata_facade.R'
     'anndata_format.R'
     'cache.R'
     'complete.R'
