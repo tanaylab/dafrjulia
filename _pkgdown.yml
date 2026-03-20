@@ -15,7 +15,14 @@ reference:
       - use_default_julia_environment
       - install_daf_packages
       - load_daf_packages
+      - daf_name
       - name
+
+  - title: "AnnData Facade"
+    desc: "AnnData-like live facade for Daf objects"
+    contents:
+      - DafAnnData
+      - as_anndata
 
   - title: "Example Data"
     desc: "Functions for loading example data"
@@ -122,12 +129,12 @@ reference:
   - title: "Query Operations - Logical"
     desc: "Logical operations for filtering and combining data"
     contents:
-      - And
-      - AndNot
-      - Or
-      - OrNot
-      - Xor
-      - XorNot
+      - AndMask
+      - AndNegatedMask
+      - OrMask
+      - OrNegatedMask
+      - XorMask
+      - XorNegatedMask
       - starts_with("Is")
 
   - title: "Query Operations - Selection"
@@ -135,6 +142,7 @@ reference:
     contents:
       - Axis
       - Lookup
+      - LookupVector
       - LookupScalar
       - LookupMatrix
       - Names
@@ -145,6 +153,8 @@ reference:
       - BeginNegatedMask
       - EndMask
       - MaskSlice
+      - SquareColumnIs
+      - SquareRowIs
       - starts_with("SquareMask")
 
   - title: "Views and Adapters"
@@ -197,4 +207,10 @@ reference:
     desc: "Deprecated functions and their replacements"
     contents:
       - deprecated-queries
+      - And
+      - AndNot
+      - Or
+      - OrNot
+      - Xor
+      - XorNot
 
