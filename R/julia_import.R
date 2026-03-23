@@ -386,19 +386,22 @@ to_julia_array <- function(value) {
 #' @return An R array, vector or sparse matrix
 #' @noRd
 from_julia_array <- function(julia_array) {
-    # Single Julia call to extract all metadata + stripped array.
-    # This replaces 6+ separate julia_call round-trips with one, eliminating
-    # per-call JIT overhead on cold start.
-    prep <- julia_call("_prepare_for_r", julia_array, need_return = "Julia")
+    # Use julia_assign + julia_command + julia_eval to avoid the docall overhead.
+    # julia_call goes through docall → rcopy(Vector{Any}, args) → sexp which has
+    # significant first-call JIT. julia_command/julia_eval bypass docall entirely.
+    JuliaCall::julia_assign("_fja_in", julia_array)
+    JuliaCall::julia_command("_fja_p = _prepare_for_r(_fja_in)")
 
-    stripped <- julia_call("getindex", prep, 1L, need_return = "Julia")
-    eltype_str <- julia_call("getindex", prep, 2L, need_return = "R")
-    is_sparse_csc <- julia_call("getindex", prep, 3L, need_return = "R")
-    is_sparse_abstract <- julia_call("getindex", prep, 4L, need_return = "R")
-    is_named_vec <- julia_call("getindex", prep, 5L, need_return = "R")
-    is_named_mat <- julia_call("getindex", prep, 6L, need_return = "R")
-    names1 <- julia_call("getindex", prep, 7L, need_return = "R")
-    names2 <- julia_call("getindex", prep, 8L, need_return = "R")
+    # Extract metadata via julia_eval (returns plain R types, no docall)
+    eltype_str <- JuliaCall::julia_eval("_fja_p[2]")
+    is_sparse_csc <- JuliaCall::julia_eval("_fja_p[3]")
+    is_sparse_abstract <- JuliaCall::julia_eval("_fja_p[4]")
+    is_named_vec <- JuliaCall::julia_eval("_fja_p[5]")
+    is_named_mat <- JuliaCall::julia_eval("_fja_p[6]")
+    names1 <- JuliaCall::julia_eval("_fja_p[7]")
+    names2 <- JuliaCall::julia_eval("_fja_p[8]")
+    # Stripped array stays in Julia for jlview zero-copy
+    stripped <- JuliaCall::julia_eval("JuliaCall.JuliaObject(_fja_p[1])")
 
     # Sparse CSC matrix path
     if (isTRUE(is_sparse_csc)) {
