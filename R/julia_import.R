@@ -166,6 +166,26 @@ define_julia_functions <- function() {
         return \"unknown\"
     end
     ")
+
+    # Single Julia-side call that extracts all metadata needed by from_julia_array.
+    # This replaces 6+ separate julia_call round-trips with one call, eliminating
+    # per-call JIT overhead on cold start (~0.5s savings).
+    # Returns: (stripped_array, eltype_str, is_sparse_csc, is_sparse_abstract,
+    #           is_named_vec, is_named_mat, names1, names2)
+    julia_eval("
+    function _prepare_for_r(array)
+        stripped = _strip_wrappers(array)
+        eltype_str = string(eltype(stripped))
+        is_sparse_csc = stripped isa SparseArrays.SparseMatrixCSC
+        is_sparse_abstract = stripped isa SparseArrays.AbstractSparseArray
+        is_named_vec = array isa NamedArrays.NamedVector
+        is_named_mat = array isa NamedArrays.NamedMatrix
+        names1 = is_named_vec || is_named_mat ? collect(string.(NamedArrays.names(array, 1))) : String[]
+        names2 = is_named_mat ? collect(string.(NamedArrays.names(array, 2))) : String[]
+        return (stripped, eltype_str, is_sparse_csc, is_sparse_abstract,
+                is_named_vec, is_named_mat, names1, names2)
+    end
+    ")
 }
 
 get_julia_field <- function(julia_object, field_name, need_return = "Julia") {
@@ -366,132 +386,92 @@ to_julia_array <- function(value) {
 #' @return An R array, vector or sparse matrix
 #' @noRd
 from_julia_array <- function(julia_array) {
-    # Keep original array for name access
-    orig_array <- julia_array
+    # Single Julia call to extract all metadata + stripped array.
+    # This replaces 6+ separate julia_call round-trips with one, eliminating
+    # per-call JIT overhead on cold start.
+    prep <- julia_call("_prepare_for_r", julia_array, need_return = "Julia")
 
-    # First strip any ReadOnly wrappers
-    julia_array <- julia_call("_strip_wrappers", orig_array, need_return = "Julia")
+    stripped <- julia_call("getindex", prep, 1L, need_return = "Julia")
+    eltype_str <- julia_call("getindex", prep, 2L, need_return = "R")
+    is_sparse_csc <- julia_call("getindex", prep, 3L, need_return = "R")
+    is_sparse_abstract <- julia_call("getindex", prep, 4L, need_return = "R")
+    is_named_vec <- julia_call("getindex", prep, 5L, need_return = "R")
+    is_named_mat <- julia_call("getindex", prep, 6L, need_return = "R")
+    names1 <- julia_call("getindex", prep, 7L, need_return = "R")
+    names2 <- julia_call("getindex", prep, 8L, need_return = "R")
 
-    # Check for sparse matrix first
-    if (is_julia_type(julia_array, "SparseArrays.SparseMatrixCSC")) {
-        # Check if jlview_sparse supports this element type
-        sparse_eltype <- julia_call("string", julia_call("eltype", julia_array), need_return = "R")
+    # Sparse CSC matrix path
+    if (isTRUE(is_sparse_csc)) {
         sparse_zero_copy_types <- c("Float64", "Float32", "Int64", "Int32", "Int16", "UInt8", "UInt16", "UInt32", "UInt64")
 
-        if (sparse_eltype %in% sparse_zero_copy_types) {
-            sp <- jlview::jlview_sparse(julia_array)
+        if (eltype_str %in% sparse_zero_copy_types) {
+            sp <- jlview::jlview_sparse(stripped)
         } else {
             # Fallback: copy-based sparse conversion for unsupported types (e.g. Bool)
-            colptr <- get_julia_field(julia_array, "colptr", need_return = "R")
-            rowval <- get_julia_field(julia_array, "rowval", need_return = "R")
-            nzval <- get_julia_field(julia_array, "nzval", need_return = "R")
-
-            # Adjust indexing (Julia is 1-indexed, R's Matrix package uses 0-indexed storage)
+            colptr <- get_julia_field(stripped, "colptr", need_return = "R")
+            rowval <- get_julia_field(stripped, "rowval", need_return = "R")
+            nzval <- get_julia_field(stripped, "nzval", need_return = "R")
             colptr <- colptr - 1
-
-            # Get dimensions
-            dims <- julia_call("size", julia_array)
+            dims <- julia_call("size", stripped)
             dims <- do.call(c, dims)
 
-            if (sparse_eltype == "Bool") {
-                # For Bool sparse matrices, use logical nzvals to create lgCMatrix
-                sp <- Matrix::sparseMatrix(
-                    i = rowval,
-                    p = colptr,
-                    x = as.logical(nzval),
-                    dims = dims,
-                    repr = "C"
-                )
+            if (eltype_str == "Bool") {
+                sp <- Matrix::sparseMatrix(i = rowval, p = colptr, x = as.logical(nzval), dims = dims, repr = "C")
             } else {
-                sp <- Matrix::sparseMatrix(
-                    i = rowval,
-                    p = colptr,
-                    x = as.numeric(nzval),
-                    dims = dims,
-                    repr = "C"
-                )
+                sp <- Matrix::sparseMatrix(i = rowval, p = colptr, x = as.numeric(nzval), dims = dims, repr = "C")
             }
         }
 
-        # Add names from orig_array if it's a NamedArray
-        # Note: dgCMatrix is not ALTREP, so post-construction assignment is fine,
-        # but we still do it in one shot via dimnames() for consistency.
-        if (is_julia_type(orig_array, "NamedArrays.NamedMatrix")) {
-            row_names <- julia_call("NamedArrays.names", orig_array, as.integer(1), need_return = "R")
-            col_names <- julia_call("NamedArrays.names", orig_array, as.integer(2), need_return = "R")
-            dimnames(sp) <- list(row_names, col_names)
+        if (isTRUE(is_named_mat) && length(names1) > 0 && length(names2) > 0) {
+            dimnames(sp) <- list(names1, names2)
         }
-
         return(sp)
     }
 
-    # Check element type for zero-copy support via jlview
-    eltype_str <- julia_call("string", julia_call("eltype", julia_array), need_return = "R")
+    # Dense zero-copy path via jlview
     zero_copy_types <- c("Float64", "Float32", "Int64", "Int32", "Int16", "UInt8", "UInt16", "UInt32", "UInt64")
 
-    # jlview only supports dense (contiguous) arrays; skip for sparse types
-    is_sparse <- is_julia_type(julia_array, "SparseArrays.AbstractSparseArray")
-
-    if (eltype_str %in% zero_copy_types && !is_sparse) {
-        # Handle NamedVector - pass names atomically to avoid COW materialization
-        if (is_julia_type(orig_array, "NamedArrays.NamedVector")) {
-            names_vector <- julia_call("NamedArrays.names", orig_array, as.integer(1), need_return = "R")
-            r_array <- jlview::jlview(orig_array, names = names_vector)
-            # Strip dim attribute for 1D vectors
-            if (!is.null(dim(r_array))) {
-                r_array <- as.vector(r_array)
-            }
+    if (eltype_str %in% zero_copy_types && !isTRUE(is_sparse_abstract)) {
+        if (isTRUE(is_named_vec) && length(names1) > 0) {
+            r_array <- jlview::jlview(julia_array, names = names1)
+            if (!is.null(dim(r_array))) r_array <- as.vector(r_array)
             return(r_array)
         }
 
-        # Handle NamedMatrix - pass dimnames atomically to avoid COW materialization
-        if (is_julia_type(orig_array, "NamedArrays.NamedMatrix")) {
-            row_names <- julia_call("NamedArrays.names", orig_array, as.integer(1), need_return = "R")
-            col_names <- julia_call("NamedArrays.names", orig_array, as.integer(2), need_return = "R")
-            r_array <- jlview::jlview(orig_array, dimnames = list(row_names, col_names))
+        if (isTRUE(is_named_mat) && length(names1) > 0 && length(names2) > 0) {
+            r_array <- jlview::jlview(julia_array, dimnames = list(names1, names2))
             return(r_array)
         }
 
-        # Use jlview for zero-copy transfer (non-named arrays)
-        r_array <- jlview::jlview(orig_array)
-
-        # For 1D vectors, strip dim attribute if present
+        # Non-named arrays
+        r_array <- jlview::jlview(julia_array)
         if (!is.null(dim(r_array)) && length(dim(r_array)) == 1) {
             r_array <- as.vector(r_array)
         }
-
         return(r_array)
     }
 
     # Fallback: Bool, String, unsupported types - copy via collect
-    # Handle NamedVector
-    if (is_julia_type(orig_array, "NamedArrays.NamedVector")) {
-        r_array <- julia_call("collect", julia_array, need_return = "R")
-        r_array <- as.vector(r_array)
-        names_vector <- julia_call("NamedArrays.names", orig_array, as.integer(1), need_return = "R")
-        names(r_array) <- names_vector
+    if (isTRUE(is_named_vec)) {
+        r_array <- as.vector(julia_call("collect", stripped, need_return = "R"))
+        if (length(names1) > 0) names(r_array) <- names1
         return(r_array)
     }
 
-    # Handle NamedMatrix
-    if (is_julia_type(orig_array, "NamedArrays.NamedMatrix")) {
-        r_array <- julia_call("collect", julia_array, need_return = "R")
-        r_array <- as.matrix(r_array)
-        row_names <- julia_call("NamedArrays.names", orig_array, as.integer(1), need_return = "R")
-        col_names <- julia_call("NamedArrays.names", orig_array, as.integer(2), need_return = "R")
-        rownames(r_array) <- row_names
-        colnames(r_array) <- col_names
+    if (isTRUE(is_named_mat)) {
+        r_array <- as.matrix(julia_call("collect", stripped, need_return = "R"))
+        if (length(names1) > 0 && length(names2) > 0) {
+            rownames(r_array) <- names1
+            colnames(r_array) <- names2
+        }
         return(r_array)
     }
 
-    # Handle regular arrays by directly collecting them
-    r_array <- julia_call("collect", julia_array, need_return = "R")
-
-    # If the array is 1-dimensional, convert to vector
+    # Handle regular arrays
+    r_array <- julia_call("collect", stripped, need_return = "R")
     if (is.vector(r_array) || length(dim(r_array)) == 1 || (length(dim(r_array)) == 2 && any(dim(r_array) == 1))) {
         r_array <- as.vector(r_array)
     }
-
     return(r_array)
 }
 
