@@ -28,3 +28,12 @@ for each entry in the axis. If the vector doesn't exist and default is NA,
 a vector of NAs with appropriate length is returned.
 See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.get_vector}{documentation} for details.
 }
+\examples{
+\dontrun{
+setup_daf()
+daf <- memory_daf("example")
+add_axis(daf, "cell", c("A", "B", "C"))
+set_vector(daf, "cell", "score", c(1.0, 2.0, 3.0))
+get_vector(daf, "cell", "score") # named vector: A=1, B=2, C=3
+}
+}

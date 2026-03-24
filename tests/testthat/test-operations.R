@@ -1,6 +1,7 @@
 # Test element-wise operations
 
 test_that("Abs operation works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- setup_test_data()
 
     # Test without piping
@@ -16,6 +17,7 @@ test_that("Abs operation works", {
 })
 
 test_that("Clamp operation works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- setup_test_data()
 
     # Test with min only - must explicitly set max = NULL
@@ -45,6 +47,7 @@ test_that("Clamp operation works", {
 })
 
 test_that("Convert operation works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- setup_test_data()
 
     # Test converting to Int32
@@ -63,6 +66,7 @@ test_that("Convert operation works", {
 })
 
 test_that("Fraction operation works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- setup_test_data()
 
     # Create a test vector with positive values only
@@ -81,6 +85,7 @@ test_that("Fraction operation works", {
 })
 
 test_that("Log operation works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- setup_test_data()
 
     # Create a test vector with positive values only
@@ -121,6 +126,7 @@ test_that("Log operation works", {
 })
 
 test_that("Round operation works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- setup_test_data()
 
     # Create a test vector with decimal values
@@ -139,6 +145,7 @@ test_that("Round operation works", {
 })
 
 test_that("Significant operation works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- setup_test_data()
 
     # Create test data with a column that has one significant value
@@ -177,6 +184,7 @@ test_that("Significant operation works", {
 # Test reduction operations
 
 test_that("Max operation works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- setup_test_data()
 
     # Test vector reduction
@@ -203,6 +211,7 @@ test_that("Max operation works", {
 })
 
 test_that("Min operation works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- setup_test_data()
 
     # Test vector reduction
@@ -226,6 +235,7 @@ test_that("Min operation works", {
 })
 
 test_that("Mean operation works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- setup_test_data()
 
     # Test vector reduction
@@ -249,6 +259,7 @@ test_that("Mean operation works", {
 })
 
 test_that("Median operation works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- setup_test_data()
 
     # Test vector reduction
@@ -272,6 +283,7 @@ test_that("Median operation works", {
 })
 
 test_that("Quantile operation works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- setup_test_data()
 
     # Test vector reduction with default p=0.5 (median)
@@ -299,6 +311,7 @@ test_that("Quantile operation works", {
 })
 
 test_that("Sum operation works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- setup_test_data()
 
     # Test vector reduction
@@ -322,6 +335,7 @@ test_that("Sum operation works", {
 })
 
 test_that("Std operation works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- setup_test_data()
 
     # Test vector reduction
@@ -337,6 +351,7 @@ test_that("Std operation works", {
 })
 
 test_that("StdN operation works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- setup_test_data()
 
     # Create a test vector with non-zero mean
@@ -355,6 +370,7 @@ test_that("StdN operation works", {
 })
 
 test_that("Var operation works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- setup_test_data()
 
     # Test vector reduction
@@ -370,6 +386,7 @@ test_that("Var operation works", {
 })
 
 test_that("VarN operation works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- setup_test_data()
 
     # Create a test vector with non-zero mean
@@ -388,12 +405,14 @@ test_that("VarN operation works", {
 })
 
 test_that("Abs operation validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     expect_error(
         Abs(1, 2)
     )
 })
 
 test_that("Clamp operation validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test invalid min parameter
     expect_error(
         Clamp(min = "not_a_number")
@@ -406,6 +425,7 @@ test_that("Clamp operation validates inputs correctly", {
 })
 
 test_that("Convert operation validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test missing type parameter
     expect_error(
         Convert()
@@ -418,12 +438,14 @@ test_that("Convert operation validates inputs correctly", {
 })
 
 test_that("Fraction operation validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     expect_error(
         Fraction(1, 2)
     )
 })
 
 test_that("Log operation validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test invalid base parameter
     expect_error(
         Log(base = "not_a_number")
@@ -436,12 +458,14 @@ test_that("Log operation validates inputs correctly", {
 })
 
 test_that("Round operation validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     expect_error(
         Round(1, 2)
     )
 })
 
 test_that("Significant operation validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test missing high parameter
     expect_error(
         Significant()
@@ -459,30 +483,35 @@ test_that("Significant operation validates inputs correctly", {
 })
 
 test_that("Max operation validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     expect_error(
         Max(1, 2)
     )
 })
 
 test_that("Min operation validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     expect_error(
         Min(1, 2)
     )
 })
 
 test_that("Mean operation validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     expect_error(
         Mean(1, 2)
     )
 })
 
 test_that("Median operation validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     expect_error(
         Median(1, 2)
     )
 })
 
 test_that("Quantile operation validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test invalid p parameter - string
     expect_error(
         Quantile(p = "not_a_number")
@@ -505,30 +534,35 @@ test_that("Quantile operation validates inputs correctly", {
 })
 
 test_that("Sum operation validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     expect_error(
         Sum(1, 2)
     )
 })
 
 test_that("Std operation validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     expect_error(
         Std(1, 2)
     )
 })
 
 test_that("StdN operation validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     expect_error(
         StdN(1, 2)
     )
 })
 
 test_that("Var operation validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     expect_error(
         Var(1, 2)
     )
 })
 
 test_that("VarN operation validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     expect_error(
         VarN(1, 2)
     )
@@ -537,6 +571,7 @@ test_that("VarN operation validates inputs correctly", {
 # Test new operations: Count, GeoMean, Mode
 
 test_that("Count operation works on vectors", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- setup_test_data()
 
     # Test vector reduction - Count counts all elements
@@ -553,6 +588,7 @@ test_that("Count operation works on vectors", {
 })
 
 test_that("Count operation works on matrices", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- setup_test_data()
 
     # Test matrix reduction - count non-zero elements per column
@@ -567,6 +603,7 @@ test_that("Count operation works on matrices", {
 })
 
 test_that("Count operation works with all-zero vector", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- setup_test_data()
     set_vector(daf, "cell", "zeros", c(0.0, 0.0, 0.0))
     query <- Axis("cell") |>
@@ -578,6 +615,7 @@ test_that("Count operation works with all-zero vector", {
 })
 
 test_that("Count operation with type parameter", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- setup_test_data()
 
     query <- Axis("cell") |>
@@ -589,6 +627,7 @@ test_that("Count operation with type parameter", {
 })
 
 test_that("Count query string format works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- setup_test_data()
     result <- get_query(daf, "@ cell : values >> Count")
     # Count counts all elements
@@ -596,6 +635,7 @@ test_that("Count query string format works", {
 })
 
 test_that("GeoMean operation works on vectors", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- setup_test_data()
 
     # Create a test vector with positive values
@@ -614,6 +654,7 @@ test_that("GeoMean operation works on vectors", {
 })
 
 test_that("GeoMean operation works on matrices", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- setup_test_data()
 
     # Test matrix reduction - geometric mean of all matrix values
@@ -626,6 +667,7 @@ test_that("GeoMean operation works on matrices", {
 })
 
 test_that("GeoMean operation with eps parameter", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- setup_test_data()
 
     # Create a vector with a zero to test eps
@@ -641,6 +683,7 @@ test_that("GeoMean operation with eps parameter", {
 })
 
 test_that("GeoMean operation with type parameter", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- setup_test_data()
 
     set_vector(daf, "cell", "positive", c(1, 4, 16))
@@ -652,6 +695,7 @@ test_that("GeoMean operation with type parameter", {
 })
 
 test_that("Mode operation works on vectors", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "mode_test!")
     add_axis(daf, "item", c("A", "B", "C", "D", "E"))
     set_vector(daf, "item", "category", c("X", "Y", "X", "X", "Y"))
@@ -669,6 +713,7 @@ test_that("Mode operation works on vectors", {
 })
 
 test_that("Mode operation works on numeric vectors", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "mode_numeric_test!")
     add_axis(daf, "item", c("A", "B", "C", "D", "E"))
     set_vector(daf, "item", "vals", c(1, 2, 2, 3, 2))
@@ -681,12 +726,14 @@ test_that("Mode operation works on numeric vectors", {
 })
 
 test_that("Mode operation validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     expect_error(
         Mode(1, 2)
     )
 })
 
 test_that("Mode query string format works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "mode_string_test!")
     add_axis(daf, "item", c("A", "B", "C", "D", "E"))
     set_vector(daf, "item", "vals", c(1, 2, 2, 3, 2))
@@ -697,6 +744,7 @@ test_that("Mode query string format works", {
 # Test type parameter on existing operations
 
 test_that("Abs operation with type parameter works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- setup_test_data()
 
     query <- Axis("cell") |>
@@ -707,6 +755,7 @@ test_that("Abs operation with type parameter works", {
 })
 
 test_that("Sum operation with type parameter works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- setup_test_data()
 
     query <- Axis("cell") |>
@@ -717,6 +766,7 @@ test_that("Sum operation with type parameter works", {
 })
 
 test_that("Mean operation with type parameter works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- setup_test_data()
 
     query <- Axis("cell") |>
@@ -727,6 +777,7 @@ test_that("Mean operation with type parameter works", {
 })
 
 test_that("Median operation with type parameter works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- setup_test_data()
 
     query <- Axis("cell") |>
@@ -737,6 +788,7 @@ test_that("Median operation with type parameter works", {
 })
 
 test_that("Quantile operation with type parameter works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- setup_test_data()
 
     query <- Axis("cell") |>
@@ -747,6 +799,7 @@ test_that("Quantile operation with type parameter works", {
 })
 
 test_that("Std operation with type parameter works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- setup_test_data()
 
     query <- Axis("cell") |>
@@ -757,6 +810,7 @@ test_that("Std operation with type parameter works", {
 })
 
 test_that("Var operation with type parameter works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- setup_test_data()
 
     query <- Axis("cell") |>
@@ -767,6 +821,7 @@ test_that("Var operation with type parameter works", {
 })
 
 test_that("Fraction operation with type parameter works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- setup_test_data()
 
     set_vector(daf, "cell", "positive", c(2, 3, 5))
@@ -778,6 +833,7 @@ test_that("Fraction operation with type parameter works", {
 })
 
 test_that("Round operation with type parameter works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- setup_test_data()
 
     set_vector(daf, "cell", "decimals", c(1.4, 2.5, 3.6))
@@ -789,6 +845,7 @@ test_that("Round operation with type parameter works", {
 })
 
 test_that("Clamp operation with type parameter works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- setup_test_data()
 
     query <- Axis("cell") |>
@@ -799,6 +856,7 @@ test_that("Clamp operation with type parameter works", {
 })
 
 test_that("Log operation with type parameter works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- setup_test_data()
 
     set_vector(daf, "cell", "positive", c(1, 10, 100))
@@ -810,6 +868,7 @@ test_that("Log operation with type parameter works", {
 })
 
 test_that("StdN operation with eps parameter works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- setup_test_data()
 
     set_vector(daf, "cell", "positive", c(2, 3, 7))
@@ -824,6 +883,7 @@ test_that("StdN operation with eps parameter works", {
 })
 
 test_that("VarN operation with eps parameter works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- setup_test_data()
 
     set_vector(daf, "cell", "positive", c(2, 3, 7))
@@ -838,6 +898,7 @@ test_that("VarN operation with eps parameter works", {
 })
 
 test_that("StdN operation with type parameter works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- setup_test_data()
 
     set_vector(daf, "cell", "positive", c(2, 3, 7))
@@ -850,6 +911,7 @@ test_that("StdN operation with type parameter works", {
 })
 
 test_that("VarN operation with type parameter works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- setup_test_data()
 
     set_vector(daf, "cell", "positive", c(2, 3, 7))

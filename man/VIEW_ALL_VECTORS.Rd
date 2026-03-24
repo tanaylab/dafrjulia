@@ -10,6 +10,9 @@ A named list representing the pair ALL_VECTORS => "="
 \usage{
 VIEW_ALL_VECTORS
 }
+\value{
+A named list specifier to expose all vectors.
+}
 \description{
 A pair to use in the \code{data} parameter of \code{viewer} to expose all base vectors with their original names.
 See the Julia documentation for details.

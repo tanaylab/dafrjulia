@@ -24,3 +24,12 @@ Vector properties store one-dimensional data along a specific axis.
 Each entry in the axis has a corresponding value in the vector.
 See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.has_vector}{documentation} for details.
 }
+\examples{
+\dontrun{
+setup_daf()
+daf <- memory_daf("example")
+add_axis(daf, "cell", c("A", "B", "C"))
+set_vector(daf, "cell", "type", c("T1", "T2", "T1"))
+has_vector(daf, "cell", "type") # TRUE
+}
+}

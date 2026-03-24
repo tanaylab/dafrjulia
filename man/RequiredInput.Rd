@@ -25,6 +25,9 @@ GuaranteedOutput
 
 OptionalOutput
 }
+\value{
+A character string representing a contract expectation type.
+}
 \description{
 These constants correspond to Julia's ContractExpectation enum
 }

@@ -26,6 +26,15 @@ scalars, vectors, matrices, or sets of names depending on the operations used.
 \details{
 See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Operations.get_query}{documentation} for details.
 }
+\examples{
+\dontrun{
+setup_daf()
+daf <- memory_daf("example")
+add_axis(daf, "cell", c("A", "B", "C"))
+set_vector(daf, "cell", "score", c(1.0, 2.0, 3.0))
+get_query(daf, Axis("cell") |> LookupVector("score"))
+}
+}
 \seealso{
 \code{\link[=has_query]{has_query()}}, \code{\link[=parse_query]{parse_query()}}, \code{\link[=get_dataframe_query]{get_dataframe_query()}}, and the query operations documentation.
 }

@@ -5,6 +5,7 @@
 # --- get_empty_dense_vector ---
 
 test_that("get_empty_dense_vector creates a vector for an axis", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "empty_dense_vec_test!")
     add_axis(daf, "cell", c("A", "B", "C"))
 
@@ -17,6 +18,7 @@ test_that("get_empty_dense_vector creates a vector for an axis", {
 })
 
 test_that("get_empty_dense_vector with Int32 type works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "empty_dense_int_test!")
     add_axis(daf, "gene", c("X", "Y"))
 
@@ -26,6 +28,7 @@ test_that("get_empty_dense_vector with Int32 type works", {
 })
 
 test_that("get_empty_dense_vector with overwrite parameter works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "empty_dense_overwrite_test!")
     add_axis(daf, "cell", c("A", "B"))
 
@@ -46,6 +49,7 @@ test_that("get_empty_dense_vector with overwrite parameter works", {
 # --- get_empty_sparse_vector ---
 
 test_that("get_empty_sparse_vector creates a sparse vector", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "empty_sparse_vec_test!")
     add_axis(daf, "cell", c("A", "B", "C", "D", "E"))
 
@@ -55,6 +59,7 @@ test_that("get_empty_sparse_vector creates a sparse vector", {
 })
 
 test_that("get_empty_sparse_vector with indtype parameter works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "empty_sparse_indtype_test!")
     add_axis(daf, "gene", c("X", "Y", "Z"))
 
@@ -63,6 +68,7 @@ test_that("get_empty_sparse_vector with indtype parameter works", {
 })
 
 test_that("get_empty_sparse_vector with overwrite parameter works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "empty_sparse_overwrite_test!")
     add_axis(daf, "cell", c("A", "B", "C"))
 
@@ -91,6 +97,7 @@ test_that("get_empty_sparse_vector with overwrite parameter works", {
 # --- filled_empty_sparse_vector ---
 
 test_that("filled_empty_sparse_vector stores data correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "filled_sparse_vec_test!")
     add_axis(daf, "cell", c("A", "B", "C", "D", "E"))
 
@@ -113,6 +120,7 @@ test_that("filled_empty_sparse_vector stores data correctly", {
 })
 
 test_that("filled_empty_sparse_vector with single non-zero element", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "filled_sparse_single_test!")
     add_axis(daf, "gene", c("X", "Y", "Z"))
 
@@ -131,6 +139,7 @@ test_that("filled_empty_sparse_vector with single non-zero element", {
 # --- get_empty_dense_matrix ---
 
 test_that("get_empty_dense_matrix creates a matrix for axes", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "empty_dense_mat_test!")
     add_axis(daf, "cell", c("A", "B"))
     add_axis(daf, "gene", c("X", "Y", "Z"))
@@ -141,6 +150,7 @@ test_that("get_empty_dense_matrix creates a matrix for axes", {
 })
 
 test_that("get_empty_dense_matrix with Int32 type works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "empty_dense_mat_int_test!")
     add_axis(daf, "cell", c("A", "B"))
     add_axis(daf, "gene", c("X", "Y"))
@@ -151,6 +161,7 @@ test_that("get_empty_dense_matrix with Int32 type works", {
 })
 
 test_that("get_empty_dense_matrix with overwrite parameter works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "empty_dense_mat_overwrite_test!")
     add_axis(daf, "cell", c("A", "B"))
     add_axis(daf, "gene", c("X", "Y"))
@@ -170,6 +181,7 @@ test_that("get_empty_dense_matrix with overwrite parameter works", {
 # --- get_empty_sparse_matrix ---
 
 test_that("get_empty_sparse_matrix creates a sparse matrix", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "empty_sparse_mat_test!")
     add_axis(daf, "cell", c("A", "B", "C"))
     add_axis(daf, "gene", c("X", "Y"))
@@ -179,6 +191,7 @@ test_that("get_empty_sparse_matrix creates a sparse matrix", {
 })
 
 test_that("get_empty_sparse_matrix with indtype parameter works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "empty_sparse_mat_indtype_test!")
     add_axis(daf, "cell", c("A", "B"))
     add_axis(daf, "gene", c("X", "Y", "Z"))
@@ -188,6 +201,7 @@ test_that("get_empty_sparse_matrix with indtype parameter works", {
 })
 
 test_that("get_empty_sparse_matrix with overwrite parameter works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "empty_sparse_mat_overwrite_test!")
     add_axis(daf, "cell", c("A", "B"))
     add_axis(daf, "gene", c("X", "Y"))
@@ -221,6 +235,7 @@ test_that("get_empty_sparse_matrix with overwrite parameter works", {
 # --- filled_empty_sparse_matrix ---
 
 test_that("filled_empty_sparse_matrix stores data correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "filled_sparse_mat_test!")
     add_axis(daf, "cell", c("A", "B", "C"))
     add_axis(daf, "gene", c("X", "Y"))
@@ -247,6 +262,7 @@ test_that("filled_empty_sparse_matrix stores data correctly", {
 })
 
 test_that("filled_empty_sparse_matrix with single non-zero element", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "filled_sparse_mat_single_test!")
     add_axis(daf, "cell", c("A", "B"))
     add_axis(daf, "gene", c("X", "Y", "Z"))
@@ -269,6 +285,7 @@ test_that("filled_empty_sparse_matrix with single non-zero element", {
 # --- get_frame (now exported) ---
 
 test_that("get_frame returns Julia-style result", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "frame_test!")
     add_axis(daf, "cell", c("A", "B", "C"))
     set_vector(daf, "cell", "age", c(1.0, 2.0, 3.0))
@@ -285,6 +302,7 @@ test_that("get_frame returns Julia-style result", {
 })
 
 test_that("get_frame with specific column names works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "frame_col_test!")
     add_axis(daf, "cell", c("A", "B"))
     set_vector(daf, "cell", "age", c(10.0, 20.0))
@@ -297,6 +315,7 @@ test_that("get_frame with specific column names works", {
 })
 
 test_that("get_frame with named list columns works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "frame_named_test!")
     add_axis(daf, "cell", c("A", "B"))
     add_axis(daf, "batch", c("B1", "B2"))
@@ -312,6 +331,7 @@ test_that("get_frame with named list columns works", {
 })
 
 test_that("get_frame with cache parameter works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "frame_cache_test!")
     add_axis(daf, "cell", c("A", "B"))
     set_vector(daf, "cell", "val", c(1.0, 2.0))
@@ -323,6 +343,7 @@ test_that("get_frame with cache parameter works", {
 })
 
 test_that("get_frame vs get_dataframe difference", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "frame_vs_df_test!")
     add_axis(daf, "cell", c("A", "B", "C"))
     set_vector(daf, "cell", "score", c(10, 20, 30))

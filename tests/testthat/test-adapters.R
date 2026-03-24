@@ -1,4 +1,5 @@
 test_that("adapter works correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Create a test daf object
     daf <- memory_daf(name = "test!")
     add_axis(daf, "cell", c("A", "B"))
@@ -39,6 +40,7 @@ test_that("adapter works correctly", {
 })
 
 test_that("adapter captures new axes", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Create a test daf object
     daf <- memory_daf(name = "test_capture!")
     add_axis(daf, "cell", c("A", "B"))
@@ -72,6 +74,7 @@ test_that("adapter captures new axes", {
 })
 
 test_that("adapter with scalar renaming works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Create a daf object
     daf <- memory_daf(name = "memory!")
 

@@ -1,4 +1,5 @@
 test_that("chain_reader with one daf works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Create a daf
     source <- memory_daf(name = "source!")
     add_axis(source, "cell", c("A", "B"))
@@ -21,6 +22,7 @@ test_that("chain_reader with one daf works", {
 })
 
 test_that("chain_reader with multiple dafs works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Create two dafs with overlapping and distinct data
     # Use the same set of entries for the overlapping axis to avoid errors
     source1 <- memory_daf(name = "source.1!")
@@ -49,6 +51,7 @@ test_that("chain_reader with multiple dafs works", {
 })
 
 test_that("chain_writer works correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Create a read-only daf and a writable daf
     # Use the same set of entries for the cell axis
     source1 <- memory_daf(name = "source.1!")
@@ -92,6 +95,7 @@ test_that("chain_writer works correctly", {
 })
 
 test_that("chain_reader and chain_writer handle errors correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Create test dafs for error cases
     readonly1 <- read_only(memory_daf())
     readonly2 <- read_only(memory_daf())

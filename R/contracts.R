@@ -6,6 +6,7 @@
 #' Contract Expectation Types
 #'
 #' These constants correspond to Julia's ContractExpectation enum
+#' @return A character string representing a contract expectation type.
 #' @export
 RequiredInput <- "RequiredInput"
 
@@ -207,10 +208,10 @@ tensor_contract <- function(main_axis, rows_axis, cols_axis, name, expectation, 
 #' }
 contractor <- function(computation, contract, daf, overwrite = FALSE) {
     if (!inherits(contract, "DafContract")) {
-        stop("contract must be a DafContract object created with create_contract()")
+        cli::cli_abort("contract must be a DafContract object created with create_contract()")
     }
     if (!inherits(daf, "Daf")) {
-        stop("daf must be a Daf object")
+        cli::cli_abort("daf must be a Daf object")
     }
 
     result <- list(
@@ -329,7 +330,7 @@ verify_contract <- function(daf_obj, contract, check_unused = FALSE) {
 verify_input <- function(daf_obj, contract) {
     result <- verify_contract(daf_obj, contract)
     if (!result$valid) {
-        stop(paste(c("DAF input validation failed:", result$errors), collapse = "\n"))
+        cli::cli_abort(paste(c("DAF input validation failed:", result$errors), collapse = "\n"))
     }
     invisible(TRUE)
 }
@@ -346,10 +347,10 @@ verify_input <- function(daf_obj, contract) {
 verify_output <- function(daf_obj, contract) {
     result <- verify_contract(daf_obj, contract, check_unused = TRUE)
     if (!result$valid) {
-        stop(paste(c("DAF output validation failed:", result$errors), collapse = "\n"))
+        cli::cli_abort(paste(c("DAF output validation failed:", result$errors), collapse = "\n"))
     }
     if (length(result$warnings) > 0) {
-        warning(paste(result$warnings, collapse = "\n"))
+        cli::cli_warn(paste(result$warnings, collapse = "\n"))
     }
     invisible(TRUE)
 }

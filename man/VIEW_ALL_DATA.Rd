@@ -10,6 +10,9 @@ A list containing VIEW_ALL_SCALARS, VIEW_ALL_VECTORS, and VIEW_ALL_MATRICES
 \usage{
 VIEW_ALL_DATA
 }
+\value{
+A list of specifiers to expose all scalars, vectors, and matrices.
+}
 \description{
 A list of pairs to use in the \code{data} parameter of \code{viewer} to expose all base data
 (scalars, vectors, and matrices) with their original names.

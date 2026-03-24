@@ -1,4 +1,5 @@
 test_that("reconstruct_axis works correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Create a memory daf object
     memory <- memory_daf(name = "memory!")
 

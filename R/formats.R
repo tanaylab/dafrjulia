@@ -5,6 +5,13 @@
 #'
 #' @param name The name of the Daf object (default: "memory")
 #' @return A Daf object with in-memory storage
+#' @examples
+#' \dontrun{
+#' setup_daf()
+#' daf <- memory_daf("example")
+#' add_axis(daf, "cell", c("A", "B", "C"))
+#' set_vector(daf, "cell", "score", c(1.0, 2.0, 3.0))
+#' }
 #' @export
 memory_daf <- function(name = "memory") {
     jl_obj <- julia_call("DataAxesFormats.MemoryDaf", name = name)
@@ -20,6 +27,12 @@ memory_daf <- function(name = "memory") {
 #' @param mode Mode to open the storage ("r" for read-only, "r+" for read-write)
 #' @param name Optional name for the Daf object
 #' @return A Daf object with file-based storage
+#' @examples
+#' \dontrun{
+#' setup_daf()
+#' daf <- files_daf(tempdir(), "w", name = "example")
+#' add_axis(daf, "gene", c("X", "Y", "Z"))
+#' }
 #' @export
 files_daf <- function(path, mode = "r", name = NULL) {
     path <- normalizePath(path, mustWork = FALSE)
@@ -41,6 +54,12 @@ files_daf <- function(path, mode = "r", name = NULL) {
 #' @param mode Mode to open the storage ("r" for read-only, "r+" for read-write)
 #' @param name Optional name for the Daf object
 #' @return A Daf object with HDF5-based storage
+#' @examples
+#' \dontrun{
+#' setup_daf()
+#' h5_path <- file.path(tempdir(), "example.h5")
+#' daf <- h5df(h5_path, "w", name = "example")
+#' }
 #' @export
 h5df <- function(root, mode = "r", name = NULL) {
     root <- normalizePath(root, mustWork = FALSE)

@@ -1,4 +1,5 @@
 test_that("example_cells_daf returns expected structure", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Load the example cells data
     daf <- example_cells_daf()
 
@@ -62,6 +63,7 @@ test_that("example_cells_daf returns expected structure", {
 })
 
 test_that("example_metacells_daf returns expected structure", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Load the example metacells data
     daf <- example_metacells_daf()
 
@@ -122,11 +124,13 @@ test_that("example_metacells_daf returns expected structure", {
 })
 
 test_that("example_cells_daf accepts custom name", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- example_cells_daf(name = "custom_cells!")
     expect_equal(daf_name(daf), "custom_cells!")
 })
 
 test_that("example_metacells_daf accepts custom name", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- example_metacells_daf(name = "custom_metacells!")
     expect_equal(daf_name(daf), "custom_metacells!")
 })

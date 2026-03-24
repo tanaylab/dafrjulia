@@ -27,3 +27,11 @@ If the scalar already exists and \code{overwrite} is FALSE, an error will be rai
 NA values are not supported in Daf.
 See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/writers.html#DataAxesFormats.Writers.set_scalar!}{documentation} for details.
 }
+\examples{
+\dontrun{
+setup_daf()
+daf <- memory_daf("example")
+set_scalar(daf, "version", "1.0")
+get_scalar(daf, "version") # "1.0"
+}
+}

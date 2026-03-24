@@ -7,6 +7,13 @@
 #' @return TRUE if scalar exists, FALSE otherwise
 #' @details Scalar properties are global values associated with the entire Daf data set.
 #'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.has_scalar) for details.
+#' @examples
+#' \dontrun{
+#' setup_daf()
+#' daf <- memory_daf("example")
+#' set_scalar(daf, "version", "1.0")
+#' has_scalar(daf, "version") # TRUE
+#' }
 #' @export
 has_scalar <- function(daf, name) {
     validate_daf_object(daf)
@@ -40,6 +47,13 @@ scalars_set <- function(daf) {
 #' @details Numeric scalars are returned as integers or doubles, regardless of the specific
 #'   data type they are stored as in the Daf data set.
 #'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.get_scalar) for details.
+#' @examples
+#' \dontrun{
+#' setup_daf()
+#' daf <- memory_daf("example")
+#' set_scalar(daf, "version", "1.0")
+#' get_scalar(daf, "version") # "1.0"
+#' }
 #' @export
 get_scalar <- function(daf, name, default = NULL) {
     validate_daf_object(daf)
@@ -60,6 +74,14 @@ get_scalar <- function(daf, name, default = NULL) {
 #' @details Axes are fundamental dimensions in a Daf data set along which vector and matrix
 #'   data are stored. Each axis has a collection of unique named entries.
 #'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.has_axis) for details.
+#' @examples
+#' \dontrun{
+#' setup_daf()
+#' daf <- memory_daf("example")
+#' add_axis(daf, "cell", c("A", "B", "C"))
+#' has_axis(daf, "cell") # TRUE
+#' has_axis(daf, "gene") # FALSE
+#' }
 #' @export
 has_axis <- function(daf, axis) {
     validate_daf_object(daf)
@@ -123,7 +145,9 @@ axis_vector <- function(daf, axis, null_if_missing = FALSE) {
 
     if (!is.null(vc)) {
         cached <- cache_lookup(daf, cache_key, vc)
-        if (!is.null(cached)) return(cached)
+        if (!is.null(cached)) {
+            return(cached)
+        }
     }
 
     if (null_if_missing) {
@@ -240,6 +264,14 @@ axis_entries <- function(daf, axis, indices = NULL, allow_empty = FALSE) {
 #' @details Vector properties store one-dimensional data along a specific axis.
 #'   Each entry in the axis has a corresponding value in the vector.
 #'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.has_vector) for details.
+#' @examples
+#' \dontrun{
+#' setup_daf()
+#' daf <- memory_daf("example")
+#' add_axis(daf, "cell", c("A", "B", "C"))
+#' set_vector(daf, "cell", "type", c("T1", "T2", "T1"))
+#' has_vector(daf, "cell", "type") # TRUE
+#' }
 #' @export
 has_vector <- function(daf, axis, name) {
     validate_daf_object(daf)
@@ -278,6 +310,14 @@ vectors_set <- function(daf, axis) {
 #'   for each entry in the axis. If the vector doesn't exist and default is NA,
 #'   a vector of NAs with appropriate length is returned.
 #'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.get_vector) for details.
+#' @examples
+#' \dontrun{
+#' setup_daf()
+#' daf <- memory_daf("example")
+#' add_axis(daf, "cell", c("A", "B", "C"))
+#' set_vector(daf, "cell", "score", c(1.0, 2.0, 3.0))
+#' get_vector(daf, "cell", "score") # named vector: A=1, B=2, C=3
+#' }
 #' @export
 get_vector <- function(daf, axis, name, default = NULL) {
     validate_daf_object(daf)
@@ -318,6 +358,16 @@ get_vector <- function(daf, axis, name, default = NULL) {
 #'   If `relayout` is TRUE, this function will also check if the matrix exists with
 #'   the axes flipped (i.e., rows as columns and columns as rows).
 #'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.has_matrix) for details.
+#' @examples
+#' \dontrun{
+#' setup_daf()
+#' daf <- memory_daf("example")
+#' add_axis(daf, "cell", c("A", "B"))
+#' add_axis(daf, "gene", c("X", "Y", "Z"))
+#' mat <- matrix(1:6, nrow = 2, ncol = 3)
+#' set_matrix(daf, "cell", "gene", "UMIs", mat)
+#' has_matrix(daf, "cell", "gene", "UMIs") # TRUE
+#' }
 #' @export
 has_matrix <- function(daf, rows_axis, columns_axis, name, relayout = TRUE) {
     validate_daf_object(daf)
@@ -370,6 +420,13 @@ matrices_set <- function(daf, rows_axis, columns_axis, relayout = TRUE) {
 #'   If the scalar already exists and `overwrite` is FALSE, an error will be raised.
 #'   NA values are not supported in Daf.
 #'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/writers.html#DataAxesFormats.Writers.set_scalar!) for details.
+#' @examples
+#' \dontrun{
+#' setup_daf()
+#' daf <- memory_daf("example")
+#' set_scalar(daf, "version", "1.0")
+#' get_scalar(daf, "version") # "1.0"
+#' }
 #' @export
 set_scalar <- function(daf, name, value, overwrite = FALSE) {
     validate_daf_object(daf)
@@ -411,6 +468,13 @@ delete_scalar <- function(daf, name, must_exist = TRUE) {
 #'   If the axis already exists and `overwrite` is FALSE, an error will be raised.
 #'   Entry names must be unique within the axis.
 #'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/writers.html#DataAxesFormats.Writers.add_axis!) for details.
+#' @examples
+#' \dontrun{
+#' setup_daf()
+#' daf <- memory_daf("example")
+#' add_axis(daf, "cell", c("A", "B", "C"))
+#' add_axis(daf, "gene", c("X", "Y", "Z"))
+#' }
 #' @export
 add_axis <- function(daf, axis, entries, overwrite = FALSE) {
     validate_daf_object(daf)
@@ -452,6 +516,14 @@ delete_axis <- function(daf, axis, must_exist = TRUE) {
 #'   If the vector already exists and `overwrite` is FALSE, an error will be raised.
 #'   NA values are not supported in Daf.
 #'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/writers.html#DataAxesFormats.Writers.set_vector!) for details.
+#' @examples
+#' \dontrun{
+#' setup_daf()
+#' daf <- memory_daf("example")
+#' add_axis(daf, "cell", c("A", "B", "C"))
+#' set_vector(daf, "cell", "type", c("T1", "T2", "T1"))
+#' get_vector(daf, "cell", "type")
+#' }
 #' @export
 set_vector <- function(daf, axis, name, value, overwrite = FALSE) {
     validate_daf_object(daf)
@@ -499,6 +571,15 @@ delete_vector <- function(daf, axis, name, must_exist = TRUE) {
 #'   If `relayout` is TRUE, the matrix will also be stored with axes flipped for faster access.
 #'   NA values are not supported in Daf.
 #'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/writers.html#DataAxesFormats.Writers.set_matrix!) for details.
+#' @examples
+#' \dontrun{
+#' setup_daf()
+#' daf <- memory_daf("example")
+#' add_axis(daf, "cell", c("A", "B"))
+#' add_axis(daf, "gene", c("X", "Y", "Z"))
+#' mat <- matrix(1:6, nrow = 2, ncol = 3)
+#' set_matrix(daf, "cell", "gene", "UMIs", mat)
+#' }
 #' @export
 set_matrix <- function(daf, rows_axis, columns_axis, name, value, overwrite = FALSE, relayout = TRUE) {
     validate_daf_object(daf)
@@ -535,6 +616,16 @@ set_matrix <- function(daf, rows_axis, columns_axis, name, value, overwrite = FA
 #'   If the matrix doesn't exist and default is NA, a matrix of NAs with appropriate dimensions is returned.
 #'   If `relayout` is TRUE and the matrix exists with flipped axes, it will be transposed automatically.
 #'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.get_matrix) for details.
+#' @examples
+#' \dontrun{
+#' setup_daf()
+#' daf <- memory_daf("example")
+#' add_axis(daf, "cell", c("A", "B"))
+#' add_axis(daf, "gene", c("X", "Y", "Z"))
+#' mat <- matrix(1:6, nrow = 2, ncol = 3)
+#' set_matrix(daf, "cell", "gene", "UMIs", mat)
+#' get_matrix(daf, "cell", "gene", "UMIs")
+#' }
 #' @export
 get_matrix <- function(daf, rows_axis, columns_axis, name, default = NULL, relayout = TRUE) {
     validate_daf_object(daf)

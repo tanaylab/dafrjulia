@@ -10,6 +10,9 @@ Character vector of length 3
 \usage{
 ALL_MATRICES
 }
+\value{
+A character vector specifier for all matrices.
+}
 \description{
 A key to use in the \code{data} parameter of \code{viewer} to specify all the matrices of the exposed axes.
 See the Julia documentation for details.

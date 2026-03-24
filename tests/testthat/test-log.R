@@ -1,13 +1,16 @@
 test_that("setup_logger works with default parameters", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # We can't directly test the side effect, but we can verify it doesn't error
     expect_no_error(setup_logger())
 })
 
 test_that("setup_logger accepts stdout as io parameter", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     expect_no_error(setup_logger(io = stdout))
 })
 
 test_that("setup_logger accepts different log levels", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     expect_no_error(setup_logger(level = "Debug"))
     expect_no_error(setup_logger(level = "Info"))
     expect_no_error(setup_logger(level = "Warn"))
@@ -16,6 +19,7 @@ test_that("setup_logger accepts different log levels", {
 })
 
 test_that("setup_logger rejects invalid log levels", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     expect_error(
         setup_logger(level = "InvalidLevel"),
         "Invalid log level"
@@ -26,6 +30,7 @@ test_that("setup_logger rejects invalid log levels", {
 })
 
 test_that("setup_logger rejects invalid io parameters", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     expect_error(
         setup_logger(io = "stdout"),
         "logging into anything other than stdout and stderr"
@@ -44,6 +49,7 @@ test_that("setup_logger rejects invalid io parameters", {
 })
 
 test_that("setup_logger accepts boolean formatting options", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test all combinations of boolean parameters
     expect_no_error(setup_logger(show_time = TRUE, show_module = TRUE, show_location = TRUE))
     expect_no_error(setup_logger(show_time = TRUE, show_module = TRUE, show_location = FALSE))
@@ -56,5 +62,6 @@ test_that("setup_logger accepts boolean formatting options", {
 })
 
 test_that("setup_logger returns invisibly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     expect_invisible(setup_logger())
 })

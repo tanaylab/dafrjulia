@@ -1,0 +1,164 @@
+---
+title: "Getting Started with dafr"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting Started with dafr}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+    collapse = TRUE,
+    comment = "#>",
+    eval = FALSE,
+    purl = FALSE
+)
+```
+
+## Introduction
+
+**dafr** is an R interface to
+[DataAxesFormats.jl](https://github.com/tanaylab/DataAxesFormats.jl), a Julia
+package that provides a uniform interface for accessing multi-dimensional data
+arranged along named axes. It generalizes AnnData-like functionality, supporting
+scalars, 1D vectors, and 2D matrices organized along arbitrary named axes with
+efficient memory management.
+
+dafr requires a working Julia installation (>= 1.10). Install Julia from
+<https://julialang.org/downloads/>.
+
+## Setup
+
+```{r}
+library(dafr)
+
+# Initialize Julia and install required Julia packages (first time only)
+setup_daf()
+```
+
+The `setup_daf()` call initializes the Julia runtime and ensures the required
+Julia packages are available. This only needs to be called once per R session.
+
+## Creating a Daf Object
+
+The simplest way to get started is with an in-memory Daf:
+
+```{r}
+daf <- memory_daf("my_data")
+```
+
+You can also use file-based or HDF5-based storage:
+
+```{r}
+# File-based storage
+daf_files <- files_daf("/path/to/directory", "w", name = "files_data")
+
+# HDF5-based storage
+daf_h5 <- h5df("/path/to/file.h5", "w", name = "h5_data")
+```
+
+## Adding Data
+
+### Axes
+
+Axes are the named dimensions of your data. Each axis has a set of unique entry
+names:
+
+```{r}
+add_axis(daf, "cell", c("C1", "C2", "C3", "C4", "C5"))
+add_axis(daf, "gene", c("Gene1", "Gene2", "Gene3"))
+```
+
+### Scalars
+
+Scalars are global properties of the dataset:
+
+```{r}
+set_scalar(daf, "version", "1.0")
+set_scalar(daf, "organism", "human")
+get_scalar(daf, "version")
+```
+
+### Vectors
+
+Vectors store one value per entry along an axis:
+
+```{r}
+set_vector(daf, "cell", "batch", c("B1", "B1", "B2", "B2", "B2"))
+set_vector(daf, "gene", "is_marker", c(TRUE, FALSE, TRUE))
+
+# Retrieve a vector (returns a named vector)
+get_vector(daf, "cell", "batch")
+```
+
+### Matrices
+
+Matrices store values for each combination of entries along two axes:
+
+```{r}
+umis <- matrix(
+    c(
+        10, 20, 0, 5, 15,
+        3, 0, 8, 12, 1,
+        0, 7, 4, 0, 9
+    ),
+    nrow = 5, ncol = 3
+)
+set_matrix(daf, "cell", "gene", "UMIs", umis)
+
+# Retrieve a matrix (returns a named matrix)
+get_matrix(daf, "cell", "gene", "UMIs")
+```
+
+## Querying Data
+
+dafr provides a composable query system for extracting and transforming data.
+Queries are built using pipe operators:
+
+```{r}
+# Get a vector property
+get_query(daf, Axis("cell") |> LookupVector("batch"))
+
+# Filter cells by a condition
+get_query(daf, Axis("gene") |> LookupVector("is_marker") |> IsEqual(TRUE))
+
+# Matrix operations with reduction
+get_query(daf, Axis("cell") |> Axis("gene") |> LookupMatrix("UMIs") |> Sum())
+```
+
+The `[` operator provides a shorthand for `get_query()`:
+
+```{r}
+daf[Axis("cell") |> LookupVector("batch")]
+```
+
+## Inspecting a Daf Object
+
+```{r}
+# Print a summary
+print(daf)
+
+# Check what axes exist
+has_axis(daf, "cell")
+
+# Check what properties exist
+has_vector(daf, "cell", "batch")
+has_matrix(daf, "cell", "gene", "UMIs")
+```
+
+## Working with Example Data
+
+dafr includes example datasets for testing and exploration:
+
+```{r}
+example_daf <- example_cells_daf()
+print(example_daf)
+```
+
+## Further Reading
+
+- [DataAxesFormats.jl documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/)
+  for the full Julia API reference
+- [dafr package documentation](https://tanaylab.github.io/dafr/) for the
+  complete R API reference

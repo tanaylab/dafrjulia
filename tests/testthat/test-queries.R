@@ -8,6 +8,7 @@ set <- function(x) {
 
 # Test query formatting
 test_that("query formatting works correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     expect_c_equal(Axis("cell"), "@ cell")
     expect_c_equal(Axis() |> Names(), "@ ?")
     expect_c_equal(LookupVector("version"), ": version")
@@ -44,6 +45,7 @@ test_that("query formatting works correctly", {
 })
 
 test_that("IfMissing handles all parameter cases correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Setup a daf for testing
     daf <- memory_daf(name = "test_if_missing")
     set_scalar(daf, "version", "1.0")
@@ -96,6 +98,7 @@ test_that("IfMissing handles all parameter cases correctly", {
 
 # Test query results
 test_that("query results are correct", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "test!")
     set_scalar(daf, "version", "1.0")
     add_axis(daf, "cell", c("A", "B"))
@@ -191,6 +194,7 @@ test_that("query results are correct", {
 })
 
 test_that("get_dataframe_query handles scalar query results correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "test_df_query")
     set_scalar(daf, "version", "1.0")
     set_scalar(daf, "numeric_val", 42)
@@ -213,6 +217,7 @@ test_that("get_dataframe_query handles scalar query results correctly", {
 })
 
 test_that("get_dataframe_query handles vector query results correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "test_df_query")
     add_axis(daf, "cell", c("A", "B", "C"))
     set_vector(daf, "cell", "age", c(1.5, 2.5, 3.5))
@@ -242,6 +247,7 @@ test_that("get_dataframe_query handles vector query results correctly", {
 })
 
 test_that("get_dataframe_query handles matrix query results correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "test_df_query")
     add_axis(daf, "cell", c("A", "B"))
     add_axis(daf, "gene", c("X", "Y", "Z"))
@@ -286,6 +292,7 @@ test_that("get_dataframe_query handles matrix query results correctly", {
 })
 
 test_that("get_dataframe_query handles sets of names correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "test_df_query")
     add_axis(daf, "cell", c("A", "B", "C"))
     add_axis(daf, "gene", c("X", "Y", "Z"))
@@ -305,6 +312,7 @@ test_that("get_dataframe_query handles sets of names correctly", {
 })
 
 test_that("get_dataframe_query can be used with pipes", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "test_df_query")
     add_axis(daf, "cell", c("A", "B", "C"))
     set_vector(daf, "cell", "age", c(1, 2, 3))
@@ -323,6 +331,7 @@ test_that("get_dataframe_query can be used with pipes", {
 })
 
 test_that("get_dataframe_query handles complex query operations", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "test_df_query")
     add_axis(daf, "cell", c("A", "B", "C"))
     add_axis(daf, "gene", c("X", "Y", "Z"))
@@ -352,6 +361,7 @@ test_that("get_dataframe_query handles complex query operations", {
 })
 
 test_that("get_dataframe_query handles missing data appropriately", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "test_df_query")
     add_axis(daf, "cell", c("A", "B", "C"))
 
@@ -367,6 +377,7 @@ test_that("get_dataframe_query handles missing data appropriately", {
 })
 
 test_that("get_dataframe_query handles caching parameter", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "test_df_query")
     add_axis(daf, "cell", c("A", "B", "C"))
     set_vector(daf, "cell", "age", c(1, 2, 3))
@@ -379,6 +390,7 @@ test_that("get_dataframe_query handles caching parameter", {
 })
 
 test_that("get_dataframe_query reports appropriate errors", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "test_df_query")
 
     expect_error(get_dataframe_query(daf), "Please provide both a Daf object and a query")
@@ -389,6 +401,7 @@ test_that("get_dataframe_query reports appropriate errors", {
 })
 
 test_that("process_frame_columns handles different column formats correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test with NULL
     result <- dafr:::process_frame_columns(NULL)
     expect_null(result)
@@ -419,6 +432,7 @@ test_that("process_frame_columns handles different column formats correctly", {
 })
 
 test_that("get_dataframe handles various column formats correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "test_frame_columns")
     add_axis(daf, "cell", c("A", "B"))
     add_axis(daf, "batch", c("U", "V", "W"))
@@ -475,6 +489,7 @@ test_that("get_dataframe handles various column formats correctly", {
 })
 
 test_that("get_tidy returns data in long format", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "test_tidy")
     add_axis(daf, "cell", c("A", "B", "C"))
     add_axis(daf, "batch", c("B1", "B2"))
@@ -522,6 +537,7 @@ test_that("get_tidy returns data in long format", {
 
 # Test the new [ operator for Daf objects
 test_that("[ operator for Daf objects works correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "test_subscript_operator")
     set_scalar(daf, "version", "1.0")
     add_axis(daf, "cell", c("A", "B"))
@@ -575,6 +591,7 @@ test_that("[ operator for Daf objects works correctly", {
 })
 
 test_that("[ operator handles errors properly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "test_subscript_errors")
 
     # Test with invalid query
@@ -589,6 +606,7 @@ test_that("[ operator handles errors properly", {
 })
 
 test_that("[ operator retrieves vectors with multiple variants", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Create a test DAF object with a 'cells' axis
     daf <- memory_daf(name = "test_cells_vector")
     add_axis(daf, "cells", c("cell1", "cell2", "cell3", "cell4", "cell5"))
@@ -640,6 +658,7 @@ test_that("[ operator retrieves vectors with multiple variants", {
 })
 
 test_that("CountBy operation works correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Setup test data
     daf <- memory_daf("test_countby")
     add_axis(daf, "cell", c("A", "B", "C", "D", "E", "F"))
@@ -673,6 +692,7 @@ test_that("CountBy operation works correctly", {
 })
 
 test_that("GroupBy operation works correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Setup test data
     daf <- memory_daf("test_groupby")
     add_axis(daf, "cell", c("A", "B", "C", "D", "E", "F"))
@@ -718,6 +738,7 @@ test_that("GroupBy operation works correctly", {
 })
 
 test_that("GroupBy and CountBy handle edge cases correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf("test_groupby_edge")
     add_axis(daf, "cell", c("A", "B", "C"))
 
@@ -732,6 +753,7 @@ test_that("GroupBy and CountBy handle edge cases correctly", {
 })
 
 test_that("AsAxis operation works correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Setup test data
     daf <- memory_daf("test_asaxis")
     add_axis(daf, "cell", c("A", "B", "C"))
@@ -768,6 +790,7 @@ test_that("AsAxis operation works correctly", {
 })
 
 test_that("chained LookupVector works correctly (replaces Fetch)", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Setup test data
     daf <- memory_daf("test_chained_lookup")
     add_axis(daf, "cell", c("A", "B", "C"))
@@ -793,6 +816,7 @@ test_that("chained LookupVector works correctly (replaces Fetch)", {
 })
 
 test_that("Names operation works correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Setup test data
     daf <- memory_daf("test_names")
     add_axis(daf, "cell", c("A", "B", "C"))
@@ -822,6 +846,7 @@ test_that("Names operation works correctly", {
 })
 
 test_that("query comparison operations work correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Setup test data
     daf <- memory_daf("test_comparison_ops")
     add_axis(daf, "cell", c("A", "B", "C", "D"))
@@ -927,6 +952,7 @@ test_that("query comparison operations work correctly", {
 })
 
 test_that("query boolean mask operations work correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Setup test data
     daf <- memory_daf("test_boolean_ops")
     add_axis(daf, "cell", c("A", "B", "C", "D"))
@@ -968,6 +994,7 @@ test_that("query boolean mask operations work correctly", {
 })
 
 test_that("query IfNot operation works correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf("test_ifnot")
     add_axis(daf, "cell", c("A", "B", "C", "D"))
     set_vector(daf, "cell", "batch", c("batch1", "batch2", "batch1", "batch2"))
@@ -980,6 +1007,7 @@ test_that("query IfNot operation works correctly", {
 })
 
 test_that("query_result_dimensions returns correct dimensions for various queries", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test scalar query dimension
     expect_equal(query_result_dimensions(". version"), 0)
     expect_equal(query_result_dimensions(LookupScalar("version")), 0)
@@ -1007,6 +1035,7 @@ test_that("query_result_dimensions returns correct dimensions for various querie
 })
 
 test_that("query_result_dimensions works with pipe operators", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test with string query
     query_str <- "@ cell : age >> Mean"
     dim_result <- query_str |> query_result_dimensions()
@@ -1021,6 +1050,7 @@ test_that("query_result_dimensions works with pipe operators", {
 })
 
 test_that("query_result_dimensions handles errors gracefully", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test with invalid query string
     expect_error(query_result_dimensions("invalid query"))
 
@@ -1029,6 +1059,7 @@ test_that("query_result_dimensions handles errors gracefully", {
 })
 
 test_that("parse_query handles various query strings correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test basic string parsing
     query_obj <- parse_query("@ cell")
     expect_true(inherits(query_obj, "JuliaObject"))
@@ -1060,11 +1091,13 @@ test_that("parse_query handles various query strings correctly", {
 })
 
 test_that("parse_query handles errors correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test with malformed query
     expect_error(parse_query("invalid query"))
 })
 
 test_that("BeginMask/EndMask operations work correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test function accepts valid input
     expect_no_error(BeginMask("is_marker"))
     expect_no_error(BeginNegatedMask("is_marker"))
@@ -1116,6 +1149,7 @@ test_that("BeginMask/EndMask operations work correctly", {
 })
 
 test_that("SquareColumnIs operation works correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test function accepts valid input
     expect_no_error(SquareColumnIs("A"))
 
@@ -1156,6 +1190,7 @@ test_that("SquareColumnIs operation works correctly", {
 })
 
 test_that("SquareRowIs operation works correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test function accepts valid input
     expect_no_error(SquareRowIs("A"))
 
@@ -1196,6 +1231,7 @@ test_that("SquareRowIs operation works correctly", {
 })
 
 test_that("Axis validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Axis() without arguments is valid in v0.2.0 (produces "@")
     expect_no_error(Axis())
     expect_c_equal(Axis(), "@")
@@ -1207,6 +1243,7 @@ test_that("Axis validates inputs correctly", {
 })
 
 test_that("LookupVector validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # LookupVector() without arguments is valid in v0.2.0 (produces ":")
     expect_no_error(LookupVector())
     expect_c_equal(LookupVector(), ":")
@@ -1218,6 +1255,7 @@ test_that("LookupVector validates inputs correctly", {
 })
 
 test_that("LookupScalar validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # LookupScalar() without arguments is valid in v0.2.0 (produces ".")
     expect_no_error(LookupScalar())
     expect_c_equal(LookupScalar(), ".")
@@ -1229,6 +1267,7 @@ test_that("LookupScalar validates inputs correctly", {
 })
 
 test_that("LookupMatrix validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test missing property parameter
     expect_error(
         LookupMatrix()
@@ -1241,6 +1280,7 @@ test_that("LookupMatrix validates inputs correctly", {
 })
 
 test_that("IfMissing validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test missing missing_value parameter
     expect_error(
         IfMissing()
@@ -1253,6 +1293,7 @@ test_that("IfMissing validates inputs correctly", {
 })
 
 test_that("IfNot validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # There are no validation errors specific to IfNot as it accepts NULL as default
     # Just test the function exists
     expect_no_error(
@@ -1261,6 +1302,7 @@ test_that("IfNot validates inputs correctly", {
 })
 
 test_that("AsAxis validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test non-character axis parameter
     expect_error(
         AsAxis(123)
@@ -1268,6 +1310,7 @@ test_that("AsAxis validates inputs correctly", {
 })
 
 test_that("BeginMask validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test missing property parameter
     expect_error(
         BeginMask()
@@ -1280,6 +1323,7 @@ test_that("BeginMask validates inputs correctly", {
 })
 
 test_that("BeginNegatedMask validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test missing property parameter
     expect_error(
         BeginNegatedMask()
@@ -1292,6 +1336,7 @@ test_that("BeginNegatedMask validates inputs correctly", {
 })
 
 test_that("SquareColumnIs validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test missing value parameter
     expect_error(
         SquareColumnIs()
@@ -1304,6 +1349,7 @@ test_that("SquareColumnIs validates inputs correctly", {
 })
 
 test_that("SquareRowIs validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test missing value parameter
     expect_error(
         SquareRowIs()
@@ -1316,6 +1362,7 @@ test_that("SquareRowIs validates inputs correctly", {
 })
 
 test_that("AndMask validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test missing property parameter
     expect_error(
         AndMask()
@@ -1328,6 +1375,7 @@ test_that("AndMask validates inputs correctly", {
 })
 
 test_that("AndNegatedMask validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test missing property parameter
     expect_error(
         AndNegatedMask()
@@ -1340,6 +1388,7 @@ test_that("AndNegatedMask validates inputs correctly", {
 })
 
 test_that("OrMask validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test missing property parameter
     expect_error(
         OrMask()
@@ -1352,6 +1401,7 @@ test_that("OrMask validates inputs correctly", {
 })
 
 test_that("OrNegatedMask validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test missing property parameter
     expect_error(
         OrNegatedMask()
@@ -1364,6 +1414,7 @@ test_that("OrNegatedMask validates inputs correctly", {
 })
 
 test_that("XorMask validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test missing property parameter
     expect_error(
         XorMask()
@@ -1376,6 +1427,7 @@ test_that("XorMask validates inputs correctly", {
 })
 
 test_that("XorNegatedMask validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test missing property parameter
     expect_error(
         XorNegatedMask()
@@ -1388,6 +1440,7 @@ test_that("XorNegatedMask validates inputs correctly", {
 })
 
 test_that("IsLess validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test missing value parameter
     expect_error(
         IsLess()
@@ -1395,6 +1448,7 @@ test_that("IsLess validates inputs correctly", {
 })
 
 test_that("IsLessEqual validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test missing value parameter
     expect_error(
         IsLessEqual()
@@ -1402,6 +1456,7 @@ test_that("IsLessEqual validates inputs correctly", {
 })
 
 test_that("IsEqual validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test missing value parameter
     expect_error(
         IsEqual()
@@ -1409,6 +1464,7 @@ test_that("IsEqual validates inputs correctly", {
 })
 
 test_that("IsNotEqual validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test missing value parameter
     expect_error(
         IsNotEqual()
@@ -1416,6 +1472,7 @@ test_that("IsNotEqual validates inputs correctly", {
 })
 
 test_that("IsGreater validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test missing value parameter
     expect_error(
         IsGreater()
@@ -1423,6 +1480,7 @@ test_that("IsGreater validates inputs correctly", {
 })
 
 test_that("IsGreaterEqual validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test missing value parameter
     expect_error(
         IsGreaterEqual()
@@ -1430,6 +1488,7 @@ test_that("IsGreaterEqual validates inputs correctly", {
 })
 
 test_that("IsMatch validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test missing value parameter
     expect_error(
         IsMatch()
@@ -1442,6 +1501,7 @@ test_that("IsMatch validates inputs correctly", {
 })
 
 test_that("IsNotMatch validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test missing value parameter
     expect_error(
         IsNotMatch()
@@ -1454,6 +1514,7 @@ test_that("IsNotMatch validates inputs correctly", {
 })
 
 test_that("CountBy validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test missing property parameter
     expect_error(
         CountBy()
@@ -1466,6 +1527,7 @@ test_that("CountBy validates inputs correctly", {
 })
 
 test_that("GroupBy validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test missing property parameter
     expect_error(
         GroupBy()
@@ -1478,6 +1540,7 @@ test_that("GroupBy validates inputs correctly", {
 })
 
 test_that("get_query validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test missing parameters
     expect_error(
         get_query()
@@ -1493,6 +1556,7 @@ test_that("get_query validates inputs correctly", {
 })
 
 test_that("get_dataframe_query validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test missing parameters
     expect_error(
         get_dataframe_query()
@@ -1510,12 +1574,14 @@ test_that("get_dataframe_query validates inputs correctly", {
 # Tests for escape_value and unescape_value
 
 test_that("escape_value escapes simple strings correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # A plain string without special characters should remain the same
     result <- escape_value("hello")
     expect_equal(result, "hello")
 })
 
 test_that("escape_value and unescape_value are inverse operations", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test round-trip for simple values
     original <- "simple"
     escaped <- escape_value(original)
@@ -1530,6 +1596,7 @@ test_that("escape_value and unescape_value are inverse operations", {
 })
 
 test_that("escape_value handles values with spaces", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     result <- escape_value("hello world")
     # The escaped value should be different from the original since it contains a space
     unescaped <- unescape_value(result)
@@ -1537,12 +1604,14 @@ test_that("escape_value handles values with spaces", {
 })
 
 test_that("escape_value handles values with backslashes", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     result <- escape_value("path\\to\\file")
     unescaped <- unescape_value(result)
     expect_equal(unescaped, "path\\to\\file")
 })
 
 test_that("unescape_value reverses escape_value for various inputs", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     test_values <- c("simple", "with space", "with\\backslash", "with.dot", "12345")
     for (val in test_values) {
         escaped <- escape_value(val)
@@ -1554,6 +1623,7 @@ test_that("unescape_value reverses escape_value for various inputs", {
 # Tests for query_requires_relayout
 
 test_that("query_requires_relayout returns FALSE for vector queries", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "relayout_test!")
     add_axis(daf, "cell", c("A", "B", "C"))
     set_vector(daf, "cell", "age", c(1, 2, 3))
@@ -1564,6 +1634,7 @@ test_that("query_requires_relayout returns FALSE for vector queries", {
 })
 
 test_that("query_requires_relayout returns FALSE for scalar queries", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "relayout_scalar_test!")
     set_scalar(daf, "version", "1.0")
 
@@ -1572,6 +1643,7 @@ test_that("query_requires_relayout returns FALSE for scalar queries", {
 })
 
 test_that("query_requires_relayout works with matrix queries", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "relayout_matrix_test!")
     add_axis(daf, "cell", c("A", "B"))
     add_axis(daf, "gene", c("X", "Y", "Z"))
@@ -1590,6 +1662,7 @@ test_that("query_requires_relayout works with matrix queries", {
 })
 
 test_that("query_requires_relayout works with query objects", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "relayout_obj_test!")
     add_axis(daf, "cell", c("A", "B"))
     add_axis(daf, "gene", c("X", "Y", "Z"))
@@ -1609,6 +1682,7 @@ test_that("query_requires_relayout works with query objects", {
 # =============================================================================
 
 test_that("LookupScalar query formatting works correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test basic formatting
     expect_c_equal(LookupScalar("version"), ". version")
 
@@ -1617,6 +1691,7 @@ test_that("LookupScalar query formatting works correctly", {
 })
 
 test_that("LookupScalar works with actual data", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "test_lookup_scalar")
     set_scalar(daf, "version", "1.0")
     set_scalar(daf, "count", 42)
@@ -1634,6 +1709,7 @@ test_that("LookupScalar works with actual data", {
 })
 
 test_that("LookupMatrix query formatting works correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test basic formatting
     expect_c_equal(LookupMatrix("UMIs"), ":: UMIs")
 
@@ -1642,6 +1718,7 @@ test_that("LookupMatrix query formatting works correctly", {
 })
 
 test_that("LookupMatrix works with actual data", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "test_lookup_matrix")
     add_axis(daf, "cell", c("A", "B"))
     add_axis(daf, "gene", c("X", "Y", "Z"))
@@ -1664,46 +1741,55 @@ test_that("LookupMatrix works with actual data", {
 })
 
 test_that("GroupColumnsBy query formatting works correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     expect_c_equal(GroupColumnsBy("type"), "|/ type")
     expect_c_equal(Axis("cell") |> Axis("gene") |> LookupMatrix("UMIs") |> GroupColumnsBy("type") |> ReduceToColumn(Mean()), "@ cell @ gene :: UMIs |/ type >| Mean")
 })
 
 test_that("GroupColumnsBy validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     expect_error(GroupColumnsBy())
     expect_error(GroupColumnsBy(123))
 })
 
 test_that("GroupRowsBy query formatting works correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     expect_c_equal(GroupRowsBy("type"), "-/ type")
     expect_c_equal(Axis("cell") |> Axis("gene") |> LookupMatrix("UMIs") |> GroupRowsBy("type") |> ReduceToRow(Mean()), "@ cell @ gene :: UMIs -/ type >- Mean")
 })
 
 test_that("GroupRowsBy validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     expect_error(GroupRowsBy())
     expect_error(GroupRowsBy(123))
 })
 
 test_that("ReduceToColumn query formatting works correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     expect_c_equal(ReduceToColumn(Sum()), ">| Sum")
     expect_c_equal(ReduceToColumn(Mean()), ">| Mean")
     expect_c_equal(ReduceToColumn(Max()), ">| Max")
 })
 
 test_that("ReduceToColumn validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     expect_error(ReduceToColumn())
 })
 
 test_that("ReduceToRow query formatting works correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     expect_c_equal(ReduceToRow(Sum()), ">- Sum")
     expect_c_equal(ReduceToRow(Mean()), ">- Mean")
     expect_c_equal(ReduceToRow(Max()), ">- Max")
 })
 
 test_that("ReduceToRow validates inputs correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     expect_error(ReduceToRow())
 })
 
 test_that("ReduceToColumn works with actual data", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "test_reduce_to_column")
     add_axis(daf, "cell", c("A", "B", "C"))
     add_axis(daf, "gene", c("X", "Y"))
@@ -1724,6 +1810,7 @@ test_that("ReduceToColumn works with actual data", {
 })
 
 test_that("ReduceToRow works with actual data", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "test_reduce_to_row")
     add_axis(daf, "cell", c("A", "B", "C"))
     add_axis(daf, "gene", c("X", "Y"))
@@ -1744,6 +1831,7 @@ test_that("ReduceToRow works with actual data", {
 })
 
 test_that("GroupColumnsBy and GroupRowsBy work with actual data", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "test_group_matrix")
     add_axis(daf, "cell", c("A", "B", "C", "D"))
     add_axis(daf, "gene", c("X", "Y", "Z"))
@@ -1774,6 +1862,7 @@ test_that("GroupColumnsBy and GroupRowsBy work with actual data", {
 })
 
 test_that("complete_path works correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test with memory_daf (should return NULL)
     daf <- memory_daf(name = "test_complete_path")
     result <- complete_path(daf)
@@ -1791,6 +1880,7 @@ test_that("complete_path works correctly", {
 })
 
 test_that("deprecated functions emit warnings but still work", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test that deprecated wrappers call through to new functions
     expect_warning(Lookup("test"), "deprecated")
     expect_warning(And("test"), "deprecated")

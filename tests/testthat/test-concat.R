@@ -1,4 +1,5 @@
 test_that("concatenate function works correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     sources <- list(
         memory_daf(name = "source.1!"),
         memory_daf(name = "source.2!")

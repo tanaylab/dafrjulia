@@ -57,7 +57,7 @@ test_that("scalar_contract creates proper specification", {
 })
 
 test_that("verify_contract validates against contract", {
-    skip_if_not(dafr:::is_julia_initialized(), "Julia not initialized")
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
 
     # Create a simple in-memory DAF for testing
     daf <- memory_daf("test")
@@ -94,7 +94,7 @@ test_that("verify_contract validates against contract", {
 })
 
 test_that("verify_input throws on invalid DAF", {
-    skip_if_not(dafr:::is_julia_initialized(), "Julia not initialized")
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
 
     daf <- memory_daf("test")
     daf <- add_axis(daf, "gene", c("A", "B"))
@@ -110,7 +110,7 @@ test_that("verify_input throws on invalid DAF", {
 })
 
 test_that("optional data does not cause validation failure", {
-    skip_if_not(dafr:::is_julia_initialized(), "Julia not initialized")
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
 
     daf <- memory_daf("test")
     daf <- add_axis(daf, "gene", c("A", "B"))
@@ -237,7 +237,7 @@ test_that("contract_docs includes tensor information", {
 })
 
 test_that("contractor creates a contract-aware Daf wrapper", {
-    skip_if_not(dafr:::is_julia_initialized(), "Julia not initialized")
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
 
     # Create a valid DAF
     daf <- memory_daf("test_contractor")
@@ -267,7 +267,7 @@ test_that("contractor creates a contract-aware Daf wrapper", {
 })
 
 test_that("contractor with invalid input throws on verify", {
-    skip_if_not(dafr:::is_julia_initialized(), "Julia not initialized")
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
 
     # Create a DAF missing required data
     daf <- memory_daf("test_missing")
@@ -290,7 +290,7 @@ test_that("contractor with invalid input throws on verify", {
 })
 
 test_that("verify_output validates output data", {
-    skip_if_not(dafr:::is_julia_initialized(), "Julia not initialized")
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
 
     daf <- memory_daf("test_output")
     add_axis(daf, "gene", c("A", "B", "C"))
@@ -333,7 +333,7 @@ test_that("contract_docs generates text format documentation", {
 })
 
 test_that("verify_contract detects missing required scalar", {
-    skip_if_not(dafr:::is_julia_initialized(), "Julia not initialized")
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
 
     daf <- memory_daf("test_scalar")
     add_axis(daf, "gene", c("A", "B"))
@@ -350,7 +350,7 @@ test_that("verify_contract detects missing required scalar", {
 })
 
 test_that("verify_contract detects missing required matrix", {
-    skip_if_not(dafr:::is_julia_initialized(), "Julia not initialized")
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
 
     daf <- memory_daf("test_matrix")
     add_axis(daf, "gene", c("A", "B"))
@@ -391,7 +391,7 @@ test_that("print.DafContract includes tensors", {
 })
 
 test_that("contractor validates its arguments", {
-    skip_if_not(dafr:::is_julia_initialized(), "Julia not initialized")
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
 
     daf <- memory_daf("test")
     add_axis(daf, "gene", c("A", "B"))

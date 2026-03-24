@@ -1,5 +1,6 @@
 # Test empty_cache function
 test_that("empty_cache works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf()
     add_axis(daf, "cell", c("A", "B"))
     add_axis(daf, "gene", c("X", "Y", "Z"))
@@ -28,6 +29,7 @@ test_that("empty_cache works", {
 
 # Test R-side caching with version-counter invalidation
 test_that("get_vector returns cached result on second call", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf()
     add_axis(daf, "cell", c("A", "B", "C"))
     set_vector(daf, "cell", "score", c(1.0, 2.0, 3.0))
@@ -40,6 +42,7 @@ test_that("get_vector returns cached result on second call", {
 })
 
 test_that("get_vector cache is invalidated after set_vector with overwrite", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf()
     add_axis(daf, "cell", c("A", "B", "C"))
     set_vector(daf, "cell", "score", c(1.0, 2.0, 3.0))
@@ -55,6 +58,7 @@ test_that("get_vector cache is invalidated after set_vector with overwrite", {
 })
 
 test_that("empty_cache clears the R-side cache", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf()
     add_axis(daf, "cell", c("A", "B", "C"))
     set_vector(daf, "cell", "score", c(1.0, 2.0, 3.0))
@@ -80,6 +84,7 @@ test_that("empty_cache clears the R-side cache", {
 })
 
 test_that("get_matrix caching works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf()
     add_axis(daf, "cell", c("A", "B"))
     add_axis(daf, "gene", c("X", "Y", "Z"))
@@ -96,6 +101,7 @@ test_that("get_matrix caching works", {
 })
 
 test_that("get_matrix cache is invalidated after set_matrix with overwrite", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf()
     add_axis(daf, "cell", c("A", "B"))
     add_axis(daf, "gene", c("X", "Y", "Z"))
@@ -115,6 +121,7 @@ test_that("get_matrix cache is invalidated after set_matrix with overwrite", {
 })
 
 test_that("axis_vector caching works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf()
     add_axis(daf, "cell", c("A", "B", "C"))
 
@@ -127,6 +134,7 @@ test_that("axis_vector caching works", {
 })
 
 test_that("axis_vector cache is invalidated after axis overwrite", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf()
     add_axis(daf, "cell", c("A", "B", "C"))
 
@@ -141,6 +149,7 @@ test_that("axis_vector cache is invalidated after axis overwrite", {
 })
 
 test_that("get_vector with default skips cache", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf()
     add_axis(daf, "cell", c("A", "B", "C"))
 

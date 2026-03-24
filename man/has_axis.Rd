@@ -22,3 +22,12 @@ Axes are fundamental dimensions in a Daf data set along which vector and matrix
 data are stored. Each axis has a collection of unique named entries.
 See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.has_axis}{documentation} for details.
 }
+\examples{
+\dontrun{
+setup_daf()
+daf <- memory_daf("example")
+add_axis(daf, "cell", c("A", "B", "C"))
+has_axis(daf, "cell") # TRUE
+has_axis(daf, "gene") # FALSE
+}
+}

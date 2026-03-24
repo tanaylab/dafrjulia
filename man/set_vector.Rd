@@ -30,3 +30,12 @@ If the vector already exists and \code{overwrite} is FALSE, an error will be rai
 NA values are not supported in Daf.
 See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/writers.html#DataAxesFormats.Writers.set_vector!}{documentation} for details.
 }
+\examples{
+\dontrun{
+setup_daf()
+daf <- memory_daf("example")
+add_axis(daf, "cell", c("A", "B", "C"))
+set_vector(daf, "cell", "type", c("T1", "T2", "T1"))
+get_vector(daf, "cell", "type")
+}
+}

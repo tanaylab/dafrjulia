@@ -1,7 +1,6 @@
 Package: dafr
-Title: Data in Axes in Formats
+Title: R Interface to the Julia 'DataAxesFormats' Package
 Version: 0.1.0
-Date: 2026-03-17
 Authors@R: c(
     person("Aviezer", "Lifshitz", , "aviezer.lifshitz@weizmann.ac.il", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-8458-9507")),
@@ -9,7 +8,8 @@ Authors@R: c(
     person("Weizmann Institute of Science", role = "cph")
   )
 Description: An R interface to 'DataAxesFormats.jl'
-    <https://github.com/tanaylab/DataAxesFormats.jl>, a Julia package
+    <https://github.com/tanaylab/DataAxesFormats.jl>, a 'Julia'
+    <https://julialang.org/> package
     providing a uniform interface for accessing multi-dimensional data
     arranged along arbitrary axes. This package generalizes and extends
     'AnnData'-like functionality, supporting both 1D and 2D data, multiple
@@ -17,14 +17,14 @@ Description: An R interface to 'DataAxesFormats.jl'
     users to create, read, modify, and analyze complex biological datasets
     such as single-cell data with multiple modalities (RNA-seq, ATAC-seq,
     etc.). The package implements efficient memory management strategies
-    and provides a seamless interface between R and Julia for handling
+    and provides a seamless interface between R and 'Julia' for handling
     large-scale biological data.
 License: MIT + file LICENSE
 URL: https://tanaylab.github.io/dafr/, https://github.com/tanaylab/dafr
 BugReports: https://github.com/tanaylab/dafr/issues
 Depends: 
     R (>= 4.1.0)
-SystemRequirements: Julia (>= 1.10), DataAxesFormats.jl, TanayLabUtilities.jl,
+SystemRequirements: Julia (>= 1.10, https://julialang.org/downloads/), DataAxesFormats.jl, TanayLabUtilities.jl,
     Muon.jl, NamedArrays.jl
 Imports:
     cli,
@@ -35,11 +35,13 @@ Imports:
     R6,
     tibble,
     tidyr
-Suggests: 
+Suggests:
+    knitr,
+    rmarkdown,
+    spelling,
     testthat (>= 3.0.0),
     withr
-Remotes:
-    tanaylab/jlview
+VignetteBuilder: knitr
 Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en-US

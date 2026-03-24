@@ -1,6 +1,10 @@
-daf <- example_cells_daf()
+daf <- NULL
+if (exists("JULIA_AVAILABLE") && JULIA_AVAILABLE) {
+    daf <- example_cells_daf()
+}
 
 test_that("get_vector returns named vector", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     vec <- get_vector(daf, "cell", "donor")
     expect_true(!is.null(names(vec)))
     expect_equal(names(vec), axis_entries(daf, "cell"))
@@ -13,6 +17,7 @@ test_that("get_vector returns named vector", {
 })
 
 test_that("get_matrix returns named matrix", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     mat <- get_matrix(daf, "cell", "gene", "UMIs")
     expect_true(!is.null(rownames(mat)))
     expect_true(!is.null(colnames(mat)))
@@ -29,6 +34,7 @@ test_that("get_matrix returns named matrix", {
 })
 
 test_that("get_dataframe returns dataframe with row and col names", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     df <- get_dataframe(daf, "cell", columns = c("donor", "experiment"))
     expect_true(!is.null(rownames(df)))
     expect_true(!is.null(colnames(df)))
@@ -46,6 +52,7 @@ test_that("get_dataframe returns dataframe with row and col names", {
 })
 
 test_that("get_tidy returns tidy tibble with correct columns", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     tidy_df <- get_tidy(daf, "cell", columns = c("donor", "experiment"))
     expect_s3_class(tidy_df, "tbl_df")
     expect_equal(colnames(tidy_df), c("name", "key", "value"))

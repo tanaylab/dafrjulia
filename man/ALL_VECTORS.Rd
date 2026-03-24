@@ -10,6 +10,9 @@ Character vector of length 2
 \usage{
 ALL_VECTORS
 }
+\value{
+A character vector specifier for all vectors.
+}
 \description{
 A key to use in the \code{data} parameter of \code{viewer} to specify all the vectors of the exposed axes.
 See the Julia documentation for details.

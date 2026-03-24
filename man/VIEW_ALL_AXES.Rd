@@ -10,6 +10,9 @@ A named list representing the pair ALL_AXES => "="
 \usage{
 VIEW_ALL_AXES
 }
+\value{
+A named list specifier to expose all axes.
+}
 \description{
 A pair to use in the \code{axes} parameter of \code{viewer} to expose all base axes with their original names.
 See the Julia documentation for details.

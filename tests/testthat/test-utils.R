@@ -1,6 +1,9 @@
-JuliaCall::julia_eval("import Random")
+if (exists("JULIA_AVAILABLE") && JULIA_AVAILABLE) {
+    JuliaCall::julia_eval("import Random")
+}
 
 test_that("set_seed sets the same seed in both R and Julia", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Set a specific seed
     test_seed <- 60427
     set_seed(test_seed)
@@ -30,6 +33,7 @@ test_that("set_seed sets the same seed in both R and Julia", {
 })
 
 test_that("set_seed handles different seed values", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Try with a different seed value
     set_seed(60427)
 
@@ -39,6 +43,7 @@ test_that("set_seed handles different seed values", {
 })
 
 test_that("set_seed produces different results with different seeds", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Generate with first seed
     set_seed(60427)
     r_first <- runif(5)
@@ -55,10 +60,12 @@ test_that("set_seed produces different results with different seeds", {
 })
 
 test_that("julia_project_status doesn't fail", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     expect_no_error(dafr:::julia_project_status())
 })
 
 test_that("R type name strings are converted to correct Julia types", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test basic type mappings
     expect_true(JuliaCall::julia_call("==", dafr:::jl_R_to_julia_type("logical"), JuliaCall::julia_eval("Bool")))
     expect_true(JuliaCall::julia_call("==", dafr:::jl_R_to_julia_type("integer"), JuliaCall::julia_eval("Int64")))
@@ -76,6 +83,7 @@ test_that("R type name strings are converted to correct Julia types", {
 })
 
 test_that("R values are converted to correct Julia types", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test logical values
     expect_true(JuliaCall::julia_call("==", dafr:::jl_R_to_julia_type(TRUE), JuliaCall::julia_eval("Bool")))
     expect_true(JuliaCall::julia_call("==", dafr:::jl_R_to_julia_type(FALSE), JuliaCall::julia_eval("Bool")))
@@ -99,6 +107,7 @@ test_that("R values are converted to correct Julia types", {
 })
 
 test_that("jl_R_to_julia_type handles special cases correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Test NULL handling
     null_result <- dafr:::jl_R_to_julia_type(NULL)
     expect_true(JuliaCall::julia_call("==", null_result, JuliaCall::julia_eval("Nothing")))

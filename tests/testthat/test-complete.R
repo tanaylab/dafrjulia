@@ -1,4 +1,5 @@
 test_that("open_daf correctly handles different file formats", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Create temporary directories with unique names for testing
     temp_dir <- tempdir()
     random_suffix <- paste0(sample(letters, 8, replace = TRUE), collapse = "")
@@ -46,6 +47,7 @@ test_that("open_daf correctly handles different file formats", {
 })
 
 test_that("complete_daf correctly handles repository chains", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Create temporary directories with unique names for testing
     temp_dir <- tempdir()
     random_suffix <- paste0(sample(letters, 8, replace = TRUE), collapse = "")

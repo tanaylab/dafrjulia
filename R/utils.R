@@ -12,7 +12,9 @@
 #' }
 #' @export
 set_seed <- function(seed) {
-    stopifnot(is.numeric(seed), length(seed) == 1)
+    if (!is.numeric(seed) || length(seed) != 1) {
+        cli::cli_abort("{.arg seed} must be a single numeric value, not {.obj_type_friendly {seed}}.")
+    }
     JuliaCall::julia_command(paste0("Random.seed!(", seed, ");"))
     set.seed(seed)
     cli::cli_alert_info("Set the seed of Julia and R to {.val {seed}}")

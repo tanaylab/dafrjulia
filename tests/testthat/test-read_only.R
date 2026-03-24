@@ -1,4 +1,5 @@
 test_that("read_only creates a read-only wrapper", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Create a writable daf
     source <- memory_daf(name = "source!")
     add_axis(source, "cell", c("A", "B"))
@@ -30,6 +31,7 @@ test_that("read_only creates a read-only wrapper", {
 })
 
 test_that("read_only wrapper prevents modifications", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Create a writable daf
     source <- memory_daf(name = "source!")
     add_axis(source, "cell", c("A", "B"))
@@ -45,6 +47,7 @@ test_that("read_only wrapper prevents modifications", {
 })
 
 test_that("read_only on a read_only returns the same object", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Create a writable daf
     source <- memory_daf(name = "source!")
 

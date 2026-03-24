@@ -30,6 +30,7 @@ formats <- list(
 # Test scalars for different formats
 
 test_that("scalar operations work for different formats", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     for (format_data in formats) {
         format_name <- format_data$name
         create_empty <- format_data$create_fn
@@ -104,6 +105,7 @@ test_that("scalar operations work for different formats", {
 })
 
 test_that("validate_daf_object works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf()
     expect_error(validate_daf_object(list()))
     expect_error(validate_daf_object(NULL))
@@ -112,6 +114,7 @@ test_that("validate_daf_object works", {
 
 # Test axes for different formats
 test_that("axes operations work for different formats", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     for (format_data in formats) {
         format_name <- format_data$name
         create_empty <- format_data$create_fn
@@ -175,6 +178,7 @@ test_that("axes operations work for different formats", {
 
 # Test vectors for different formats
 test_that("vector operations work for different formats", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     for (format_data in formats) {
         format_name <- format_data$name
         create_empty <- format_data$create_fn
@@ -243,6 +247,7 @@ test_that("vector operations work for different formats", {
 
 # Test matrices for different formats
 test_that("matrix operations work for different formats", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     for (format_data in formats) {
         format_name <- format_data$name
         create_empty <- format_data$create_fn
@@ -327,6 +332,7 @@ test_that("matrix operations work for different formats", {
 
 # Test sparse matrices
 test_that("sparse matrix operations work", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     for (format_data in formats) {
         result <- format_data$create_fn()
         format_name <- format_data$name
@@ -402,6 +408,7 @@ test_that("sparse matrix operations work", {
 
 # Test matrix caching
 test_that("matrix caching works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     for (format_data in formats) {
         result <- format_data$create_fn()
         daf <- result$daf
@@ -440,6 +447,7 @@ test_that("matrix caching works", {
 
 # Test chains
 test_that("chain operations work", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Create first daf object
     first <- memory_daf(name = "first!")
     set_scalar(first, "version", 1.0)
@@ -468,6 +476,7 @@ test_that("chain operations work", {
 
 # Test get_dataframe function
 test_that("get_dataframe works with different data types", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     for (format_data in formats) {
         result <- format_data$create_fn()
         daf <- result$daf
@@ -514,6 +523,7 @@ test_that("get_dataframe works with different data types", {
 
 # Test is_daf function
 test_that("is_daf works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf()
     expect_true(is_daf(daf))
     expect_false(is_daf(list()))
@@ -523,6 +533,7 @@ test_that("is_daf works", {
 
 # Test print.Daf function
 test_that("print.Daf works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "test_print!")
     expect_output(print(daf), "name: test_print!")
     expect_output(print(daf), "type: MemoryDaf")

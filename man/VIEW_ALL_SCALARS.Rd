@@ -10,6 +10,9 @@ A named list representing the pair ALL_SCALARS => "="
 \usage{
 VIEW_ALL_SCALARS
 }
+\value{
+A named list specifier to expose all scalars.
+}
 \description{
 A pair to use in the \code{data} parameter of \code{viewer} to expose all base scalars with their original names.
 See the Julia documentation for details.

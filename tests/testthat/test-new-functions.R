@@ -1,6 +1,7 @@
 # Tests for newly implemented functions
 
 test_that("example_chain_daf works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     chain <- example_chain_daf()
     expect_true(is_daf(chain))
     expect_equal(daf_name(chain), "chain!")
@@ -15,6 +16,7 @@ test_that("example_chain_daf works", {
 })
 
 test_that("version counters work", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "version_test!")
     add_axis(daf, "cell", c("A", "B", "C"))
 
@@ -45,6 +47,7 @@ test_that("version counters work", {
 })
 
 test_that("is_axis_query works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Axis query should return TRUE
     expect_true(is_axis_query("@ cell"))
 
@@ -57,6 +60,7 @@ test_that("is_axis_query works", {
 })
 
 test_that("query_axis_name works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     expect_equal(query_axis_name("@ cell"), "cell")
     expect_equal(query_axis_name("@ gene"), "gene")
 
@@ -65,6 +69,7 @@ test_that("query_axis_name works", {
 })
 
 test_that("collect_group_members works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Simple case: entries 1,3 in group 1, entry 2 in group 2
     group_indices <- c(1L, 2L, 1L, 0L)
     members <- collect_group_members(group_indices)
@@ -81,6 +86,7 @@ test_that("collect_group_members works", {
 })
 
 test_that("group_names works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "group_test!")
     add_axis(daf, "cell", c("A", "B", "C", "D"))
 
@@ -98,6 +104,7 @@ test_that("group_names works", {
 })
 
 test_that("group_names with different prefixes", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- memory_daf(name = "prefix_test!")
     add_axis(daf, "cell", c("A", "B"))
 
@@ -112,6 +119,7 @@ test_that("group_names with different prefixes", {
 })
 
 test_that("collect_group_members with empty groups", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # All entries in no group
     all_zeros <- c(0L, 0L, 0L)
     members <- collect_group_members(all_zeros)
@@ -119,6 +127,7 @@ test_that("collect_group_members with empty groups", {
 })
 
 test_that("collect_group_members with single group", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # All entries in group 1
     single_group <- c(1L, 1L, 1L, 1L)
     members <- collect_group_members(single_group)
@@ -128,6 +137,7 @@ test_that("collect_group_members with single group", {
 })
 
 test_that("compact_groups works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Non-compact indices: gaps in group numbering
     group_indices <- c(5L, 10L, 5L, 0L, 10L)
     result <- compact_groups(group_indices)
@@ -159,6 +169,7 @@ test_that("compact_groups works", {
 })
 
 test_that("VIEW_ALL constants are defined correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     expect_true(exists("VIEW_ALL_AXES"))
     expect_true(exists("VIEW_ALL_SCALARS"))
     expect_true(exists("VIEW_ALL_VECTORS"))

@@ -31,6 +31,14 @@ has_query <- function(daf, query) {
 #' @return The result of the query, which could be a scalar, vector, matrix, or set of names depending on the query
 #' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Operations.get_query) for details.
 #' @seealso [has_query()], [parse_query()], [get_dataframe_query()], and the query operations documentation.
+#' @examples
+#' \dontrun{
+#' setup_daf()
+#' daf <- memory_daf("example")
+#' add_axis(daf, "cell", c("A", "B", "C"))
+#' set_vector(daf, "cell", "score", c(1.0, 2.0, 3.0))
+#' get_query(daf, Axis("cell") |> LookupVector("score"))
+#' }
 #' @export
 get_query <- function(daf = NULL, query = NULL, cache = TRUE) {
     if (is.null(daf) || is.null(query)) {

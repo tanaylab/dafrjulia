@@ -20,3 +20,10 @@ See the Julia documentation \href{https://tanaylab.github.io/DataAxesFormats.jl/
 \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/formats.html#Read-API}{here}
 and \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/formats.html#Write-API}{here} for details.
 }
+\examples{
+\dontrun{
+setup_daf()
+daf <- memory_daf("example") # memory_daf() returns a Daf object
+is_daf(daf) # TRUE
+}
+}

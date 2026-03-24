@@ -10,6 +10,9 @@ Character string
 \usage{
 ALL_SCALARS
 }
+\value{
+A character string specifier for all scalars.
+}
 \description{
 A key to use in the \code{data} parameter of \code{viewer} to specify all the base data scalars.
 See the Julia documentation for details.

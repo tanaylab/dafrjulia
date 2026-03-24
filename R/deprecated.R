@@ -95,6 +95,7 @@ SquareMaskRow <- function(value, ...) {
 #' @param property A property to fetch.
 #' @param ... Additional arguments (ignored).
 #'
+#' @return Does not return; always raises an error.
 #' @export
 Fetch <- function(property, ...) {
     .Deprecated(msg = "Fetch has been removed in DataAxesFormats v0.2.0. Use LookupVector() with AsAxis() instead.")
@@ -109,6 +110,7 @@ Fetch <- function(property, ...) {
 #' @param axis An axis to slice.
 #' @param ... Additional arguments (ignored).
 #'
+#' @return Does not return; always raises an error.
 #' @export
 MaskSlice <- function(axis, ...) {
     .Deprecated(msg = "MaskSlice has been removed in DataAxesFormats v0.2.0. Use BeginMask()/EndMask() instead.")

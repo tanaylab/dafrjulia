@@ -20,3 +20,10 @@ A Daf object with file-based storage
 This function creates a Daf object that stores data in disk files. See the Julia
 \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/files_format.html}{documentation} for details.
 }
+\examples{
+\dontrun{
+setup_daf()
+daf <- files_daf(tempdir(), "w", name = "example")
+add_axis(daf, "gene", c("X", "Y", "Z"))
+}
+}

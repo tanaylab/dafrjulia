@@ -20,3 +20,10 @@ A Daf object with HDF5-based storage
 This function creates a Daf object that stores data in an HDF5 disk file. See the Julia
 \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/h5df_format.html}{documentation} for details.
 }
+\examples{
+\dontrun{
+setup_daf()
+h5_path <- file.path(tempdir(), "example.h5")
+daf <- h5df(h5_path, "w", name = "example")
+}
+}

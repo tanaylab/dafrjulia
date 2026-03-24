@@ -21,6 +21,7 @@
 #'
 #' All reads are lazy and cached via dafr's caching system.
 #'
+#' @return An R6 object of class \code{DafAnnData}.
 #' @export
 DafAnnData <- R6::R6Class("DafAnnData",
     public = list(
@@ -88,7 +89,6 @@ DafAnnData <- R6::R6Class("DafAnnData",
             invisible(self)
         }
     ),
-
     active = list(
         #' @field X The primary matrix (obs x var)
         X = function(value) {
@@ -171,7 +171,6 @@ DafAnnData <- R6::R6Class("DafAnnData",
             c(self$n_obs, self$n_vars)
         }
     ),
-
     private = list(
         get_layer_names = function() {
             all_mats <- matrices_set(self$daf, self$obs_axis, self$var_axis)
@@ -195,11 +194,11 @@ DafAnnData <- R6::R6Class("DafAnnData",
 #' \dontrun{
 #' daf <- example_cells_daf()
 #' adata <- as_anndata(daf)
-#' adata$X          # primary matrix
-#' adata$obs        # observation metadata
-#' adata$var        # variable metadata
-#' adata$obs_names  # observation names
-#' adata$n_obs      # number of observations
+#' adata$X # primary matrix
+#' adata$obs # observation metadata
+#' adata$var # variable metadata
+#' adata$obs_names # observation names
+#' adata$n_obs # number of observations
 #' }
 #' @importFrom R6 R6Class
 #' @export

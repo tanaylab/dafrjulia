@@ -18,3 +18,4 @@
 ^timings\.tab$
 ^.*\.Rcheck$
 ^.*_[0-9].*\.tar\.gz$
+^AGENTS\.md$

@@ -16,3 +16,11 @@ A Daf object with in-memory storage
 This function creates a Daf object that stores data in memory. See the Julia
 \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/memory_format.html}{documentation} for details.
 }
+\examples{
+\dontrun{
+setup_daf()
+daf <- memory_daf("example")
+add_axis(daf, "cell", c("A", "B", "C"))
+set_vector(daf, "cell", "score", c(1.0, 2.0, 3.0))
+}
+}

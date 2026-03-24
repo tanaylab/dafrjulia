@@ -3,6 +3,9 @@
 \name{DafAnnData}
 \alias{DafAnnData}
 \title{AnnData-like live facade for a Daf object}
+\value{
+An R6 object of class \code{DafAnnData}.
+}
 \description{
 AnnData-like live facade for a Daf object
 

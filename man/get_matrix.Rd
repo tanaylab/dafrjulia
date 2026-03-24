@@ -32,3 +32,14 @@ If the matrix doesn't exist and default is NA, a matrix of NAs with appropriate 
 If \code{relayout} is TRUE and the matrix exists with flipped axes, it will be transposed automatically.
 See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.get_matrix}{documentation} for details.
 }
+\examples{
+\dontrun{
+setup_daf()
+daf <- memory_daf("example")
+add_axis(daf, "cell", c("A", "B"))
+add_axis(daf, "gene", c("X", "Y", "Z"))
+mat <- matrix(1:6, nrow = 2, ncol = 3)
+set_matrix(daf, "cell", "gene", "UMIs", mat)
+get_matrix(daf, "cell", "gene", "UMIs")
+}
+}

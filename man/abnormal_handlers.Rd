@@ -21,6 +21,9 @@ WARN_HANDLER
 
 ERROR_HANDLER
 }
+\value{
+A character string representing the handler type.
+}
 \description{
 These constants define the different types of handlers for abnormal (but recoverable) operations.
 }

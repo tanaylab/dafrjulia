@@ -1,4 +1,5 @@
 test_that("copy functions work correctly", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Create source and destination Daf objects
     source <- memory_daf(name = "source!")
     destination <- memory_daf(name = "destination!")
@@ -75,6 +76,7 @@ test_that("copy functions work correctly", {
 })
 
 # test_that("copy_all with empty parameter works correctly", {
+#     skip_if(!JULIA_AVAILABLE, "Julia not available")
 #     # Create source and target Daf objects with different axis entries
 #     source <- memory_daf(name = "source!")
 #     add_axis(source, "cell", c("A", "B"))
@@ -135,6 +137,7 @@ test_that("copy functions work correctly", {
 # Tests for new copy parameters: type, eltype, bestify, insist
 
 test_that("copy_scalar with default=NULL silently skips missing scalar in source", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     source <- memory_daf(name = "source_insist!")
     destination <- memory_daf(name = "dest_insist!")
 
@@ -154,6 +157,7 @@ test_that("copy_scalar with default=NULL silently skips missing scalar in source
 })
 
 test_that("copy_scalar errors on missing scalar when no default is provided", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     source <- memory_daf(name = "source_insist2!")
     destination <- memory_daf(name = "dest_insist2!")
 
@@ -173,6 +177,7 @@ test_that("copy_scalar errors on missing scalar when no default is provided", {
 })
 
 test_that("copy_scalar with insist=FALSE skips when destination already has scalar", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     source <- memory_daf(name = "source_insist3!")
     destination <- memory_daf(name = "dest_insist3!")
 
@@ -195,6 +200,7 @@ test_that("copy_scalar with insist=FALSE skips when destination already has scal
 })
 
 test_that("copy_scalar with type parameter converts types", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     source <- memory_daf(name = "source_type!")
     destination <- memory_daf(name = "dest_type!")
 
@@ -211,6 +217,7 @@ test_that("copy_scalar with type parameter converts types", {
 })
 
 test_that("copy_vector with eltype parameter converts element types", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     source <- memory_daf(name = "source_eltype!")
     destination <- memory_daf(name = "dest_eltype!")
 
@@ -234,6 +241,7 @@ test_that("copy_vector with eltype parameter converts element types", {
 })
 
 test_that("copy_vector with default=NULL silently skips missing vector in source", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     source <- memory_daf(name = "source_vec_insist!")
     destination <- memory_daf(name = "dest_vec_insist!")
 
@@ -255,6 +263,7 @@ test_that("copy_vector with default=NULL silently skips missing vector in source
 })
 
 test_that("copy_vector errors on missing vector when no default is provided", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     source <- memory_daf(name = "source_vec_insist2!")
     destination <- memory_daf(name = "dest_vec_insist2!")
 
@@ -277,6 +286,7 @@ test_that("copy_vector errors on missing vector when no default is provided", {
 })
 
 test_that("copy_vector with bestify parameter works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     source <- memory_daf(name = "source_bestify!")
     destination <- memory_daf(name = "dest_bestify!")
 
@@ -301,6 +311,7 @@ test_that("copy_vector with bestify parameter works", {
 })
 
 test_that("copy_matrix with eltype parameter converts element types", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     source <- memory_daf(name = "source_mat_eltype!")
     destination <- memory_daf(name = "dest_mat_eltype!")
 
@@ -329,6 +340,7 @@ test_that("copy_matrix with eltype parameter converts element types", {
 })
 
 test_that("copy_matrix with default=NULL silently skips missing matrix in source", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     source <- memory_daf(name = "source_mat_insist!")
     destination <- memory_daf(name = "dest_mat_insist!")
 
@@ -353,6 +365,7 @@ test_that("copy_matrix with default=NULL silently skips missing matrix in source
 })
 
 test_that("copy_matrix errors on missing matrix when no default is provided", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     source <- memory_daf(name = "source_mat_insist2!")
     destination <- memory_daf(name = "dest_mat_insist2!")
 
@@ -379,6 +392,7 @@ test_that("copy_matrix errors on missing matrix when no default is provided", {
 })
 
 test_that("copy_matrix with bestify parameter works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     source <- memory_daf(name = "source_mat_bestify!")
     destination <- memory_daf(name = "dest_mat_bestify!")
 

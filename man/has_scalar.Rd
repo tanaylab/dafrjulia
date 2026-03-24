@@ -21,3 +21,11 @@ Determines whether a scalar property with the specified name exists in the Daf d
 Scalar properties are global values associated with the entire Daf data set.
 See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.has_scalar}{documentation} for details.
 }
+\examples{
+\dontrun{
+setup_daf()
+daf <- memory_daf("example")
+set_scalar(daf, "version", "1.0")
+has_scalar(daf, "version") # TRUE
+}
+}

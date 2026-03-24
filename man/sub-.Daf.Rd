@@ -23,3 +23,12 @@ Extract results from a Daf object using a query
 The expression \code{daf[query]} is equivalent to \code{get_query(daf, query, cache = TRUE)}.
 See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Operations.get_query}{documentation} for details.
 }
+\examples{
+\dontrun{
+setup_daf()
+daf <- memory_daf("example")
+add_axis(daf, "cell", c("A", "B", "C"))
+set_vector(daf, "cell", "score", c(1.0, 2.0, 3.0))
+daf[Axis("cell") |> LookupVector("score")]
+}
+}

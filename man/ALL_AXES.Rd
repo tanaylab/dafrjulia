@@ -10,6 +10,9 @@ Character string
 \usage{
 ALL_AXES
 }
+\value{
+A character string specifier for all axes.
+}
 \description{
 A pair to use in the \code{axes} parameter of \code{viewer} to specify all the base data axes.
 See the Julia documentation for details.

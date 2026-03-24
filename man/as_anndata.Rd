@@ -27,10 +27,10 @@ No data is copied; reads go through to the underlying Daf object on demand.
 \dontrun{
 daf <- example_cells_daf()
 adata <- as_anndata(daf)
-adata$X          # primary matrix
-adata$obs        # observation metadata
-adata$var        # variable metadata
-adata$obs_names  # observation names
-adata$n_obs      # number of observations
+adata$X # primary matrix
+adata$obs # observation metadata
+adata$var # variable metadata
+adata$obs_names # observation names
+adata$n_obs # number of observations
 }
 }

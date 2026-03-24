@@ -2,6 +2,7 @@
 #'
 #' These constants define the different types of handlers for abnormal (but recoverable) operations.
 #'
+#' @return A character string representing the handler type.
 #' @name abnormal_handlers
 #' @export
 IGNORE_HANDLER <- "IgnoreHandler"

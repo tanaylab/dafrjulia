@@ -10,6 +10,9 @@ A named list representing the pair ALL_MATRICES => "="
 \usage{
 VIEW_ALL_MATRICES
 }
+\value{
+A named list specifier to expose all matrices.
+}
 \description{
 A pair to use in the \code{data} parameter of \code{viewer} to expose all base matrices with their original names.
 See the Julia documentation for details.

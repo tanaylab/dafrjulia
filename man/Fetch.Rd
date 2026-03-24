@@ -11,6 +11,9 @@ Fetch(property, ...)
 
 \item{...}{Additional arguments (ignored).}
 }
+\value{
+Does not return; always raises an error.
+}
 \description{
 This function has been removed in DataAxesFormats v0.2.0.
 Use \code{\link{LookupVector}} with \code{AsAxis()} instead.

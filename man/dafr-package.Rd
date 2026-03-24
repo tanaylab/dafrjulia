@@ -4,9 +4,9 @@
 \name{dafr-package}
 \alias{dafr}
 \alias{dafr-package}
-\title{dafr: Data in Axes in Formats}
+\title{dafr: R Interface to the Julia 'DataAxesFormats' Package}
 \description{
-An R interface to 'DataAxesFormats.jl' \url{https://github.com/tanaylab/DataAxesFormats.jl}, a Julia package providing a uniform interface for accessing multi-dimensional data arranged along arbitrary axes. This package generalizes and extends 'AnnData'-like functionality, supporting both 1D and 2D data, multiple data modalities, and efficient memory management. 'dafr' enables R users to create, read, modify, and analyze complex biological datasets such as single-cell data with multiple modalities (RNA-seq, ATAC-seq, etc.). The package implements efficient memory management strategies and provides a seamless interface between R and Julia for handling large-scale biological data.
+An R interface to 'DataAxesFormats.jl' \url{https://github.com/tanaylab/DataAxesFormats.jl}, a 'Julia' \url{https://julialang.org/} package providing a uniform interface for accessing multi-dimensional data arranged along arbitrary axes. This package generalizes and extends 'AnnData'-like functionality, supporting both 1D and 2D data, multiple data modalities, and efficient memory management. 'dafr' enables R users to create, read, modify, and analyze complex biological datasets such as single-cell data with multiple modalities (RNA-seq, ATAC-seq, etc.). The package implements efficient memory management strategies and provides a seamless interface between R and 'Julia' for handling large-scale biological data.
 }
 \seealso{
 Useful links:

@@ -4,22 +4,46 @@
 
 ## R CMD check results
 
-- `R CMD build .`
-- `_R_CHECK_SYSTEM_CLOCK_=FALSE R CMD check --as-cran --no-manual dafr_0.0.3.tar.gz`
+0 errors | 0 warnings | 1 note
 
-Result: 0 errors | 0 warnings | 1 note
-
-Notes observed:
-- New submission.
+* New submission.
 
 ## Julia dependency notes
 
-`dafr` interfaces with Julia via `JuliaCall`. Julia runtime and Julia packages are declared in
-`SystemRequirements` and are only initialized when users call `setup_daf()`.
+`dafr` provides an R interface to the Julia package 'DataAxesFormats.jl' via
+`JuliaCall` (already on CRAN). Julia (>= 1.10) and several Julia packages are
+declared in `SystemRequirements` with a download URL, following CRAN policy.
 
-Julia-dependent tests are skipped on CRAN (`tests/testthat.R`) because they require an external
-Julia runtime and Julia package installation/downloads. CRAN checks therefore run package load,
-documentation, examples, and non-Julia checks without external runtime/network setup.
+**No Julia at install or load time.** Julia is only initialized when users
+explicitly call `setup_daf()`. The package installs, loads, and passes all
+checks without a Julia runtime present.
 
-To avoid unintended writes in non-interactive environments, Julia package installation now requires
-explicit confirmation (`confirm_install = TRUE`) or is skipped (`pkg_check = FALSE`).
+**Examples.** All examples use `\dontrun{}` since they require a Julia runtime.
+
+**Tests.** The test suite uses a `tryCatch`/`JULIA_AVAILABLE` guard in
+`tests/testthat/setup.R`:
+
+```r
+tryCatch(
+    { setup_daf(pkg_check = FALSE); JULIA_AVAILABLE <- TRUE },
+    error = function(e) { JULIA_AVAILABLE <<- FALSE }
+)
+```
+
+Every Julia-dependent test is wrapped with
+`skip_if(!JULIA_AVAILABLE, "Julia not available")` so that all 283 Julia tests
+are gracefully skipped when Julia is absent. Pure-R tests (contract object
+creation, documentation generation) run unconditionally. On CRAN, the check
+therefore covers package load, documentation, and R-only logic without requiring
+an external runtime or network access.
+
+**Vignette.** The vignette uses `eval = FALSE` for all code chunks.
+
+**Julia package installation.** To avoid unintended writes in non-interactive
+environments, Julia package installation requires explicit user confirmation
+via the `confirm_install` parameter or is skipped entirely with
+`pkg_check = FALSE`.
+
+**CRAN precedent.** The `jlview` package on CRAN uses the same architecture:
+it interfaces with Julia via `JuliaCall` and uses the identical
+`tryCatch`/`JULIA_AVAILABLE` guard pattern in its test setup.

@@ -11,6 +11,9 @@ MaskSlice(axis, ...)
 
 \item{...}{Additional arguments (ignored).}
 }
+\value{
+Does not return; always raises an error.
+}
 \description{
 This function has been removed in DataAxesFormats v0.2.0.
 Use \code{\link{BeginMask}}/\code{\link{EndMask}} instead.

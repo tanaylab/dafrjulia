@@ -43,3 +43,13 @@ If \code{relayout} is TRUE, the matrix will also be stored with axes flipped for
 NA values are not supported in Daf.
 See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/writers.html#DataAxesFormats.Writers.set_matrix!}{documentation} for details.
 }
+\examples{
+\dontrun{
+setup_daf()
+daf <- memory_daf("example")
+add_axis(daf, "cell", c("A", "B"))
+add_axis(daf, "gene", c("X", "Y", "Z"))
+mat <- matrix(1:6, nrow = 2, ncol = 3)
+set_matrix(daf, "cell", "gene", "UMIs", mat)
+}
+}

@@ -1,4 +1,5 @@
 test_that("viewer creates correct views", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Create a test daf object
     daf <- memory_daf(name = "test!")
     set_scalar(daf, "version", "1.0")

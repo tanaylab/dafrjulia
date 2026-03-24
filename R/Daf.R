@@ -7,6 +7,12 @@
 #' @details See the Julia documentation [here](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/index.html),
 #' [here](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/formats.html#Read-API)
 #' and [here](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/formats.html#Write-API) for details.
+#' @examples
+#' \dontrun{
+#' setup_daf()
+#' daf <- memory_daf("example") # memory_daf() returns a Daf object
+#' is_daf(daf) # TRUE
+#' }
 #' @export
 Daf <- function(jl_obj) {
     if (inherits(jl_obj, "JuliaObject")) {
@@ -79,6 +85,14 @@ validate_daf_object <- function(daf, call = parent.frame()) {
 #' @return The result of the query
 #' @details The expression `daf[query]` is equivalent to `get_query(daf, query, cache = TRUE)`.
 #' See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Operations.get_query) for details.
+#' @examples
+#' \dontrun{
+#' setup_daf()
+#' daf <- memory_daf("example")
+#' add_axis(daf, "cell", c("A", "B", "C"))
+#' set_vector(daf, "cell", "score", c(1.0, 2.0, 3.0))
+#' daf[Axis("cell") |> LookupVector("score")]
+#' }
 #' @export
 `[.Daf` <- function(x, i, ...) {
     get_query(x, i, cache = TRUE)

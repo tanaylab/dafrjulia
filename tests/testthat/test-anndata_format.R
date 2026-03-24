@@ -1,4 +1,5 @@
 test_that("h5ad conversion works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Create a memory daf
     origin <- memory_daf(name = "memory!")
     set_scalar(origin, "version", 1)
@@ -66,6 +67,7 @@ test_that("h5ad conversion works", {
 })
 
 test_that("h5ad_as_daf accepts different handler types", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Create a simple h5ad file for testing
     origin <- memory_daf(name = "test_handlers!")
     add_axis(origin, "cell", c("A", "B"))
@@ -105,6 +107,7 @@ test_that("h5ad_as_daf accepts different handler types", {
 })
 
 test_that("daf_as_h5ad with X_eltype parameter works", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Create a memory daf with integer matrix
     origin <- memory_daf(name = "eltype_test!")
     add_axis(origin, "cell", c("A", "B"))
@@ -156,6 +159,7 @@ test_that("daf_as_h5ad with X_eltype parameter works", {
 })
 
 test_that("daf_as_h5ad without X_eltype preserves original type", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Create a memory daf
     origin <- memory_daf(name = "no_eltype_test!")
     add_axis(origin, "cell", c("A", "B"))
