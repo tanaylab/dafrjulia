@@ -23,7 +23,7 @@ tensor_contract(
 
 \item{name}{Tensor name (individual matrices will be named "entry_name")}
 
-\item{expectation}{One of RequiredInput, OptionalInput, GuaranteedOutput, OptionalOutput}
+\item{expectation}{One of RequiredInput, OptionalInput, CreatedOutput, GuaranteedOutput, OptionalOutput}
 
 \item{dtype}{Data type (e.g., "numeric", "integer")}
 

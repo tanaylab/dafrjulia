@@ -16,6 +16,10 @@ OptionalInput <- "OptionalInput"
 
 #' @rdname RequiredInput
 #' @export
+CreatedOutput <- "CreatedOutput"
+
+#' @rdname RequiredInput
+#' @export
 GuaranteedOutput <- "GuaranteedOutput"
 
 #' @rdname RequiredInput
@@ -66,7 +70,7 @@ create_contract <- function(axes = list(), data = list(), is_relaxed = FALSE) {
 #' Create an axis contract specification
 #'
 #' @param name Axis name
-#' @param expectation One of RequiredInput, OptionalInput, GuaranteedOutput, OptionalOutput
+#' @param expectation One of RequiredInput, OptionalInput, CreatedOutput, GuaranteedOutput, OptionalOutput
 #' @param description Human-readable description
 #'
 #' @return Axis specification list
@@ -83,7 +87,7 @@ axis_contract <- function(name, expectation, description) {
 #' Create a scalar contract specification
 #'
 #' @param name Scalar name
-#' @param expectation One of RequiredInput, OptionalInput, GuaranteedOutput, OptionalOutput
+#' @param expectation One of RequiredInput, OptionalInput, CreatedOutput, GuaranteedOutput, OptionalOutput
 #' @param dtype Data type (e.g., "character", "numeric", "integer", "logical")
 #' @param description Human-readable description
 #'
@@ -103,7 +107,7 @@ scalar_contract <- function(name, expectation, dtype, description) {
 #'
 #' @param axis Axis name the vector belongs to
 #' @param name Vector name
-#' @param expectation One of RequiredInput, OptionalInput, GuaranteedOutput, OptionalOutput
+#' @param expectation One of RequiredInput, OptionalInput, CreatedOutput, GuaranteedOutput, OptionalOutput
 #' @param dtype Data type (e.g., "character", "numeric", "integer", "logical")
 #' @param description Human-readable description
 #'
@@ -125,7 +129,7 @@ vector_contract <- function(axis, name, expectation, dtype, description) {
 #' @param rows_axis Rows axis name
 #' @param cols_axis Columns axis name
 #' @param name Matrix name
-#' @param expectation One of RequiredInput, OptionalInput, GuaranteedOutput, OptionalOutput
+#' @param expectation One of RequiredInput, OptionalInput, CreatedOutput, GuaranteedOutput, OptionalOutput
 #' @param dtype Data type (e.g., "numeric", "integer")
 #' @param description Human-readable description
 #'
@@ -153,7 +157,7 @@ matrix_contract <- function(rows_axis, cols_axis, name, expectation, dtype, desc
 #' @param rows_axis Rows axis name for each matrix
 #' @param cols_axis Columns axis name for each matrix
 #' @param name Tensor name (individual matrices will be named "entry_name")
-#' @param expectation One of RequiredInput, OptionalInput, GuaranteedOutput, OptionalOutput
+#' @param expectation One of RequiredInput, OptionalInput, CreatedOutput, GuaranteedOutput, OptionalOutput
 #' @param dtype Data type (e.g., "numeric", "integer")
 #' @param description Human-readable description
 #'
@@ -265,9 +269,9 @@ verify_contract <- function(daf_obj, contract, check_unused = FALSE) {
             )
         } else if (spec$expectation == OptionalInput && !has_it) {
             # Optional, no error
-        } else if (spec$expectation %in% c(GuaranteedOutput, OptionalOutput)) {
+        } else if (spec$expectation %in% c(CreatedOutput, GuaranteedOutput, OptionalOutput)) {
             # Output expectations - check if shouldn't exist
-            if (has_it && spec$expectation == GuaranteedOutput) {
+            if (has_it && spec$expectation %in% c(CreatedOutput, GuaranteedOutput)) {
                 warnings <- c(
                     warnings,
                     sprintf("Pre-existing output axis: %s", spec$name)

@@ -11,7 +11,7 @@ vector_contract(axis, name, expectation, dtype, description)
 
 \item{name}{Vector name}
 
-\item{expectation}{One of RequiredInput, OptionalInput, GuaranteedOutput, OptionalOutput}
+\item{expectation}{One of RequiredInput, OptionalInput, CreatedOutput, GuaranteedOutput, OptionalOutput}
 
 \item{dtype}{Data type (e.g., "character", "numeric", "integer", "logical")}
 

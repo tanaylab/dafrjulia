@@ -9,7 +9,7 @@ axis_contract(name, expectation, description)
 \arguments{
 \item{name}{Axis name}
 
-\item{expectation}{One of RequiredInput, OptionalInput, GuaranteedOutput, OptionalOutput}
+\item{expectation}{One of RequiredInput, OptionalInput, CreatedOutput, GuaranteedOutput, OptionalOutput}
 
 \item{description}{Human-readable description}
 }

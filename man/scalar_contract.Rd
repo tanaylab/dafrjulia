@@ -9,7 +9,7 @@ scalar_contract(name, expectation, dtype, description)
 \arguments{
 \item{name}{Scalar name}
 
-\item{expectation}{One of RequiredInput, OptionalInput, GuaranteedOutput, OptionalOutput}
+\item{expectation}{One of RequiredInput, OptionalInput, CreatedOutput, GuaranteedOutput, OptionalOutput}
 
 \item{dtype}{Data type (e.g., "character", "numeric", "integer", "logical")}
 

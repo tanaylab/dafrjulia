@@ -4,10 +4,13 @@
 \name{RequiredInput}
 \alias{RequiredInput}
 \alias{OptionalInput}
+\alias{CreatedOutput}
 \alias{GuaranteedOutput}
 \alias{OptionalOutput}
 \title{Contract Expectation Types}
 \format{
+An object of class \code{character} of length 1.
+
 An object of class \code{character} of length 1.
 
 An object of class \code{character} of length 1.
@@ -20,6 +23,8 @@ An object of class \code{character} of length 1.
 RequiredInput
 
 OptionalInput
+
+CreatedOutput
 
 GuaranteedOutput
 

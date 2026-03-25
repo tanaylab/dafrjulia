@@ -169,6 +169,7 @@ reference:
     contents:
       - RequiredInput
       - OptionalInput
+      - CreatedOutput
       - GuaranteedOutput
       - OptionalOutput
       - create_contract

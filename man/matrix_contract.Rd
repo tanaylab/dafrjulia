@@ -13,7 +13,7 @@ matrix_contract(rows_axis, cols_axis, name, expectation, dtype, description)
 
 \item{name}{Matrix name}
 
-\item{expectation}{One of RequiredInput, OptionalInput, GuaranteedOutput, OptionalOutput}
+\item{expectation}{One of RequiredInput, OptionalInput, CreatedOutput, GuaranteedOutput, OptionalOutput}
 
 \item{dtype}{Data type (e.g., "numeric", "integer")}
 
