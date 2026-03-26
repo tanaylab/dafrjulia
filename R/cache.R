@@ -15,6 +15,9 @@ get_daf_cache <- function(daf) {
 #' Get a stable identifier for a Daf object
 #' @noRd
 get_daf_id <- function(daf) {
+    if (!is.null(daf$cache_id)) {
+        return(daf$cache_id)
+    }
     JuliaCall::julia_call("string", JuliaCall::julia_call("objectid", daf$jl_obj, need_return = "Julia"), need_return = "R")
 }
 
@@ -80,11 +83,15 @@ empty_cache <- function(daf, clear = NULL, keep = NULL) {
         keep = keep
     )
 
-    # Clear R-side cache
-    obj_id <- get_daf_id(daf)
-    if (exists(obj_id, envir = .daf_cache_registry)) {
-        cache <- get(obj_id, envir = .daf_cache_registry)
-        rm(list = ls(cache), envir = cache)
+    # Clear R-side cache only when doing a full clear (no selective filter).
+    # When clear or keep is specified, rely on version counters to naturally
+    # invalidate stale R-side entries on next access.
+    if (is.null(clear) && is.null(keep)) {
+        obj_id <- get_daf_id(daf)
+        if (exists(obj_id, envir = .daf_cache_registry)) {
+            cache <- get(obj_id, envir = .daf_cache_registry)
+            rm(list = ls(cache), envir = cache)
+        }
     }
 
     invisible(daf)

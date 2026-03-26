@@ -168,24 +168,35 @@ define_julia_functions <- function() {
     ")
 
     # Single Julia-side call that extracts all metadata needed by from_julia_array.
-    # This replaces 6+ separate julia_call round-trips with one call, eliminating
-    # per-call JIT overhead on cold start (~0.5s savings).
-    # Returns: (stripped_array, eltype_str, is_sparse_csc, is_sparse_abstract,
-    #           is_named_vec, is_named_mat, names1, names2)
+    # Returns: (metadata_string, names1, names2, stripped_array)
+    # metadata_string = "eltype;is_sparse;is_named;is_sparse_csc;is_sparse_abstract"
+    # Booleans encoded as "1"/"0". This consolidates 9 bridge calls to ~4.
     julia_eval("
     function _prepare_for_r(array)
         stripped = _strip_wrappers(array)
-        eltype_str = string(eltype(stripped))
+        et = string(eltype(stripped))
         is_sparse_csc = stripped isa SparseArrays.SparseMatrixCSC
         is_sparse_abstract = stripped isa SparseArrays.AbstractSparseArray
         is_named_vec = array isa NamedArrays.NamedVector
         is_named_mat = array isa NamedArrays.NamedMatrix
-        names1 = is_named_vec || is_named_mat ? collect(string.(NamedArrays.names(array, 1))) : String[]
+        is_named = is_named_vec || is_named_mat
+        is_sparse = is_sparse_csc || is_sparse_abstract
+        meta = string(et, ';',
+                      is_sparse ? '1' : '0', ';',
+                      is_named ? '1' : '0', ';',
+                      is_sparse_csc ? '1' : '0', ';',
+                      is_sparse_abstract ? '1' : '0', ';',
+                      is_named_vec ? '1' : '0', ';',
+                      is_named_mat ? '1' : '0')
+        names1 = is_named ? collect(string.(NamedArrays.names(array, 1))) : String[]
         names2 = is_named_mat ? collect(string.(NamedArrays.names(array, 2))) : String[]
-        return (stripped, eltype_str, is_sparse_csc, is_sparse_abstract,
-                is_named_vec, is_named_mat, names1, names2)
+        return (meta, names1, names2, stripped)
     end
     ")
+
+    # Initialize constant type vectors used by from_julia_array
+    dafr_env$zero_copy_types <- c("Float64", "Float32", "Int64", "Int32", "Int16", "UInt8", "UInt16", "UInt32", "UInt64")
+    dafr_env$sparse_zero_copy_types <- c("Float64", "Float32", "Int64", "Int32", "Int16", "UInt8", "UInt16", "UInt32", "UInt64")
 }
 
 get_julia_field <- function(julia_object, field_name, need_return = "Julia") {
@@ -386,27 +397,49 @@ to_julia_array <- function(value) {
 #' @return An R array, vector or sparse matrix
 #' @noRd
 from_julia_array <- function(julia_array) {
-    # Use julia_assign + julia_command + julia_eval to avoid the docall overhead.
-    # julia_call goes through docall → rcopy(Vector{Any}, args) → sexp which has
-    # significant first-call JIT. julia_command/julia_eval bypass docall entirely.
+    # Consolidated bridge: 4 calls for unnamed arrays, 5-6 for named arrays
+    # (down from 9 calls in the previous version).
+
+    # Call 1: assign input array into Julia workspace
     JuliaCall::julia_assign("_fja_in", julia_array)
+    # Call 2: run _prepare_for_r which returns (meta_string, names1, names2, stripped)
     JuliaCall::julia_command("_fja_p = _prepare_for_r(_fja_in)")
 
-    # Extract metadata via julia_eval (returns plain R types, no docall)
-    eltype_str <- JuliaCall::julia_eval("_fja_p[2]")
-    is_sparse_csc <- JuliaCall::julia_eval("_fja_p[3]")
-    is_sparse_abstract <- JuliaCall::julia_eval("_fja_p[4]")
-    is_named_vec <- JuliaCall::julia_eval("_fja_p[5]")
-    is_named_mat <- JuliaCall::julia_eval("_fja_p[6]")
-    names1 <- JuliaCall::julia_eval("_fja_p[7]")
-    names2 <- JuliaCall::julia_eval("_fja_p[8]")
-    # Stripped array stays in Julia for jlview zero-copy
-    stripped <- JuliaCall::julia_eval("JuliaCall.JuliaObject(_fja_p[1])")
+    # Call 3: fetch the metadata string (all scalar fields in one round-trip)
+    meta_str <- JuliaCall::julia_eval("_fja_p[1]")
+
+    # Parse metadata in pure R — no bridge calls
+    meta_parts <- strsplit(meta_str, ";", fixed = TRUE)[[1]]
+    eltype_str        <- meta_parts[1]
+    is_sparse         <- meta_parts[2] == "1"
+    is_named          <- meta_parts[3] == "1"
+    is_sparse_csc     <- meta_parts[4] == "1"
+    is_sparse_abstract <- meta_parts[5] == "1"
+    is_named_vec      <- meta_parts[6] == "1"
+    is_named_mat      <- meta_parts[7] == "1"
+
+    # Call 4: fetch stripped array (stays as JuliaObject for jlview zero-copy)
+    stripped <- JuliaCall::julia_eval("JuliaCall.JuliaObject(_fja_p[4])")
+
+    # Conditionally fetch names only when needed (calls 5-6, only for named arrays)
+    names1 <- character(0)
+    names2 <- character(0)
+    if (is_named) {
+        names1 <- JuliaCall::julia_eval("_fja_p[2]")
+        if (is_named_mat) {
+            names2 <- JuliaCall::julia_eval("_fja_p[3]")
+        }
+    }
+
+    # Cleanup Julia temporaries
+    JuliaCall::julia_command("_fja_in = nothing; _fja_p = nothing")
+
+    # Use cached constant vectors from dafr_env
+    zero_copy_types <- dafr_env$zero_copy_types
+    sparse_zero_copy_types <- dafr_env$sparse_zero_copy_types
 
     # Sparse CSC matrix path
-    if (isTRUE(is_sparse_csc)) {
-        sparse_zero_copy_types <- c("Float64", "Float32", "Int64", "Int32", "Int16", "UInt8", "UInt16", "UInt32", "UInt64")
-
+    if (is_sparse_csc) {
         if (eltype_str %in% sparse_zero_copy_types) {
             sp <- jlview::jlview_sparse(stripped)
         } else {
@@ -425,23 +458,21 @@ from_julia_array <- function(julia_array) {
             }
         }
 
-        if (isTRUE(is_named_mat) && length(names1) > 0 && length(names2) > 0) {
+        if (is_named_mat && length(names1) > 0 && length(names2) > 0) {
             dimnames(sp) <- list(names1, names2)
         }
         return(sp)
     }
 
     # Dense zero-copy path via jlview
-    zero_copy_types <- c("Float64", "Float32", "Int64", "Int32", "Int16", "UInt8", "UInt16", "UInt32", "UInt64")
-
-    if (eltype_str %in% zero_copy_types && !isTRUE(is_sparse_abstract)) {
-        if (isTRUE(is_named_vec) && length(names1) > 0) {
+    if (eltype_str %in% zero_copy_types && !is_sparse_abstract) {
+        if (is_named_vec && length(names1) > 0) {
             r_array <- jlview::jlview(julia_array, names = names1)
             if (!is.null(dim(r_array))) r_array <- as.vector(r_array)
             return(r_array)
         }
 
-        if (isTRUE(is_named_mat) && length(names1) > 0 && length(names2) > 0) {
+        if (is_named_mat && length(names1) > 0 && length(names2) > 0) {
             r_array <- jlview::jlview(julia_array, dimnames = list(names1, names2))
             return(r_array)
         }
@@ -455,13 +486,13 @@ from_julia_array <- function(julia_array) {
     }
 
     # Fallback: Bool, String, unsupported types - copy via collect
-    if (isTRUE(is_named_vec)) {
+    if (is_named_vec) {
         r_array <- as.vector(julia_call("collect", stripped, need_return = "R"))
         if (length(names1) > 0) names(r_array) <- names1
         return(r_array)
     }
 
-    if (isTRUE(is_named_mat)) {
+    if (is_named_mat) {
         r_array <- as.matrix(julia_call("collect", stripped, need_return = "R"))
         if (length(names1) > 0 && length(names2) > 0) {
             rownames(r_array) <- names1

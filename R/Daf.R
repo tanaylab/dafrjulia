@@ -22,7 +22,8 @@ Daf <- function(jl_obj) {
             cli::cli_abort("Expected a Julia DafReader object but got {.val {obj_type}}")
         }
     }
-    obj <- structure(list(jl_obj = jl_obj), class = "Daf")
+    cache_id <- JuliaCall::julia_call("string", JuliaCall::julia_call("objectid", jl_obj, need_return = "Julia"), need_return = "R")
+    obj <- structure(list(jl_obj = jl_obj, cache_id = cache_id), class = "Daf")
     return(obj)
 }
 
