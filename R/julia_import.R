@@ -1,5 +1,5 @@
 # Package-level environment for caching Julia type maps and other state
-dafr_env <- new.env(parent = emptyenv())
+pkg_env <- new.env(parent = emptyenv())
 
 #' Check if Julia is initialized
 #'
@@ -168,10 +168,17 @@ define_julia_functions <- function() {
     ")
 
     # Single Julia-side call that extracts all metadata needed by from_julia_array.
-    # Returns: (metadata_string, names1, names2, stripped_array)
-    # metadata_string = "eltype;is_sparse;is_named;is_sparse_csc;is_sparse_abstract"
-    # Booleans encoded as "1"/"0". This consolidates 9 bridge calls to ~4.
+    # Returns a 4-tuple: (eltype_string, flags_bool_vector, names_tuple, stripped_array).
+    # - flags = (is_sparse, is_named, is_sparse_csc, is_sparse_abstract, is_named_vec, is_named_mat)
+    # - names = (names1, names2) — empty String[] when not applicable
+    # Structured fields are passed across the bridge individually via Tuple
+    # indexing; no string delimiter is used, so property names containing
+    # any character are safe. No Main-level globals are used, so this is
+    # safe under re-entrant calls.
     julia_eval("
+    const _ZERO_COPY_TYPES = Set([\"Float64\", \"Float32\", \"Int64\", \"Int32\", \"Int16\",
+                                   \"UInt8\", \"UInt16\", \"UInt32\", \"UInt64\"])
+
     function _prepare_for_r(array)
         stripped = _strip_wrappers(array)
         et = string(eltype(stripped))
@@ -181,22 +188,26 @@ define_julia_functions <- function() {
         is_named_mat = array isa NamedArrays.NamedMatrix
         is_named = is_named_vec || is_named_mat
         is_sparse = is_sparse_csc || is_sparse_abstract
-        meta = string(et, ';',
-                      is_sparse ? '1' : '0', ';',
-                      is_named ? '1' : '0', ';',
-                      is_sparse_csc ? '1' : '0', ';',
-                      is_sparse_abstract ? '1' : '0', ';',
-                      is_named_vec ? '1' : '0', ';',
-                      is_named_mat ? '1' : '0')
+        flags = Bool[is_sparse, is_named, is_sparse_csc, is_sparse_abstract, is_named_vec, is_named_mat]
         names1 = is_named ? collect(string.(NamedArrays.names(array, 1))) : String[]
         names2 = is_named_mat ? collect(string.(NamedArrays.names(array, 2))) : String[]
-        return (meta, names1, names2, stripped)
+        # Eager materialisation for dense non-zero-copy types (Bool, String, etc.):
+        # the R fallback would call `collect(stripped)` anyway; doing it here
+        # saves one bridge round-trip and keeps type dispatch inside Julia.
+        if !is_sparse && !(et in _ZERO_COPY_TYPES)
+            stripped = collect(stripped)
+        end
+        return (et, flags, names1, names2, stripped)
     end
     ")
 
     # Initialize constant type vectors used by from_julia_array
-    dafr_env$zero_copy_types <- c("Float64", "Float32", "Int64", "Int32", "Int16", "UInt8", "UInt16", "UInt32", "UInt64")
-    dafr_env$sparse_zero_copy_types <- c("Float64", "Float32", "Int64", "Int32", "Int16", "UInt8", "UInt16", "UInt32", "UInt64")
+    pkg_env$zero_copy_types <- c("Float64", "Float32", "Int64", "Int32", "Int16", "UInt8", "UInt16", "UInt32", "UInt64")
+    pkg_env$sparse_zero_copy_types <- c("Float64", "Float32", "Int64", "Int32", "Int16", "UInt8", "UInt16", "UInt32", "UInt64")
+    # Precompiled regex for jl_R_to_julia_type input validation. Accept
+    # standard Julia type-name syntax only: identifiers, braces, commas,
+    # spaces. Rejects semicolons, backticks, parens, operators etc.
+    pkg_env$julia_type_name_re <- "^[A-Za-z_][A-Za-z0-9_{}, ]*$"
 }
 
 get_julia_field <- function(julia_object, field_name, need_return = "Julia") {
@@ -240,13 +251,13 @@ jl_pairify_data <- function(data) {
 
 #' Initialize the Julia type cache
 #'
-#' Builds the R-to-Julia type mapping and stores it in dafr_env$JULIA_TYPE_OF_R_TYPE.
+#' Builds the R-to-Julia type mapping and stores it in pkg_env$JULIA_TYPE_OF_R_TYPE.
 #' Should be called once during setup, after Julia is initialized.
 #'
 #' @return No return value, called for side effects.
 #' @noRd
 init_julia_type_cache <- function() {
-    dafr_env$JULIA_TYPE_OF_R_TYPE <- list(
+    pkg_env$JULIA_TYPE_OF_R_TYPE <- list(
         "logical" = julia_eval("Bool"),
         "integer" = julia_eval("Int64"),
         "double" = julia_eval("Float64"),
@@ -261,28 +272,37 @@ init_julia_type_cache <- function() {
         "float32" = julia_eval("Float32"),
         "float64" = julia_eval("Float64")
     )
-    dafr_env$JULIA_NOTHING_TYPE <- julia_eval("Nothing")
+    pkg_env$JULIA_NOTHING_TYPE <- julia_eval("Nothing")
 }
 
 #' Convert R types to Julia types
 #'
 #' This function converts R types or values to their appropriate Julia type equivalents.
 #' It maps R data types to Julia data types using a cached lookup table.
+#' For string values that fall outside the lookup, only syntactically-clean
+#' Julia type expressions (identifiers, braces, commas, spaces) are accepted;
+#' everything else raises an error. This prevents arbitrary Julia code
+#' execution via `julia_eval`.
 #'
 #' @param value An R value or type to convert to a Julia type
 #' @return The equivalent Julia type or the value unchanged if no conversion is needed
 #' @noRd
 jl_R_to_julia_type <- function(value) {
-    type_map <- dafr_env$JULIA_TYPE_OF_R_TYPE
+    type_map <- pkg_env$JULIA_TYPE_OF_R_TYPE
 
-    # If value is a string that represents a type name
     if (is.character(value) && length(value) == 1) {
         if (value %in% names(type_map)) {
             return(type_map[[value]])
         }
+        # Whitelist: reject anything that could carry arbitrary Julia code.
+        if (!grepl(pkg_env$julia_type_name_re, value)) {
+            cli::cli_abort(
+                "{.val {value}} is not a recognised type name and does not look like a Julia type expression"
+            )
+        }
+        return(julia_eval(value, need_return = "Julia"))
     }
 
-    # Determine the type of the actual value
     if (!is.null(value) && !is.function(value)) {
         r_type <- typeof(value)
         if (r_type %in% names(type_map)) {
@@ -291,11 +311,10 @@ jl_R_to_julia_type <- function(value) {
     }
 
     if (is.null(value)) {
-        return(dafr_env$JULIA_NOTHING_TYPE)
+        return(pkg_env$JULIA_NOTHING_TYPE)
     }
 
-    # Return the value unchanged if no conversion is needed or possible
-    return(julia_eval(value, need_return = "Julia"))
+    cli::cli_abort("Cannot convert value of type {.cls {typeof(value)}} to a Julia type")
 }
 
 #' Convert a Julia object to an appropriate R object
@@ -397,46 +416,42 @@ to_julia_array <- function(value) {
 #' @return An R array, vector or sparse matrix
 #' @noRd
 from_julia_array <- function(julia_array) {
-    # Consolidated bridge: 4 calls for unnamed arrays, 5-6 for named arrays
-    # (down from 9 calls in the previous version).
+    # Bridge plan (re-entrant, no Main-level globals):
+    #   1. _prepare_for_r(array) → Tuple{String, Vector{Bool}, Vector{String}, Vector{String}, AbstractArray}
+    #   2-3. getindex(prep, 1)  -> eltype_str (R character)
+    #        getindex(prep, 2)  -> flags      (R logical vector, length 6)
+    #   4. getindex(prep, 5)    -> stripped   (JuliaObject, for jlview zero-copy)
+    #   5-6. (only if named) getindex(prep, 3) / getindex(prep, 4) -> names vectors
+    # Total: 4 calls for unnamed, 5-6 for named. Structured Tuple indexing
+    # makes parsing impossible to misinterpret and avoids Main clobbering.
 
-    # Call 1: assign input array into Julia workspace
-    JuliaCall::julia_assign("_fja_in", julia_array)
-    # Call 2: run _prepare_for_r which returns (meta_string, names1, names2, stripped)
-    JuliaCall::julia_command("_fja_p = _prepare_for_r(_fja_in)")
+    prep <- JuliaCall::julia_call("_prepare_for_r", julia_array, need_return = "Julia")
+    eltype_str <- JuliaCall::julia_call("getindex", prep, 1L, need_return = "R")
+    flags      <- as.logical(JuliaCall::julia_call("getindex", prep, 2L, need_return = "R"))
+    if (length(flags) != 6L) {
+        cli::cli_abort("from_julia_array: Julia helper returned {length(flags)} flags; expected 6")
+    }
+    is_sparse          <- flags[1]
+    is_named           <- flags[2]
+    is_sparse_csc      <- flags[3]
+    is_sparse_abstract <- flags[4]
+    is_named_vec       <- flags[5]
+    is_named_mat       <- flags[6]
 
-    # Call 3: fetch the metadata string (all scalar fields in one round-trip)
-    meta_str <- JuliaCall::julia_eval("_fja_p[1]")
+    stripped <- JuliaCall::julia_call("getindex", prep, 5L, need_return = "Julia")
 
-    # Parse metadata in pure R — no bridge calls
-    meta_parts <- strsplit(meta_str, ";", fixed = TRUE)[[1]]
-    eltype_str        <- meta_parts[1]
-    is_sparse         <- meta_parts[2] == "1"
-    is_named          <- meta_parts[3] == "1"
-    is_sparse_csc     <- meta_parts[4] == "1"
-    is_sparse_abstract <- meta_parts[5] == "1"
-    is_named_vec      <- meta_parts[6] == "1"
-    is_named_mat      <- meta_parts[7] == "1"
-
-    # Call 4: fetch stripped array (stays as JuliaObject for jlview zero-copy)
-    stripped <- JuliaCall::julia_eval("JuliaCall.JuliaObject(_fja_p[4])")
-
-    # Conditionally fetch names only when needed (calls 5-6, only for named arrays)
     names1 <- character(0)
     names2 <- character(0)
     if (is_named) {
-        names1 <- JuliaCall::julia_eval("_fja_p[2]")
+        names1 <- as.character(JuliaCall::julia_call("getindex", prep, 3L, need_return = "R"))
         if (is_named_mat) {
-            names2 <- JuliaCall::julia_eval("_fja_p[3]")
+            names2 <- as.character(JuliaCall::julia_call("getindex", prep, 4L, need_return = "R"))
         }
     }
 
-    # Cleanup Julia temporaries
-    JuliaCall::julia_command("_fja_in = nothing; _fja_p = nothing")
-
-    # Use cached constant vectors from dafr_env
-    zero_copy_types <- dafr_env$zero_copy_types
-    sparse_zero_copy_types <- dafr_env$sparse_zero_copy_types
+    # Use cached constant vectors from pkg_env
+    zero_copy_types <- pkg_env$zero_copy_types
+    sparse_zero_copy_types <- pkg_env$sparse_zero_copy_types
 
     # Sparse CSC matrix path
     if (is_sparse_csc) {

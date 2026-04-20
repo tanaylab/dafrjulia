@@ -83,5 +83,43 @@ test_that("DafAnnData print works", {
     skip_if(!JULIA_AVAILABLE, "Julia not available")
     daf <- example_cells_daf()
     adata <- as_anndata(daf, obs_axis = "cell", var_axis = "gene", x_name = "UMIs")
-    expect_output(print(adata), "DafAnnData object")
+    expect_output(print(adata), "DafAnnData")
+})
+
+test_that("DafAnnData rejects a missing x_name at construction", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
+    daf <- example_cells_daf()
+    expect_error(
+        as_anndata(daf, obs_axis = "cell", var_axis = "gene", x_name = "Nope"),
+        "is not available"
+    )
+})
+
+test_that("DafAnnData rejects unknown axes at construction", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
+    daf <- example_cells_daf()
+    expect_error(
+        as_anndata(daf, obs_axis = "notanaxis", var_axis = "gene", x_name = "UMIs"),
+        "is not one of the Daf axes"
+    )
+    expect_error(
+        as_anndata(daf, obs_axis = "cell", var_axis = "notanaxis", x_name = "UMIs"),
+        "is not one of the Daf axes"
+    )
+})
+
+test_that("DafAnnData auto-detect fails cleanly when axes are absent", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
+    daf <- memory_daf()
+    add_axis(daf, "row", c("r1", "r2"))
+    add_axis(daf, "col", c("c1", "c2", "c3"))
+    expect_error(as_anndata(daf), "Cannot auto-detect obs_axis")
+    expect_error(as_anndata(daf, obs_axis = "row"), "Cannot auto-detect var_axis")
+})
+
+test_that("DafAnnData $obs and $obs_names agree on row names", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
+    daf <- example_cells_daf()
+    adata <- as_anndata(daf)
+    expect_equal(rownames(adata$obs), adata$obs_names)
 })

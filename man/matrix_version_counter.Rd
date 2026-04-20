@@ -16,7 +16,9 @@ matrix_version_counter(daf, rows_axis, columns_axis, name)
 \item{name}{Name of the matrix property}
 }
 \value{
-An integer version counter
+A character string representing the current counter value. Returned
+as a string rather than an R integer because the Julia-side counter is a
+\code{UInt32} that can exceed R's signed-integer range.
 }
 \description{
 Returns the version counter for a matrix property, which is incremented when the matrix is modified.
@@ -24,5 +26,5 @@ This is useful for cache invalidation.
 }
 \details{
 The version counter is incremented whenever the matrix data is modified.
-This can be used to detect changes and invalidate caches.
+Compare counters with \code{identical()} or \code{==} on the strings.
 }

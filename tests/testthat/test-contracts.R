@@ -413,17 +413,100 @@ test_that("contract with all expectation types works", {
             axis_contract("input_axis", RequiredInput, "Required input"),
             axis_contract("optional_axis", OptionalInput, "Optional input"),
             axis_contract("output_axis", GuaranteedOutput, "Guaranteed output"),
+            axis_contract("created_axis", CreatedOutput, "Created output"),
             axis_contract("maybe_output", OptionalOutput, "Optional output")
         )
     )
 
     expect_s3_class(contract, "DafContract")
-    expect_length(contract$axes, 4)
+    expect_length(contract$axes, 5)
 
     # Check all expectation types are preserved
     expectations <- sapply(contract$axes, function(a) a$expectation)
     expect_true(RequiredInput %in% expectations)
     expect_true(OptionalInput %in% expectations)
     expect_true(GuaranteedOutput %in% expectations)
+    expect_true(CreatedOutput %in% expectations)
     expect_true(OptionalOutput %in% expectations)
+})
+
+test_that("CreatedOutput warns when the axis already exists", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
+
+    daf <- memory_daf("created_existing")
+    add_axis(daf, "gene", c("A", "B"))
+
+    contract <- create_contract(
+        axes = list(
+            axis_contract("gene", CreatedOutput, "Freshly-created gene axis")
+        )
+    )
+
+    result <- verify_contract(daf, contract)
+    expect_true(result$valid)
+    expect_length(result$errors, 0)
+    expect_true(any(grepl("Pre-existing output axis: gene", result$warnings)))
+})
+
+test_that("GuaranteedOutput warns when the axis already exists", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
+
+    daf <- memory_daf("guaranteed_existing")
+    add_axis(daf, "gene", c("A", "B"))
+
+    contract <- create_contract(
+        axes = list(
+            axis_contract("gene", GuaranteedOutput, "Guaranteed gene axis")
+        )
+    )
+
+    result <- verify_contract(daf, contract)
+    expect_true(any(grepl("Pre-existing output axis: gene", result$warnings)))
+})
+
+test_that("OptionalOutput does NOT warn when the axis already exists", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
+
+    daf <- memory_daf("optional_existing")
+    add_axis(daf, "gene", c("A", "B"))
+
+    contract <- create_contract(
+        axes = list(
+            axis_contract("gene", OptionalOutput, "Optional gene axis")
+        )
+    )
+
+    result <- verify_contract(daf, contract)
+    expect_true(result$valid)
+    expect_length(result$errors, 0)
+    expect_length(result$warnings, 0)
+})
+
+test_that("CreatedOutput on a non-existent axis produces no warnings", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
+
+    daf <- memory_daf("created_new")
+    # intentionally no axes
+
+    contract <- create_contract(
+        axes = list(
+            axis_contract("gene", CreatedOutput, "Will be created")
+        )
+    )
+
+    result <- verify_contract(daf, contract)
+    expect_true(result$valid)
+    expect_length(result$errors, 0)
+    expect_length(result$warnings, 0)
+})
+
+test_that("contract_docs (text) includes CreatedOutput expectations", {
+    contract <- create_contract(
+        axes = list(
+            axis_contract("gene", CreatedOutput, "Will be created")
+        )
+    )
+
+    docs <- contract_docs(contract, "text")
+    expect_true(grepl("CreatedOutput", docs))
 })

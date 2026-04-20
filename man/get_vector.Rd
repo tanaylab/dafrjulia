@@ -26,6 +26,13 @@ Retrieves a vector property with the specified name for a given axis.
 Vector properties store one-dimensional data along an axis, with one value
 for each entry in the axis. If the vector doesn't exist and default is NA,
 a vector of NAs with appropriate length is returned.
+
+For zero-copy-eligible element types (numeric/integer), the returned
+vector is a live view over the Julia-side memory (via \code{jlview}).
+Mutating the Daf through \code{set_vector()} or file-mapped writes may
+change the contents of a previously returned vector. Call
+\code{unname(as.vector(v))} or an explicit \code{as.numeric(v)} to take
+a detached copy when stability across modifications is required.
 See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.get_vector}{documentation} for details.
 }
 \examples{

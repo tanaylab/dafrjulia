@@ -15,15 +15,21 @@
 #' }
 #' @export
 Daf <- function(jl_obj) {
-    if (inherits(jl_obj, "JuliaObject")) {
-        is_daf_type <- julia_call("isa", jl_obj, julia_eval("DafReader"), need_return = "R")
-        if (!isTRUE(is_daf_type)) {
-            obj_type <- julia_call("string", julia_call("typeof", jl_obj), need_return = "R")
-            cli::cli_abort("Expected a Julia DafReader object but got {.val {obj_type}}")
-        }
+    if (!inherits(jl_obj, "JuliaObject")) {
+        cli::cli_abort("Expected a Julia object (JuliaObject) but got {.cls {class(jl_obj)[1]}}")
     }
-    cache_id <- JuliaCall::julia_call("string", JuliaCall::julia_call("objectid", jl_obj, need_return = "Julia"), need_return = "R")
-    obj <- structure(list(jl_obj = jl_obj, cache_id = cache_id), class = "Daf")
+    is_daf_type <- julia_call("isa", jl_obj, julia_eval("DafReader"), need_return = "R")
+    if (!isTRUE(is_daf_type)) {
+        obj_type <- julia_call("string", julia_call("typeof", jl_obj), need_return = "R")
+        cli::cli_abort("Expected a Julia DafReader object but got {.val {obj_type}}")
+    }
+    # cache_env is an environment (reference semantics): two R-level copies
+    # of the Daf list share the same cache; two wrappers of the same Julia
+    # object get separate caches — that's intentional isolation.
+    obj <- structure(
+        list(jl_obj = jl_obj, cache_env = new_daf_cache()),
+        class = "Daf"
+    )
     return(obj)
 }
 

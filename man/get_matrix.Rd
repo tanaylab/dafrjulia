@@ -30,6 +30,13 @@ Retrieves a matrix property with the specified name for the given axes from the 
 Matrix properties store two-dimensional data along two axes.
 If the matrix doesn't exist and default is NA, a matrix of NAs with appropriate dimensions is returned.
 If \code{relayout} is TRUE and the matrix exists with flipped axes, it will be transposed automatically.
+
+For zero-copy-eligible element types, the returned matrix is a live
+view over Julia-side memory; sparse CSC matrices are also zero-copy
+via \code{jlview::jlview_sparse}. Mutating the Daf through
+\code{set_matrix()} or file-mapped writes may alter the contents of a
+previously returned matrix. Copy explicitly if stability across
+modifications is required.
 See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.get_matrix}{documentation} for details.
 }
 \examples{

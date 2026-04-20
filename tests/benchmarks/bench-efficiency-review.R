@@ -14,23 +14,40 @@
 #   1. Cold-start / setup_daf() sub-phases
 #   2. Bridge round-trips (from_julia_array for various types & sizes)
 #   3. Version counter overhead (cache hit vs miss in get_vector)
-#   4. Cache infrastructure (get_daf_id objectid+string cost)
+#   4. Cache infrastructure (cache_lookup + version counter fetch)
 #   5. Matrix transfer sizes (dense & sparse at realistic dimensions)
 #   6. Query execution (simple vs complex, cached vs uncached)
 #   7. Type conversion (Bool collect vs numeric zero-copy)
+#
+# Notes:
+#   - Absolute numbers only; there is no "before" baseline checked in.
+#     To compare against a prior implementation, run this script on an
+#     earlier commit (e.g. git checkout <sha>; Rscript bench-...) and
+#     diff the CSVs. Headline claims like "9 → 4 bridge calls" are
+#     structural — count them in the source, don't infer from timings.
+#   - Cache-miss measurements use `before_each` to clear R-side state
+#     outside the timed closure. Cache-hit measurements do not warmup
+#     artificially; the first real call populates the cache, subsequent
+#     calls hit it.
 # =============================================================================
 
 # -- Utilities ----------------------------------------------------------------
 
-#' Run a benchmark `n` times, returning elapsed times in seconds
-bench_times <- function(expr_fn, n = 5, warmup = 1) {
-    # Warmup runs (not recorded)
+#' Run a benchmark `n` times, returning elapsed times in seconds.
+#' `before_each` runs before each measured iteration but is not timed.
+#' Use it to reset state (e.g. clear the R-side cache to force a miss)
+#' without inflating the measured closure.
+bench_times <- function(expr_fn, n = 5, warmup = 1, before_each = NULL) {
     for (i in seq_len(warmup)) {
-        tryCatch(expr_fn(), error = function(e) NULL)
+        tryCatch({
+            if (!is.null(before_each)) before_each()
+            expr_fn()
+        }, error = function(e) NULL)
     }
     times <- numeric(n)
     for (i in seq_len(n)) {
         gc(verbose = FALSE)
+        if (!is.null(before_each)) before_each()
         t <- system.time(expr_fn())
         times[i] <- t["elapsed"]
     }
@@ -51,9 +68,9 @@ summarise_bench <- function(name, times_sec) {
 }
 
 #' Safely run a benchmark block; returns NULL on error
-safe_bench <- function(name, expr_fn, n = 5, warmup = 1) {
+safe_bench <- function(name, expr_fn, n = 5, warmup = 1, before_each = NULL) {
     tryCatch({
-        times <- bench_times(expr_fn, n = n, warmup = warmup)
+        times <- bench_times(expr_fn, n = n, warmup = warmup, before_each = before_each)
         summarise_bench(name, times)
     }, error = function(e) {
         message(sprintf("[SKIP] %s -- %s", name, conditionMessage(e)))
@@ -300,16 +317,13 @@ empty_cache(daf_small)
 results[[length(results) + 1]] <- safe_bench(
     "version_counter:get_vector_cache_miss",
     function() {
-        # Clear R cache before each iteration to force miss
-        obj_id <- dafJuliaWrapper:::get_daf_id(daf_small)
-        if (exists(obj_id, envir = dafJuliaWrapper:::.daf_cache_registry)) {
-            cache <- get(obj_id, envir = dafJuliaWrapper:::.daf_cache_registry)
-            rm(list = ls(cache), envir = cache)
-        }
         v <- get_vector(daf_small, "cell", "score")
     },
     n = reps,
-    warmup = 0
+    warmup = 0,
+    before_each = function() {
+        rm(list = ls(daf_small$cache_env, all.names = TRUE), envir = daf_small$cache_env)
+    }
 )
 
 # 3b. get_vector cache hit (second+ call, R-cache warm)
@@ -342,18 +356,10 @@ results[[length(results) + 1]] <- safe_bench(
 # =============================================================================
 # 4. CACHE INFRASTRUCTURE
 # =============================================================================
-cat("\n[4] Cache infrastructure: get_daf_id overhead\n")
+cat("\n[4] Cache infrastructure: cache_lookup overhead\n")
 
-# 4a. get_daf_id (objectid + string conversion)
-results[[length(results) + 1]] <- safe_bench(
-    "cache:get_daf_id",
-    function() {
-        id <- dafJuliaWrapper:::get_daf_id(daf_small)
-    },
-    n = reps
-)
-
-# 4b. cache_lookup (after get_daf_id)
+# Warm the cache so a realistic lookup hits.
+invisible(get_vector(daf_small, "cell", "score"))
 vc_for_bench <- JuliaCall::julia_call("string",
     JuliaCall::julia_call("DataAxesFormats.vector_version_counter",
         daf_small$jl_obj, "cell", "score",
@@ -361,6 +367,8 @@ vc_for_bench <- JuliaCall::julia_call("string",
     ),
     need_return = "R"
 )
+
+# 4a. cache_lookup (O(1) env get)
 results[[length(results) + 1]] <- safe_bench(
     "cache:cache_lookup",
     function() {
@@ -369,13 +377,14 @@ results[[length(results) + 1]] <- safe_bench(
     n = reps
 )
 
-# 4c. Full cache round-trip: get_daf_cache + lookup
+# 4b. Bare env lookup via exists/get (baseline comparison)
 results[[length(results) + 1]] <- safe_bench(
-    "cache:full_lookup_roundtrip",
+    "cache:bare_env_lookup",
     function() {
-        cache <- dafJuliaWrapper:::get_daf_cache(daf_small)
-        full_key <- paste0(vc_for_bench, ":vec:cell:score")
-        val <- if (exists(full_key, envir = cache)) get(full_key, envir = cache) else NULL
+        cache <- daf_small$cache_env
+        val <- if (exists("vec:cell:score", envir = cache, inherits = FALSE)) {
+            get("vec:cell:score", envir = cache, inherits = FALSE)
+        } else NULL
     },
     n = reps
 )
@@ -588,9 +597,9 @@ if (nrow(vc_row) == 1 && !is.na(vc_row$median_ms)) {
     cat(sprintf("Version counter bare fetch cost: %.2f ms\n", vc_row$median_ms))
 }
 
-id_row <- results_df[results_df$benchmark == "cache:get_daf_id", ]
-if (nrow(id_row) == 1 && !is.na(id_row$median_ms)) {
-    cat(sprintf("get_daf_id overhead: %.2f ms\n", id_row$median_ms))
+lookup_row <- results_df[results_df$benchmark == "cache:cache_lookup", ]
+if (nrow(lookup_row) == 1 && !is.na(lookup_row$median_ms)) {
+    cat(sprintf("cache_lookup overhead: %.2f ms\n", lookup_row$median_ms))
 }
 
 cat("\n=== Done ===\n")

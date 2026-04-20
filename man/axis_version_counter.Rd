@@ -12,7 +12,9 @@ axis_version_counter(daf, axis)
 \item{axis}{Name of the axis}
 }
 \value{
-An integer version counter
+A character string representing the current counter value. Returned
+as a string rather than an R integer because the Julia-side counter is a
+\code{UInt32} that can exceed R's signed-integer range.
 }
 \description{
 Returns the version counter for an axis, which is incremented when the axis is modified.
@@ -20,5 +22,5 @@ This is useful for cache invalidation.
 }
 \details{
 The version counter is incremented whenever the axis entries are modified.
-This can be used to detect changes and invalidate caches.
+Compare counters with \code{identical()} or \code{==} on the strings.
 }

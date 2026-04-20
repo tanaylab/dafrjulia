@@ -17,8 +17,21 @@ empty_cache(daf, clear = NULL, keep = NULL)
 The Daf object (invisibly, for chaining operations)
 }
 \description{
-Clears both the Julia-side cache and the R-side cache for a Daf object.
+Clears the Julia-side cache and the R-side cache for a Daf object. The
+R-side cache is always purged (regardless of \code{clear}/\code{keep}), because
+version counters only invalidate entries opportunistically on next
+access and may miss stale data when backing storage is unmapped or
+when Julia cache is flushed without bumping data versions.
 }
 \details{
 See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/queries.html#DataAxesFormats.Data.empty_cache!}{documentation} for details.
+}
+\examples{
+\dontrun{
+setup_daf()
+daf <- example_cells_daf()
+empty_cache(daf) # clear all caches
+empty_cache(daf, clear = "QueryData") # clear only Julia query cache
+empty_cache(daf, keep = "MappedData") # keep mapped data, clear rest
+}
 }

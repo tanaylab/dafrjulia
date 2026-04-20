@@ -13,7 +13,9 @@ as_anndata(daf, obs_axis = NULL, var_axis = NULL, x_name = "UMIs")
 
 \item{var_axis}{Name of the variables axis. Auto-detected if NULL (tries "gene").}
 
-\item{x_name}{Name of the primary matrix property (default "UMIs")}
+\item{x_name}{Name of the primary matrix property. If NULL, the first
+matrix on (obs_axis, var_axis) is used, preferring \code{"UMIs"}.
+Defaults to \code{"UMIs"}.}
 }
 \value{
 A \code{\link{DafAnnData}} R6 object
@@ -21,7 +23,8 @@ A \code{\link{DafAnnData}} R6 object
 \description{
 Creates a live, read-only facade over a Daf object that provides AnnData-compatible
 accessors (\code{$X}, \code{$obs}, \code{$var}, \code{$layers}, \code{$uns}).
-No data is copied; reads go through to the underlying Daf object on demand.
+No data is copied at construction; reads go through to the underlying Daf
+object on demand, served by dafJuliaWrapper's R-side cache on subsequent calls.
 }
 \examples{
 \dontrun{
@@ -33,4 +36,7 @@ adata$var # variable metadata
 adata$obs_names # observation names
 adata$n_obs # number of observations
 }
+}
+\seealso{
+\code{\link{DafAnnData}}
 }

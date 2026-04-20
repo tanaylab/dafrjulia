@@ -309,6 +309,13 @@ vectors_set <- function(daf, axis) {
 #' @details Vector properties store one-dimensional data along an axis, with one value
 #'   for each entry in the axis. If the vector doesn't exist and default is NA,
 #'   a vector of NAs with appropriate length is returned.
+#'
+#'   For zero-copy-eligible element types (numeric/integer), the returned
+#'   vector is a live view over the Julia-side memory (via \code{jlview}).
+#'   Mutating the Daf through \code{set_vector()} or file-mapped writes may
+#'   change the contents of a previously returned vector. Call
+#'   \code{unname(as.vector(v))} or an explicit \code{as.numeric(v)} to take
+#'   a detached copy when stability across modifications is required.
 #'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.get_vector) for details.
 #' @examples
 #' \dontrun{
@@ -615,6 +622,13 @@ set_matrix <- function(daf, rows_axis, columns_axis, name, value, overwrite = FA
 #' @details Matrix properties store two-dimensional data along two axes.
 #'   If the matrix doesn't exist and default is NA, a matrix of NAs with appropriate dimensions is returned.
 #'   If `relayout` is TRUE and the matrix exists with flipped axes, it will be transposed automatically.
+#'
+#'   For zero-copy-eligible element types, the returned matrix is a live
+#'   view over Julia-side memory; sparse CSC matrices are also zero-copy
+#'   via \code{jlview::jlview_sparse}. Mutating the Daf through
+#'   \code{set_matrix()} or file-mapped writes may alter the contents of a
+#'   previously returned matrix. Copy explicitly if stability across
+#'   modifications is required.
 #'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.get_matrix) for details.
 #' @examples
 #' \dontrun{
@@ -847,9 +861,11 @@ read_only <- function(daf, name = NULL) {
 #'
 #' @param daf A Daf object
 #' @param axis Name of the axis
-#' @return An integer version counter
+#' @return A character string representing the current counter value. Returned
+#'   as a string rather than an R integer because the Julia-side counter is a
+#'   \code{UInt32} that can exceed R's signed-integer range.
 #' @details The version counter is incremented whenever the axis entries are modified.
-#'   This can be used to detect changes and invalidate caches.
+#'   Compare counters with \code{identical()} or \code{==} on the strings.
 #' @export
 axis_version_counter <- function(daf, axis) {
     validate_daf_object(daf)
@@ -864,9 +880,11 @@ axis_version_counter <- function(daf, axis) {
 #' @param daf A Daf object
 #' @param axis Name of the axis
 #' @param name Name of the vector property
-#' @return An integer version counter
+#' @return A character string representing the current counter value. Returned
+#'   as a string rather than an R integer because the Julia-side counter is a
+#'   \code{UInt32} that can exceed R's signed-integer range.
 #' @details The version counter is incremented whenever the vector data is modified.
-#'   This can be used to detect changes and invalidate caches.
+#'   Compare counters with \code{identical()} or \code{==} on the strings.
 #' @export
 vector_version_counter <- function(daf, axis, name) {
     validate_daf_object(daf)
@@ -1079,9 +1097,11 @@ filled_empty_sparse_matrix <- function(daf, rows_axis, columns_axis, name, colpt
 #' @param rows_axis Name of the rows axis
 #' @param columns_axis Name of the columns axis
 #' @param name Name of the matrix property
-#' @return An integer version counter
+#' @return A character string representing the current counter value. Returned
+#'   as a string rather than an R integer because the Julia-side counter is a
+#'   \code{UInt32} that can exceed R's signed-integer range.
 #' @details The version counter is incremented whenever the matrix data is modified.
-#'   This can be used to detect changes and invalidate caches.
+#'   Compare counters with \code{identical()} or \code{==} on the strings.
 #' @export
 matrix_version_counter <- function(daf, rows_axis, columns_axis, name) {
     validate_daf_object(daf)

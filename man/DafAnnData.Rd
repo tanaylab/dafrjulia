@@ -12,25 +12,25 @@ AnnData-like live facade for a Daf object
 AnnData-like live facade for a Daf object
 }
 \details{
-Wraps a Daf object and provides AnnData-compatible accessors (\verb{$X}, \verb{$obs},
-\verb{$var}, \verb{$layers}, \verb{$uns}). This is a zero-copy live facade: reads are
-lazy and go through to the underlying Daf data on demand.
+Wraps a Daf object and provides AnnData-compatible accessors
+(\code{$X}, \code{$obs}, \code{$var}, \code{$layers}, \code{$uns}).
+This is a read-only facade: reads are lazy and go through to the
+underlying Daf object on demand, benefiting from dafJuliaWrapper's
+R-side caching.
 
 The facade maps AnnData concepts to Daf data:
 \itemize{
-\item \code{$X} - the primary matrix (obs_axis x var_axis, named x_name)
-\item \code{$obs} - data frame of observation (obs_axis) vectors
-\item \code{$var} - data frame of variable (var_axis) vectors
-\item \code{$layers} - named list of additional matrices (obs_axis x var_axis)
+\item \code{$X} - the primary matrix (\code{obs_axis} x \code{var_axis}, named \code{x_name})
+\item \code{$obs} - data frame of observation (\code{obs_axis}) vectors
+\item \code{$var} - data frame of variable (\code{var_axis}) vectors
+\item \code{$layers} - named list of additional matrices (excluding \code{$X})
 \item \code{$uns} - named list of scalars
 \item \code{$obs_names} - character vector of observation names
 \item \code{$var_names} - character vector of variable names
 \item \code{$n_obs} - number of observations
 \item \code{$n_vars} - number of variables
-\item \code{$shape} - c(n_obs, n_vars)
+\item \code{$shape} - \code{c(n_obs, n_vars)}
 }
-
-All reads are lazy and cached via dafJuliaWrapper's caching system.
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -75,6 +75,7 @@ All reads are lazy and cached via dafJuliaWrapper's caching system.
 \itemize{
 \item \href{#method-DafAnnData-new}{\code{DafAnnData$new()}}
 \item \href{#method-DafAnnData-print}{\code{DafAnnData$print()}}
+\item \href{#method-DafAnnData-summary}{\code{DafAnnData$summary()}}
 \item \href{#method-DafAnnData-clone}{\code{DafAnnData$clone()}}
 }
 }
@@ -82,7 +83,7 @@ All reads are lazy and cached via dafJuliaWrapper's caching system.
 \if{html}{\out{<a id="method-DafAnnData-new"></a>}}
 \if{latex}{\out{\hypertarget{method-DafAnnData-new}{}}}
 \subsection{Method \code{new()}}{
-Create a new DafAnnData facade
+Create a new DafAnnData facade.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{DafAnnData$new(daf, obs_axis = NULL, var_axis = NULL, x_name = "UMIs")}\if{html}{\out{</div>}}
 }
@@ -92,11 +93,13 @@ Create a new DafAnnData facade
 \describe{
 \item{\code{daf}}{A Daf object}
 
-\item{\code{obs_axis}}{Observations axis name (auto-detected if NULL)}
+\item{\code{obs_axis}}{Observations axis name. If \code{NULL}, auto-detects
+\code{"cell"} or \code{"metacell"}.}
 
-\item{\code{var_axis}}{Variables axis name (auto-detected if NULL)}
+\item{\code{var_axis}}{Variables axis name. If \code{NULL}, auto-detects \code{"gene"}.}
 
-\item{\code{x_name}}{Primary matrix name (default "UMIs")}
+\item{\code{x_name}}{Primary matrix name. If \code{NULL}, the first matrix available on
+\code{(obs_axis, var_axis)} is used; defaults to \code{"UMIs"} when present.}
 }
 \if{html}{\out{</div>}}
 }
@@ -105,7 +108,9 @@ Create a new DafAnnData facade
 \if{html}{\out{<a id="method-DafAnnData-print"></a>}}
 \if{latex}{\out{\hypertarget{method-DafAnnData-print}{}}}
 \subsection{Method \code{print()}}{
-Print the DafAnnData object
+Print a concise summary. Prints dimensions and axis
+names only; call \code{summary()} for the full listing of
+obs/var/layer names.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{DafAnnData$print(...)}\if{html}{\out{</div>}}
 }
@@ -113,7 +118,28 @@ Print the DafAnnData object
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Ignored}
+\item{\code{...}}{Ignored.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-DafAnnData-summary"></a>}}
+\if{latex}{\out{\hypertarget{method-DafAnnData-summary}{}}}
+\subsection{Method \code{summary()}}{
+Full listing of obs vectors, var vectors, and layer
+names. Each access is a bridge call; kept out of
+\code{print()} to keep auto-print cheap.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{DafAnnData$summary(object, ...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{object}}{Present for S3 generic compatibility.}
+
+\item{\code{...}}{Ignored.}
 }
 \if{html}{\out{</div>}}
 }

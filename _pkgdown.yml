@@ -85,6 +85,7 @@ reference:
       - has_matrix
       - matches("^(get|set|delete)_(scalar|vector|matrix)$")
       - relayout_matrix
+      - axis_version_counter
       - matrix_version_counter
       - vector_version_counter
       - get_empty_dense_vector
@@ -141,21 +142,17 @@ reference:
     desc: "Operations for selecting data from axes and properties"
     contents:
       - Axis
-      - Lookup
       - LookupVector
       - LookupScalar
       - LookupMatrix
       - Names
       - AsAxis
-      - Fetch
       - starts_with("If")
       - BeginMask
       - BeginNegatedMask
       - EndMask
-      - MaskSlice
       - SquareColumnIs
       - SquareRowIs
-      - starts_with("SquareMask")
 
   - title: "Views and Adapters"
     desc: "Creating views and adapters for Daf objects"
@@ -214,4 +211,8 @@ reference:
       - OrNot
       - Xor
       - XorNot
+      - Lookup
+      - Fetch
+      - MaskSlice
+      - starts_with("SquareMask")
 

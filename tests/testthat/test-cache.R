@@ -65,22 +65,66 @@ test_that("empty_cache clears the R-side cache", {
 
     # Populate cache
     get_vector(daf, "cell", "score")
-
-    # Verify cache is populated
-    obj_id <- dafJuliaWrapper:::get_daf_id(daf)
-    cache <- get(obj_id, envir = dafJuliaWrapper:::.daf_cache_registry)
-    expect_gt(length(ls(cache)), 0)
+    expect_gt(length(ls(daf$cache_env)), 0)
 
     # Clear cache
     empty_cache(daf)
-
-    # Verify R-side cache is empty
-    cache <- get(obj_id, envir = dafJuliaWrapper:::.daf_cache_registry)
-    expect_equal(length(ls(cache)), 0)
+    expect_equal(length(ls(daf$cache_env)), 0)
 
     # Data should still be accessible
     result <- get_vector(daf, "cell", "score")
     expect_equal(as.numeric(result), c(1.0, 2.0, 3.0))
+})
+
+test_that("empty_cache clears R-side cache even with selective clear/keep", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
+    daf <- memory_daf()
+    add_axis(daf, "cell", c("A", "B", "C"))
+    set_vector(daf, "cell", "score", c(1.0, 2.0, 3.0))
+
+    get_vector(daf, "cell", "score")
+    expect_gt(length(ls(daf$cache_env)), 0)
+    empty_cache(daf, clear = "QueryData")
+    expect_equal(length(ls(daf$cache_env)), 0)
+
+    get_vector(daf, "cell", "score")
+    expect_gt(length(ls(daf$cache_env)), 0)
+    empty_cache(daf, keep = "MemoryData")
+    expect_equal(length(ls(daf$cache_env)), 0)
+})
+
+test_that("empty_cache rejects invalid clear/keep values", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
+    daf <- memory_daf()
+    expect_error(empty_cache(daf, clear = "Nonsense"))
+    expect_error(empty_cache(daf, keep = "AlsoWrong"))
+})
+
+test_that("two Daf wrappers of distinct Julia objects get isolated caches", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
+    daf1 <- memory_daf()
+    daf2 <- memory_daf()
+    add_axis(daf1, "cell", c("A", "B"))
+    add_axis(daf2, "cell", c("X", "Y", "Z"))
+
+    axis_vector(daf1, "cell")
+    expect_gt(length(ls(daf1$cache_env)), 0)
+    expect_equal(length(ls(daf2$cache_env)), 0)
+
+    empty_cache(daf1)
+    expect_equal(length(ls(daf1$cache_env)), 0)
+})
+
+test_that("S3 copy of a Daf shares the cache env", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
+    daf <- memory_daf()
+    add_axis(daf, "cell", c("A", "B", "C"))
+    set_vector(daf, "cell", "score", c(1.0, 2.0, 3.0))
+
+    daf_copy <- daf
+    get_vector(daf_copy, "cell", "score")
+    # both see the same entries
+    expect_equal(ls(daf$cache_env), ls(daf_copy$cache_env))
 })
 
 test_that("get_matrix caching works", {

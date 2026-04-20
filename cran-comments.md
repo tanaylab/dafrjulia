@@ -37,7 +37,12 @@ creation, documentation generation) run unconditionally. On CRAN, the check
 therefore covers package load, documentation, and R-only logic without requiring
 an external runtime or network access.
 
-**Vignette.** The vignette uses `eval = FALSE` for all code chunks.
+**Vignette.** Every code chunk in `vignettes/dafJuliaWrapper.Rmd` carries
+`eval = FALSE, purl = FALSE` explicitly. Per-chunk options are required
+(rather than a single `knitr::opts_chunk$set(...)`) because R CMD check's
+`checking running R code from vignettes` stage tangles the `.Rmd` via
+`knitr::purl()`, which reads chunk options statically and does not
+execute the setup chunk first.
 
 **Julia package installation.** To avoid unintended writes in non-interactive
 environments, Julia package installation requires explicit user confirmation
