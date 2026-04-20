@@ -9,14 +9,14 @@ setup_daf(
   seed = NULL,
   env_path = getwd(),
   installJulia = FALSE,
-  force_dev = getOption("dafr.force_dev", FALSE),
+  force_dev = getOption("dafJuliaWrapper.force_dev", FALSE),
   confirm_install = NULL,
   level = "Warn",
   show_time = TRUE,
   show_module = TRUE,
   show_location = FALSE,
-  julia_environment = getOption("dafr.julia_environment", "default"),
-  JULIA_HOME = getOption("dafr.JULIA_HOME", NULL),
+  julia_environment = getOption("dafJuliaWrapper.julia_environment", "default"),
+  JULIA_HOME = getOption("dafJuliaWrapper.JULIA_HOME", NULL),
   ...
 )
 }
@@ -31,7 +31,7 @@ By default, this is the current working directory.}
 
 \item{installJulia}{(Default=TRUE) Whether to install Julia}
 
-\item{force_dev}{(Default=FALSE) Whether to force dev versions of packages, default value comes from getOption("dafr.force_dev")}
+\item{force_dev}{(Default=FALSE) Whether to force dev versions of packages, default value comes from getOption("dafJuliaWrapper.force_dev")}
 
 \item{confirm_install}{Whether to allow installation of Julia packages
 that may write to the Julia package store. If \code{NULL} (default),
@@ -49,10 +49,10 @@ prompt interactively and fail in non-interactive sessions.}
 "custom" creates a new environment (default if option not set),
 "default" uses the default Julia environment,
 any other value can be the path to a custom environment.
-Default value comes from getOption("dafr.julia_environment")}
+Default value comes from getOption("dafJuliaWrapper.julia_environment")}
 
 \item{JULIA_HOME}{The path to the Julia installation.
-Default value comes from getOption("dafr.JULIA_HOME").
+Default value comes from getOption("dafJuliaWrapper.JULIA_HOME").
 See \code{\link[JuliaCall]{julia_setup}} for more details.}
 
 \item{...}{Other parameters passed on to \code{\link[JuliaCall]{julia_setup}}}
@@ -89,7 +89,7 @@ setup_daf(julia_environment = "default")
 setup_daf(pkg_check = FALSE)
 
 # Set global option
-options(dafr.julia_environment = "default")
+options(dafJuliaWrapper.julia_environment = "default")
 setup_daf() # Will use the default Julia environment
 }
 }

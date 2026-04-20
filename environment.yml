@@ -27,7 +27,7 @@ dependencies:
   # R build tools
   - r-devtools
   - r-remotes
-  # dafr dependencies
+  # dafJuliaWrapper dependencies
   - r-cli
   - r-juliacall
   - r-matrix

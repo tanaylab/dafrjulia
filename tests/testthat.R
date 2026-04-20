@@ -1,4 +1,4 @@
 library(testthat)
-library(dafr)
+library(dafJuliaWrapper)
 
-test_check("dafr")
+test_check("dafJuliaWrapper")

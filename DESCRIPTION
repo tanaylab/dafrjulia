@@ -1,4 +1,4 @@
-Package: dafr
+Package: dafJuliaWrapper
 Title: R Interface to the Julia 'DataAxesFormats' Package
 Version: 0.1.0
 Authors@R: c(
@@ -13,15 +13,15 @@ Description: An R interface to 'DataAxesFormats.jl'
     providing a uniform interface for accessing multi-dimensional data
     arranged along arbitrary axes. This package generalizes and extends
     'AnnData'-like functionality, supporting both 1D and 2D data, multiple
-    data modalities, and efficient memory management. 'dafr' enables R
+    data modalities, and efficient memory management. 'dafJuliaWrapper' enables R
     users to create, read, modify, and analyze complex biological datasets
     such as single-cell data with multiple modalities (RNA-seq, ATAC-seq,
     etc.). The package implements efficient memory management strategies
     and provides a seamless interface between R and 'Julia' for handling
     large-scale biological data.
 License: MIT + file LICENSE
-URL: https://tanaylab.github.io/dafr/, https://github.com/tanaylab/dafr
-BugReports: https://github.com/tanaylab/dafr/issues
+URL: https://tanaylab.github.io/dafJuliaWrapper/, https://github.com/tanaylab/dafJuliaWrapper
+BugReports: https://github.com/tanaylab/dafJuliaWrapper/issues
 Depends: 
     R (>= 4.1.0)
 SystemRequirements: Julia (>= 1.10, https://julialang.org/downloads/), DataAxesFormats.jl, TanayLabUtilities.jl,
@@ -57,7 +57,7 @@ Collate:
     'concat.R'
     'contracts.R'
     'copies.R'
-    'dafr-package.R'
+    'dafJuliaWrapper-package.R'
     'data.R'
     'deprecated.R'
     'example_data.R'

@@ -1,4 +1,4 @@
-library(dafr)
+library(dafJuliaWrapper)
 library(jlview)
 library(JuliaCall)
 
@@ -6,7 +6,7 @@ setup_daf(pkg_check = FALSE)
 
 cat("=== Phase 5a Benchmark: Zero-Copy with Named Matrices ===\n\n")
 
-# Create test data: 10K x 1K named Float64 matrix using dafr's R API
+# Create test data: 10K x 1K named Float64 matrix using dafJuliaWrapper's R API
 daf <- memory_daf(name = "bench")
 cell_names <- sprintf("cell_%05d", 1:10000)
 gene_names <- sprintf("gene_%04d", 1:1000)

@@ -30,7 +30,7 @@ The facade maps AnnData concepts to Daf data:
 \item \code{$shape} - c(n_obs, n_vars)
 }
 
-All reads are lazy and cached via dafr's caching system.
+All reads are lazy and cached via dafJuliaWrapper's caching system.
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}

@@ -67,15 +67,15 @@ test_that("empty_cache clears the R-side cache", {
     get_vector(daf, "cell", "score")
 
     # Verify cache is populated
-    obj_id <- dafr:::get_daf_id(daf)
-    cache <- get(obj_id, envir = dafr:::.daf_cache_registry)
+    obj_id <- dafJuliaWrapper:::get_daf_id(daf)
+    cache <- get(obj_id, envir = dafJuliaWrapper:::.daf_cache_registry)
     expect_gt(length(ls(cache)), 0)
 
     # Clear cache
     empty_cache(daf)
 
     # Verify R-side cache is empty
-    cache <- get(obj_id, envir = dafr:::.daf_cache_registry)
+    cache <- get(obj_id, envir = dafJuliaWrapper:::.daf_cache_registry)
     expect_equal(length(ls(cache)), 0)
 
     # Data should still be accessible

@@ -1,13 +1,13 @@
 #!/usr/bin/env Rscript
 # =============================================================================
-# dafr Efficiency Bottleneck Micro-Benchmarks
+# dafJuliaWrapper Efficiency Bottleneck Micro-Benchmarks
 # =============================================================================
 #
 # Usage:
 #   Rscript bench-efficiency-review.R
 #
 # Prerequisites:
-#   - dafr, jlview, JuliaCall installed
+#   - dafJuliaWrapper, jlview, JuliaCall installed
 #   - Julia environment with DataAxesFormats.jl available
 #
 # This benchmark covers 7 bottleneck areas:
@@ -74,17 +74,17 @@ reps <- 5
 # =============================================================================
 # 0. SETUP  (not timed; required for all subsequent benchmarks)
 # =============================================================================
-cat("=== dafr Efficiency Bottleneck Benchmarks ===\n\n")
+cat("=== dafJuliaWrapper Efficiency Bottleneck Benchmarks ===\n\n")
 
-cat("[0] Loading dafr and initialising Julia...\n")
-library(dafr)
+cat("[0] Loading dafJuliaWrapper and initialising Julia...\n")
+library(dafJuliaWrapper)
 library(jlview)
 library(JuliaCall)
 library(Matrix)
 
 # -- Benchmark 1: Cold-start sub-phases --------------------------------------
 # We time the *remaining* setup_daf phases (JuliaCall::julia_setup already done
-# when library(dafr) was loaded, so we time it once separately then load pkgs).
+# when library(dafJuliaWrapper) was loaded, so we time it once separately then load pkgs).
 
 cat("\n[1] Cold-start / setup_daf sub-phases\n")
 
@@ -101,7 +101,7 @@ results[[length(results) + 1]] <- summarise_bench(
 # Phase 1b: Pkg.activate
 t_pkg_activate <- system.time({
     JuliaCall::julia_library("Pkg")
-    dafr:::use_default_julia_environment("default")
+    dafJuliaWrapper:::use_default_julia_environment("default")
 })
 results[[length(results) + 1]] <- summarise_bench(
     "cold_start:pkg_activate (single run)", c(t_pkg_activate["elapsed"])
@@ -118,9 +118,9 @@ results[[length(results) + 1]] <- summarise_bench(
 
 # Phase 1d: import_julia_packages + define_julia_functions + type cache
 t_define <- system.time({
-    dafr:::import_julia_packages()
-    dafr:::define_julia_functions()
-    dafr:::init_julia_type_cache()
+    dafJuliaWrapper:::import_julia_packages()
+    dafJuliaWrapper:::define_julia_functions()
+    dafJuliaWrapper:::init_julia_type_cache()
 })
 results[[length(results) + 1]] <- summarise_bench(
     "cold_start:define_helpers (single run)", c(t_define["elapsed"])
@@ -128,7 +128,7 @@ results[[length(results) + 1]] <- summarise_bench(
 
 # Phase 1e: setup_logger
 t_logger <- system.time({
-    dafr:::setup_logger(level = "Warn", show_time = TRUE, show_module = TRUE, show_location = FALSE)
+    dafJuliaWrapper:::setup_logger(level = "Warn", show_time = TRUE, show_module = TRUE, show_location = FALSE)
 })
 results[[length(results) + 1]] <- summarise_bench(
     "cold_start:setup_logger (single run)", c(t_logger["elapsed"])
@@ -231,7 +231,7 @@ results[[length(results) + 1]] <- safe_bench(
             daf_small$jl_obj, "cell", "score",
             need_return = "Julia"
         )
-        r_vec <- dafr:::from_julia_array(jl_vec)
+        r_vec <- dafJuliaWrapper:::from_julia_array(jl_vec)
     },
     n = reps
 )
@@ -244,7 +244,7 @@ results[[length(results) + 1]] <- safe_bench(
             daf_small$jl_obj, "cell", "gene", "UMIs",
             need_return = "Julia"
         )
-        r_mat <- dafr:::from_julia_array(jl_mat)
+        r_mat <- dafJuliaWrapper:::from_julia_array(jl_mat)
     },
     n = reps
 )
@@ -257,7 +257,7 @@ results[[length(results) + 1]] <- safe_bench(
             daf_small$jl_obj, "cell", "gene", "weights",
             need_return = "Julia"
         )
-        r_sp <- dafr:::from_julia_array(jl_sp)
+        r_sp <- dafJuliaWrapper:::from_julia_array(jl_sp)
     },
     n = reps
 )
@@ -270,7 +270,7 @@ results[[length(results) + 1]] <- safe_bench(
             daf_small$jl_obj, "cell", "flag",
             need_return = "Julia"
         )
-        r_bool <- dafr:::from_julia_array(jl_bool)
+        r_bool <- dafJuliaWrapper:::from_julia_array(jl_bool)
     },
     n = reps
 )
@@ -283,7 +283,7 @@ results[[length(results) + 1]] <- safe_bench(
             daf_small$jl_obj, "cell", "label",
             need_return = "Julia"
         )
-        r_str <- dafr:::from_julia_array(jl_str)
+        r_str <- dafJuliaWrapper:::from_julia_array(jl_str)
     },
     n = reps
 )
@@ -301,9 +301,9 @@ results[[length(results) + 1]] <- safe_bench(
     "version_counter:get_vector_cache_miss",
     function() {
         # Clear R cache before each iteration to force miss
-        obj_id <- dafr:::get_daf_id(daf_small)
-        if (exists(obj_id, envir = dafr:::.daf_cache_registry)) {
-            cache <- get(obj_id, envir = dafr:::.daf_cache_registry)
+        obj_id <- dafJuliaWrapper:::get_daf_id(daf_small)
+        if (exists(obj_id, envir = dafJuliaWrapper:::.daf_cache_registry)) {
+            cache <- get(obj_id, envir = dafJuliaWrapper:::.daf_cache_registry)
             rm(list = ls(cache), envir = cache)
         }
         v <- get_vector(daf_small, "cell", "score")
@@ -348,7 +348,7 @@ cat("\n[4] Cache infrastructure: get_daf_id overhead\n")
 results[[length(results) + 1]] <- safe_bench(
     "cache:get_daf_id",
     function() {
-        id <- dafr:::get_daf_id(daf_small)
+        id <- dafJuliaWrapper:::get_daf_id(daf_small)
     },
     n = reps
 )
@@ -364,7 +364,7 @@ vc_for_bench <- JuliaCall::julia_call("string",
 results[[length(results) + 1]] <- safe_bench(
     "cache:cache_lookup",
     function() {
-        val <- dafr:::cache_lookup(daf_small, "vec:cell:score", vc_for_bench)
+        val <- dafJuliaWrapper:::cache_lookup(daf_small, "vec:cell:score", vc_for_bench)
     },
     n = reps
 )
@@ -373,7 +373,7 @@ results[[length(results) + 1]] <- safe_bench(
 results[[length(results) + 1]] <- safe_bench(
     "cache:full_lookup_roundtrip",
     function() {
-        cache <- dafr:::get_daf_cache(daf_small)
+        cache <- dafJuliaWrapper:::get_daf_cache(daf_small)
         full_key <- paste0(vc_for_bench, ":vec:cell:score")
         val <- if (exists(full_key, envir = cache)) get(full_key, envir = cache) else NULL
     },
@@ -506,7 +506,7 @@ jl_bool_vec <- JuliaCall::julia_call("DataAxesFormats.get_vector",
 results[[length(results) + 1]] <- safe_bench(
     "typeconv:float64_zerocopy_10K",
     function() {
-        r <- dafr:::from_julia_array(jl_float_vec)
+        r <- dafJuliaWrapper:::from_julia_array(jl_float_vec)
     },
     n = reps
 )
@@ -515,7 +515,7 @@ results[[length(results) + 1]] <- safe_bench(
 results[[length(results) + 1]] <- safe_bench(
     "typeconv:bool_collect_10K",
     function() {
-        r <- dafr:::from_julia_array(jl_bool_vec)
+        r <- dafJuliaWrapper:::from_julia_array(jl_bool_vec)
     },
     n = reps
 )
@@ -528,7 +528,7 @@ jl_str_vec <- JuliaCall::julia_call("DataAxesFormats.get_vector",
 results[[length(results) + 1]] <- safe_bench(
     "typeconv:string_collect_10K",
     function() {
-        r <- dafr:::from_julia_array(jl_str_vec)
+        r <- dafJuliaWrapper:::from_julia_array(jl_str_vec)
     },
     n = reps
 )

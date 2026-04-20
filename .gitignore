@@ -1,6 +1,6 @@
 dev
 docs
-dafr.code-workspace
+dafJuliaWrapper.code-workspace
 
 # Local agent/editor state
 .a5c/

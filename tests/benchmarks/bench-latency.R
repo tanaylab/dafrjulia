@@ -1,4 +1,4 @@
-library(dafr)
+library(dafJuliaWrapper)
 library(jlview)
 
 setup_daf(confirm_install = TRUE)

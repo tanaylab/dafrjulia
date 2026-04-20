@@ -41,7 +41,7 @@ install_daf_packages <- function(force_dev = FALSE, confirm_install = NULL) {
     if (is.null(confirm_install)) {
         if (interactive()) {
             confirm_install <- isTRUE(utils::askYesNo(
-                "Install required Julia packages for dafr? This may download packages and write to your Julia package store."
+                "Install required Julia packages for dafJuliaWrapper? This may download packages and write to your Julia package store."
             ))
         } else {
             confirm_install <- FALSE
@@ -102,7 +102,7 @@ load_daf_packages <- function() {
 #' @param env_path The path to were the Julia environment should be created.
 #'                 By default, this is the current working directory.
 #' @param installJulia (Default=TRUE) Whether to install Julia
-#' @param force_dev (Default=FALSE) Whether to force dev versions of packages, default value comes from getOption("dafr.force_dev")
+#' @param force_dev (Default=FALSE) Whether to force dev versions of packages, default value comes from getOption("dafJuliaWrapper.force_dev")
 #' @param confirm_install Whether to allow installation of Julia packages
 #'   that may write to the Julia package store. If \code{NULL} (default),
 #'   prompt interactively and fail in non-interactive sessions.
@@ -110,9 +110,9 @@ load_daf_packages <- function() {
 #'                         "custom" creates a new environment (default if option not set),
 #'                         "default" uses the default Julia environment,
 #'                         any other value can be the path to a custom environment.
-#'                         Default value comes from getOption("dafr.julia_environment")
+#'                         Default value comes from getOption("dafJuliaWrapper.julia_environment")
 #' @param JULIA_HOME The path to the Julia installation.
-#'                    Default value comes from getOption("dafr.JULIA_HOME").
+#'                    Default value comes from getOption("dafJuliaWrapper.JULIA_HOME").
 #'                    See \code{\link[JuliaCall]{julia_setup}} for more details.
 #' @param ... Other parameters passed on to \code{\link[JuliaCall]{julia_setup}}
 #'
@@ -141,21 +141,21 @@ load_daf_packages <- function() {
 #' setup_daf(pkg_check = FALSE)
 #'
 #' # Set global option
-#' options(dafr.julia_environment = "default")
+#' options(dafJuliaWrapper.julia_environment = "default")
 #' setup_daf() # Will use the default Julia environment
 #' }
 #' @inheritParams setup_logger
 #' @export
 setup_daf <- function(pkg_check = TRUE, seed = NULL,
                       env_path = getwd(), installJulia = FALSE,
-                      force_dev = getOption("dafr.force_dev", FALSE),
+                      force_dev = getOption("dafJuliaWrapper.force_dev", FALSE),
                       confirm_install = NULL,
                       level = "Warn",
                       show_time = TRUE,
                       show_module = TRUE,
                       show_location = FALSE,
-                      julia_environment = getOption("dafr.julia_environment", "default"),
-                      JULIA_HOME = getOption("dafr.JULIA_HOME", NULL),
+                      julia_environment = getOption("dafJuliaWrapper.julia_environment", "default"),
+                      JULIA_HOME = getOption("dafJuliaWrapper.JULIA_HOME", NULL),
                       ...) {
     julia <- JuliaCall::julia_setup(installJulia = installJulia, JULIA_HOME = JULIA_HOME, ...)
     JuliaCall::julia_library("Pkg")

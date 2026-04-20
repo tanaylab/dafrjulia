@@ -102,7 +102,7 @@ jobs:
           )
         shell: Rscript {0}
 
-      - name: Install dafr package
+      - name: Install dafJuliaWrapper package
         run: R CMD INSTALL .
 
       # Tests run on macOS only - JuliaCall/RCall segfaults on Ubuntu Linux
@@ -113,7 +113,7 @@ jobs:
         run: |
           Rscript -e '
           library(testthat)
-          library(dafr)
+          library(dafJuliaWrapper)
 
           # Initialize Julia/DAF
           tryCatch({

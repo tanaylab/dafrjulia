@@ -69,7 +69,7 @@ jobs:
           anaconda -t "$ANACONDA_TOKEN" upload \
             --user aviezerl \
             --force \
-            conda-output/linux-64/r-dafr-*.tar.bz2
+            conda-output/linux-64/r-dafJuliaWrapper-*.tar.bz2
         env:
           ANACONDA_TOKEN: ${{ secrets.ANACONDA_TOKEN }}
 
@@ -78,5 +78,5 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: conda-package-linux-64
-          path: conda-output/linux-64/r-dafr-*.tar.bz2
+          path: conda-output/linux-64/r-dafJuliaWrapper-*.tar.bz2
           if-no-files-found: warn

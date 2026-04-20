@@ -8,13 +8,13 @@ test_that("handler constants are exported correctly", {
 test_that("get_julia_handler validates input", {
     skip_if(!JULIA_AVAILABLE, "Julia not available")
     # Valid handlers should not error
-    expect_no_error(dafr:::get_julia_handler(IGNORE_HANDLER))
-    expect_no_error(dafr:::get_julia_handler(WARN_HANDLER))
-    expect_no_error(dafr:::get_julia_handler(ERROR_HANDLER))
+    expect_no_error(dafJuliaWrapper:::get_julia_handler(IGNORE_HANDLER))
+    expect_no_error(dafJuliaWrapper:::get_julia_handler(WARN_HANDLER))
+    expect_no_error(dafJuliaWrapper:::get_julia_handler(ERROR_HANDLER))
 
     # Invalid handler should error with clear message
     expect_error(
-        dafr:::get_julia_handler("InvalidHandler"),
+        dafJuliaWrapper:::get_julia_handler("InvalidHandler"),
         "Handler must be one of:"
     )
 })

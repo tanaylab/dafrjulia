@@ -10,7 +10,7 @@
 
 ## Julia dependency notes
 
-`dafr` provides an R interface to the Julia package 'DataAxesFormats.jl' via
+`dafJuliaWrapper` provides an R interface to the Julia package 'DataAxesFormats.jl' via
 `JuliaCall` (already on CRAN). Julia (>= 1.10) and several Julia packages are
 declared in `SystemRequirements` with a download URL, following CRAN policy.
 
