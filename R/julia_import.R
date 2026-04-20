@@ -482,7 +482,11 @@ from_julia_array <- function(julia_array) {
     if (eltype_str %in% zero_copy_types && !is_sparse_abstract) {
         if (is_named_vec && length(names1) > 0) {
             r_array <- jlview::jlview(julia_array, names = names1)
+            # jlview may return the view with a dim attribute (observed on
+            # macOS/arm64 jlview 0.1.0). `as.vector()` strips names along
+            # with the dim, so re-apply names1 unconditionally.
             if (!is.null(dim(r_array))) r_array <- as.vector(r_array)
+            names(r_array) <- names1
             return(r_array)
         }
 
