@@ -175,10 +175,9 @@ define_julia_functions <- function() {
     # indexing; no string delimiter is used, so property names containing
     # any character are safe. No Main-level globals are used, so this is
     # safe under re-entrant calls.
-    julia_eval("
-    const _ZERO_COPY_TYPES = Set([\"Float64\", \"Float32\", \"Int64\", \"Int32\", \"Int16\",
-                                   \"UInt8\", \"UInt16\", \"UInt32\", \"UInt64\"])
+    julia_eval("const _ZERO_COPY_TYPES = Set([\"Float64\", \"Float32\", \"Int64\", \"Int32\", \"Int16\", \"UInt8\", \"UInt16\", \"UInt32\", \"UInt64\"])")
 
+    julia_eval("
     function _prepare_for_r(array)
         stripped = _strip_wrappers(array)
         et = string(eltype(stripped))
