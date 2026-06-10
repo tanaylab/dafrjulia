@@ -10,7 +10,7 @@
 
 ## Julia dependency notes
 
-`dafJuliaWrapper` provides an R interface to the Julia package 'DataAxesFormats.jl' via
+`dafrjulia` provides an R interface to the Julia package 'DataAxesFormats.jl' via
 `JuliaCall` (already on CRAN). Julia (>= 1.10) and several Julia packages are
 declared in `SystemRequirements` with a download URL, following CRAN policy.
 
@@ -37,7 +37,7 @@ creation, documentation generation) run unconditionally. On CRAN, the check
 therefore covers package load, documentation, and R-only logic without requiring
 an external runtime or network access.
 
-**Vignette.** Every code chunk in `vignettes/dafJuliaWrapper.Rmd` carries
+**Vignette.** Every code chunk in `vignettes/dafrjulia.Rmd` carries
 `eval = FALSE, purl = FALSE` explicitly. Per-chunk options are required
 (rather than a single `knitr::opts_chunk$set(...)`) because R CMD check's
 `checking running R code from vignettes` stage tangles the `.Rmd` via

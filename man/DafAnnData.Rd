@@ -15,7 +15,7 @@ AnnData-like live facade for a Daf object
 Wraps a Daf object and provides AnnData-compatible accessors
 (\code{$X}, \code{$obs}, \code{$var}, \code{$layers}, \code{$uns}).
 This is a read-only facade: reads are lazy and go through to the
-underlying Daf object on demand, benefiting from dafJuliaWrapper's
+underlying Daf object on demand, benefiting from dafrjulia's
 R-side caching.
 
 The facade maps AnnData concepts to Daf data:

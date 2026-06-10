@@ -1,8 +1,8 @@
 ---
-title: "Getting Started with dafJuliaWrapper"
+title: "Getting Started with dafrjulia"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Getting Started with dafJuliaWrapper}
+  %\VignetteIndexEntry{Getting Started with dafrjulia}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -18,20 +18,20 @@ knitr::opts_chunk$set(
 
 ## Introduction
 
-**dafJuliaWrapper** is an R interface to
+**dafrjulia** is an R interface to
 [DataAxesFormats.jl](https://github.com/tanaylab/DataAxesFormats.jl), a Julia
 package that provides a uniform interface for accessing multi-dimensional data
 arranged along named axes. It generalizes AnnData-like functionality, supporting
 scalars, 1D vectors, and 2D matrices organized along arbitrary named axes with
 efficient memory management.
 
-dafJuliaWrapper requires a working Julia installation (>= 1.10). Install Julia from
+dafrjulia requires a working Julia installation (>= 1.10). Install Julia from
 <https://julialang.org/downloads/>.
 
 ## Setup
 
 ```{r, eval = FALSE, purl = FALSE}
-library(dafJuliaWrapper)
+library(dafrjulia)
 
 # Initialize Julia and install required Julia packages (first time only)
 setup_daf()
@@ -113,7 +113,7 @@ get_matrix(daf, "cell", "gene", "UMIs")
 
 ## Querying Data
 
-dafJuliaWrapper provides a composable query system for extracting and transforming data.
+dafrjulia provides a composable query system for extracting and transforming data.
 Queries are built using pipe operators:
 
 ```{r, eval = FALSE, purl = FALSE}
@@ -149,7 +149,7 @@ has_matrix(daf, "cell", "gene", "UMIs")
 
 ## Working with Example Data
 
-dafJuliaWrapper includes example datasets for testing and exploration:
+dafrjulia includes example datasets for testing and exploration:
 
 ```{r, eval = FALSE, purl = FALSE}
 example_daf <- example_cells_daf()
@@ -160,5 +160,5 @@ print(example_daf)
 
 - [DataAxesFormats.jl documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/)
   for the full Julia API reference
-- [dafJuliaWrapper package documentation](https://tanaylab.github.io/dafJuliaWrapper/) for the
+- [dafrjulia package documentation](https://tanaylab.github.io/dafrjulia/) for the
   complete R API reference

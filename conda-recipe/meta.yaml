@@ -1,4 +1,4 @@
-{% set name = "r-dafJuliaWrapper" %}
+{% set name = "r-dafrjulia" %}
 {% set version = load_file_regex(load_file="DESCRIPTION", regex_pattern='Version: (\S+)').group(1) %}
 
 package:
@@ -34,11 +34,11 @@ requirements:
 
 test:
   commands:
-    - $R -e "library('dafJuliaWrapper')"
+    - $R -e "library('dafrjulia')"
 
 about:
-  home: https://tanaylab.github.io/dafJuliaWrapper/
-  dev_url: https://github.com/tanaylab/dafJuliaWrapper
+  home: https://tanaylab.github.io/dafrjulia/
+  dev_url: https://github.com/tanaylab/dafrjulia
   license: MIT
   license_family: MIT
   license_file: LICENSE

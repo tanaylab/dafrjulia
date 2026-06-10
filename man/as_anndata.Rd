@@ -24,7 +24,7 @@ A \code{\link{DafAnnData}} R6 object
 Creates a live, read-only facade over a Daf object that provides AnnData-compatible
 accessors (\code{$X}, \code{$obs}, \code{$var}, \code{$layers}, \code{$uns}).
 No data is copied at construction; reads go through to the underlying Daf
-object on demand, served by dafJuliaWrapper's R-side cache on subsequent calls.
+object on demand, served by dafrjulia's R-side cache on subsequent calls.
 }
 \examples{
 \dontrun{

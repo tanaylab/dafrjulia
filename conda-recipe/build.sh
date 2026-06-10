@@ -4,11 +4,11 @@ set -euo pipefail
 # Install the R package
 ${R} CMD INSTALL --build . -l "${PREFIX}/lib/R/library"
 
-# Set up Julia packages needed by dafJuliaWrapper
+# Set up Julia packages needed by dafrjulia
 # This installs DataAxesFormats.jl and its dependencies into the default Julia environment
 # so they are available when the user calls setup_daf()
 if command -v julia &> /dev/null; then
-    echo "Installing Julia dependencies for dafJuliaWrapper..."
+    echo "Installing Julia dependencies for dafrjulia..."
     julia -e '
     using Pkg
     Pkg.add("Suppressor")
@@ -28,6 +28,6 @@ if command -v julia &> /dev/null; then
 else
     echo "WARNING: Julia not found during build. Julia packages must be installed manually."
     echo "After installing Julia, run in R:"
-    echo '  library(dafJuliaWrapper)'
+    echo '  library(dafrjulia)'
     echo '  setup_daf()'
 fi
