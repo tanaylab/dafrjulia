@@ -1,4 +1,4 @@
-# contracts.R - DAF Contract Support for dafJuliaWrapper
+# contracts.R - DAF Contract Support for dafrjulia
 #
 # Wraps the DataAxesFormats.Contracts module from Julia to provide
 # contract-based data validation in R.

@@ -1,4 +1,4 @@
-# dafJuliaWrapper 0.1.0
+# dafrjulia 0.1.0
 
 **First CRAN release. Renamed from `dafr` — the `dafr` name has been freed
 for a native-R reimplementation in a separate repository. This package is
@@ -7,8 +7,8 @@ accordingly.**
 
 ## Migration from `dafr`
 
-* `library(dafr)` becomes `library(dafJuliaWrapper)`.
-* `options(dafr.JULIA_HOME = ...)` becomes `options(dafJuliaWrapper.JULIA_HOME = ...)`;
+* `library(dafr)` becomes `library(dafrjulia)`.
+* `options(dafr.JULIA_HOME = ...)` becomes `options(dafrjulia.JULIA_HOME = ...)`;
   same for `dafr.julia_environment` and other `dafr.*` options.
 * Public API (function names, arguments, return shapes) is unchanged.
 
@@ -86,7 +86,7 @@ accordingly.**
 
 ---
 
-# dafr 0.1.0 (renamed to dafJuliaWrapper)
+# dafr 0.1.0 (renamed to dafrjulia)
 
 ## Breaking Changes
 

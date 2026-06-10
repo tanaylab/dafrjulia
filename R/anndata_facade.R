@@ -3,7 +3,7 @@
 #' Wraps a Daf object and provides AnnData-compatible accessors
 #' (\code{$X}, \code{$obs}, \code{$var}, \code{$layers}, \code{$uns}).
 #' This is a read-only facade: reads are lazy and go through to the
-#' underlying Daf object on demand, benefiting from dafJuliaWrapper's
+#' underlying Daf object on demand, benefiting from dafrjulia's
 #' R-side caching.
 #'
 #' The facade maps AnnData concepts to Daf data:
@@ -209,7 +209,7 @@ DafAnnData <- R6::R6Class("DafAnnData",
 #' Creates a live, read-only facade over a Daf object that provides AnnData-compatible
 #' accessors (\code{$X}, \code{$obs}, \code{$var}, \code{$layers}, \code{$uns}).
 #' No data is copied at construction; reads go through to the underlying Daf
-#' object on demand, served by dafJuliaWrapper's R-side cache on subsequent calls.
+#' object on demand, served by dafrjulia's R-side cache on subsequent calls.
 #'
 #' @param daf A Daf object
 #' @param obs_axis Name of the observations axis. Auto-detected if NULL (tries "cell", then "metacell").

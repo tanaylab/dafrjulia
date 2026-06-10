@@ -57,7 +57,7 @@ anndata
 barcodes
 composable
 daf
-dafJuliaWrapper
+dafrjulia
 dev
 dplyr
 facade
