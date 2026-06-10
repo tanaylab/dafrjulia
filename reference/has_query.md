@@ -33,6 +33,6 @@ for details.
 
 ## See also
 
-[`get_query()`](https://tanaylab.github.io/dafJuliaWrapper/reference/get_query.md),
-[`parse_query()`](https://tanaylab.github.io/dafJuliaWrapper/reference/parse_query.md),
+[`get_query()`](https://tanaylab.github.io/dafrjulia/reference/get_query.md),
+[`parse_query()`](https://tanaylab.github.io/dafrjulia/reference/parse_query.md),
 and the query operations documentation.

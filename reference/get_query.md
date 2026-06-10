@@ -41,9 +41,9 @@ for details.
 
 ## See also
 
-[`has_query()`](https://tanaylab.github.io/dafJuliaWrapper/reference/has_query.md),
-[`parse_query()`](https://tanaylab.github.io/dafJuliaWrapper/reference/parse_query.md),
-[`get_dataframe_query()`](https://tanaylab.github.io/dafJuliaWrapper/reference/get_dataframe_query.md),
+[`has_query()`](https://tanaylab.github.io/dafrjulia/reference/has_query.md),
+[`parse_query()`](https://tanaylab.github.io/dafrjulia/reference/parse_query.md),
+[`get_dataframe_query()`](https://tanaylab.github.io/dafrjulia/reference/get_dataframe_query.md),
 and the query operations documentation.
 
 ## Examples

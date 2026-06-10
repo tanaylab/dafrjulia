@@ -2,7 +2,7 @@
 
 Retrieves multiple vector properties for an axis as a dataframe,
 returning the raw Julia-style result. For a more R-friendly version, see
-[`get_dataframe()`](https://tanaylab.github.io/dafJuliaWrapper/reference/get_dataframe.md).
+[`get_dataframe()`](https://tanaylab.github.io/dafrjulia/reference/get_dataframe.md).
 
 ## Usage
 

@@ -1,6 +1,6 @@
 # Changelog
 
-## dafJuliaWrapper 0.1.0
+## dafrjulia 0.1.0
 
 **First CRAN release. Renamed from `dafr` — the `dafr` name has been
 freed for a native-R reimplementation in a separate repository. This
@@ -10,9 +10,9 @@ been renamed accordingly.**
 ### Migration from `dafr`
 
 - [`library(dafr)`](https://rdrr.io/r/base/library.html) becomes
-  [`library(dafJuliaWrapper)`](https://tanaylab.github.io/dafJuliaWrapper/).
+  [`library(dafrjulia)`](https://tanaylab.github.io/dafrjulia/).
 - `options(dafr.JULIA_HOME = ...)` becomes
-  `options(dafJuliaWrapper.JULIA_HOME = ...)`; same for
+  `options(dafrjulia.JULIA_HOME = ...)`; same for
   `dafr.julia_environment` and other `dafr.*` options.
 - Public API (function names, arguments, return shapes) is unchanged.
 

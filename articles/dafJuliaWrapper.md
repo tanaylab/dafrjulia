@@ -1,8 +1,8 @@
-# Getting Started with dafJuliaWrapper
+# Getting Started with dafrjulia
 
 ## Introduction
 
-**dafJuliaWrapper** is an R interface to
+**dafrjulia** is an R interface to
 [DataAxesFormats.jl](https://github.com/tanaylab/DataAxesFormats.jl), a
 Julia package that provides a uniform interface for accessing
 multi-dimensional data arranged along named axes. It generalizes
@@ -10,20 +10,21 @@ AnnData-like functionality, supporting scalars, 1D vectors, and 2D
 matrices organized along arbitrary named axes with efficient memory
 management.
 
-dafJuliaWrapper requires a working Julia installation (\>= 1.10).
-Install Julia from <https://julialang.org/downloads/>.
+dafrjulia requires a working Julia installation (\>= 1.10). Install
+Julia from <https://julialang.org/downloads/>.
 
 ## Setup
 
 ``` r
-library(dafJuliaWrapper)
+
+library(dafrjulia)
 
 # Initialize Julia and install required Julia packages (first time only)
 setup_daf()
 ```
 
 The
-[`setup_daf()`](https://tanaylab.github.io/dafJuliaWrapper/reference/setup_daf.md)
+[`setup_daf()`](https://tanaylab.github.io/dafrjulia/reference/setup_daf.md)
 call initializes the Julia runtime and ensures the required Julia
 packages are available. This only needs to be called once per R session.
 
@@ -32,12 +33,14 @@ packages are available. This only needs to be called once per R session.
 The simplest way to get started is with an in-memory Daf:
 
 ``` r
+
 daf <- memory_daf("my_data")
 ```
 
 You can also use file-based or HDF5-based storage:
 
 ``` r
+
 # File-based storage
 daf_files <- files_daf("/path/to/directory", "w", name = "files_data")
 
@@ -53,6 +56,7 @@ Axes are the named dimensions of your data. Each axis has a set of
 unique entry names:
 
 ``` r
+
 add_axis(daf, "cell", c("C1", "C2", "C3", "C4", "C5"))
 add_axis(daf, "gene", c("Gene1", "Gene2", "Gene3"))
 ```
@@ -62,6 +66,7 @@ add_axis(daf, "gene", c("Gene1", "Gene2", "Gene3"))
 Scalars are global properties of the dataset:
 
 ``` r
+
 set_scalar(daf, "version", "1.0")
 set_scalar(daf, "organism", "human")
 get_scalar(daf, "version")
@@ -72,6 +77,7 @@ get_scalar(daf, "version")
 Vectors store one value per entry along an axis:
 
 ``` r
+
 set_vector(daf, "cell", "batch", c("B1", "B1", "B2", "B2", "B2"))
 set_vector(daf, "gene", "is_marker", c(TRUE, FALSE, TRUE))
 
@@ -84,6 +90,7 @@ get_vector(daf, "cell", "batch")
 Matrices store values for each combination of entries along two axes:
 
 ``` r
+
 umis <- matrix(
     c(
         10, 20, 0, 5, 15,
@@ -100,10 +107,11 @@ get_matrix(daf, "cell", "gene", "UMIs")
 
 ## Querying Data
 
-dafJuliaWrapper provides a composable query system for extracting and
+dafrjulia provides a composable query system for extracting and
 transforming data. Queries are built using pipe operators:
 
 ``` r
+
 # Get a vector property
 get_query(daf, Axis("cell") |> LookupVector("batch"))
 
@@ -115,15 +123,17 @@ get_query(daf, Axis("cell") |> Axis("gene") |> LookupMatrix("UMIs") |> Sum())
 ```
 
 The `[` operator provides a shorthand for
-[`get_query()`](https://tanaylab.github.io/dafJuliaWrapper/reference/get_query.md):
+[`get_query()`](https://tanaylab.github.io/dafrjulia/reference/get_query.md):
 
 ``` r
+
 daf[Axis("cell") |> LookupVector("batch")]
 ```
 
 ## Inspecting a Daf Object
 
 ``` r
+
 # Print a summary
 print(daf)
 
@@ -137,9 +147,10 @@ has_matrix(daf, "cell", "gene", "UMIs")
 
 ## Working with Example Data
 
-dafJuliaWrapper includes example datasets for testing and exploration:
+dafrjulia includes example datasets for testing and exploration:
 
 ``` r
+
 example_daf <- example_cells_daf()
 print(example_daf)
 ```
@@ -149,6 +160,6 @@ print(example_daf)
 - [DataAxesFormats.jl
   documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/)
   for the full Julia API reference
-- [dafJuliaWrapper package
-  documentation](https://tanaylab.github.io/dafJuliaWrapper/) for the
-  complete R API reference
+- [dafrjulia package
+  documentation](https://tanaylab.github.io/dafrjulia/) for the complete
+  R API reference

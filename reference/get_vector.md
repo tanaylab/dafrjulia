@@ -40,7 +40,7 @@ default is NA, a vector of NAs with appropriate length is returned.
 For zero-copy-eligible element types (numeric/integer), the returned
 vector is a live view over the Julia-side memory (via `jlview`).
 Mutating the Daf through
-[`set_vector()`](https://tanaylab.github.io/dafJuliaWrapper/reference/set_vector.md)
+[`set_vector()`](https://tanaylab.github.io/dafrjulia/reference/set_vector.md)
 or file-mapped writes may change the contents of a previously returned
 vector. Call `unname(as.vector(v))` or an explicit `as.numeric(v)` to
 take a detached copy when stability across modifications is required.

@@ -12,16 +12,16 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/tanaylab/dafJuliaWrapper/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/tanaylab/dafrjulia/blob/main/DESCRIPTION)
 
-Lifshitz A, Ben-Kiki O (2026). *dafJuliaWrapper: R Interface to the
-Julia 'DataAxesFormats' Package*. R package version 0.1.0,
-<https://tanaylab.github.io/dafJuliaWrapper/>.
+Lifshitz A, Ben-Kiki O (2026). *dafrjulia: R Interface to the Julia
+'DataAxesFormats' Package*. R package version 0.1.0,
+<https://tanaylab.github.io/dafrjulia/>.
 
     @Manual{,
-      title = {dafJuliaWrapper: R Interface to the Julia 'DataAxesFormats' Package},
+      title = {dafrjulia: R Interface to the Julia 'DataAxesFormats' Package},
       author = {Aviezer Lifshitz and Oren Ben-Kiki},
       year = {2026},
       note = {R package version 0.1.0},
-      url = {https://tanaylab.github.io/dafJuliaWrapper/},
+      url = {https://tanaylab.github.io/dafrjulia/},
     }

@@ -1,13 +1,13 @@
-# dafJuliaWrapper - Data in Axes in Formats for R
+# dafrjulia - Data in Axes in Formats for R
 
-The goal of dafJuliaWrapper is to provide R bindings for the
+The goal of dafrjulia is to provide R bindings for the
 [DataAxesFormats.jl](https://github.com/tanaylab/DataAxesFormats.jl)
 Julia package, which provides a uniform generic interface for accessing
 1D and 2D data arranged along some set of axes. This is a much-needed
 generalization of the [AnnData](https://github.com/scverse/anndata)
 functionality.
 
-The dafJuliaWrapper package enables R users to access `Daf` data using
+The dafrjulia package enables R users to access `Daf` data using
 familiar R interfaces while leveraging the powerful implementation
 provided by the Julia package. The package follows a functional
 interface similar to the Julia implementation, with some limitations due
@@ -16,16 +16,17 @@ to the limitations of JuliaCall (see
 
 ## Installation
 
-You can install the development version of dafJuliaWrapper from
+You can install the development version of dafrjulia from
 [GitHub](https://github.com/) with:
 
 ``` r
+
 # install.packages("remotes")
-remotes::install_github("tanaylab/dafJuliaWrapper")
+remotes::install_github("tanaylab/dafrjulia")
 ```
 
-Note that dafJuliaWrapper requires the Julia programming language and
-the DataAxesFormats.jl package to be installed. The package uses
+Note that dafrjulia requires the Julia programming language and the
+DataAxesFormats.jl package to be installed. The package uses
 [JuliaCall](https://github.com/JuliaInterop/JuliaCall) to interface with
 Julia from R.
 
@@ -35,12 +36,14 @@ The R package provides an interface similar to the Julia package, with
 functions that mirror the Julia API:
 
 ``` r
-library(dafJuliaWrapper)
+
+library(dafrjulia)
 # Setup connection to Julia
 setup_daf()
 ```
 
 ``` r
+
 # Create a DAF object in memory
 daf <- memory_daf("example")
 
@@ -75,11 +78,12 @@ get_dataframe(daf, "obs", c("score"))
 
 ## Querying Data
 
-One of the powerful features of dafJuliaWrapper is its query language.
-You can use queries to access and transform data flexibly. The package
-provides a convenient `[` operator for concise query syntax:
+One of the powerful features of dafrjulia is its query language. You can
+use queries to access and transform data flexibly. The package provides
+a convenient `[` operator for concise query syntax:
 
 ``` r
+
 # Create a sample dataset
 daf <- memory_daf("query_examples")
 add_axis(daf, "cell", c("A", "B", "C"))
@@ -159,18 +163,16 @@ for more details about the query language.
 
 ### Note on Data Transfer
 
-The dafJuliaWrapper package uses
-[jlview](https://github.com/tanaylab/jlview) for zero-copy transfer of
-arrays from Julia to R. However, writing data from R to Julia (e.g., via
-`set_vector` or `set_matrix`) still involves copying through JuliaCall.
-This means that `get_empty_dense_vector`, `get_empty_sparse_vector` and
-their matrix equivalents do not provide the in-place filling benefit
-they offer in Julia.
+The dafrjulia package uses [jlview](https://github.com/tanaylab/jlview)
+for zero-copy transfer of arrays from Julia to R. However, writing data
+from R to Julia (e.g., via `set_vector` or `set_matrix`) still involves
+copying through JuliaCall. This means that `get_empty_dense_vector`,
+`get_empty_sparse_vector` and their matrix equivalents do not provide
+the in-place filling benefit they offer in Julia.
 
 ## Key Features
 
-The dafJuliaWrapper package inherits the key features of
-DataAxesFormats.jl:
+The dafrjulia package inherits the key features of DataAxesFormats.jl:
 
 - Support for both in-memory and persistent data storage
 - Thread-safe implementation using read/write locks
@@ -190,13 +192,12 @@ on user feedback. Comments, bug reports, and PRs are welcome!
 
 ### Future Plans
 
-In future releases, we plan to implement a dplyr-like API for
-dafJuliaWrapper to make it even more intuitive for R users. This will
-allow you to use familiar verbs like
-[`filter()`](https://rdrr.io/r/stats/filter.html), `select()`,
-`mutate()`, and `summarize()` with dafJuliaWrapper objects, combining
-the power of the Julia implementation with the ergonomics of the
-tidyverse.
+In future releases, we plan to implement a dplyr-like API for dafrjulia
+to make it even more intuitive for R users. This will allow you to use
+familiar verbs like [`filter()`](https://rdrr.io/r/stats/filter.html),
+`select()`, `mutate()`, and `summarize()` with dafrjulia objects,
+combining the power of the Julia implementation with the ergonomics of
+the tidyverse.
 
 ## License (MIT)
 

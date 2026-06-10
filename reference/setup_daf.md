@@ -12,14 +12,14 @@ setup_daf(
   seed = NULL,
   env_path = getwd(),
   installJulia = FALSE,
-  force_dev = getOption("dafJuliaWrapper.force_dev", FALSE),
+  force_dev = getOption("dafrjulia.force_dev", FALSE),
   confirm_install = NULL,
   level = "Warn",
   show_time = TRUE,
   show_module = TRUE,
   show_location = FALSE,
-  julia_environment = getOption("dafJuliaWrapper.julia_environment", "default"),
-  JULIA_HOME = getOption("dafJuliaWrapper.JULIA_HOME", NULL),
+  julia_environment = getOption("dafrjulia.julia_environment", "default"),
+  JULIA_HOME = getOption("dafrjulia.JULIA_HOME", NULL),
   ...
 )
 ```
@@ -46,7 +46,7 @@ setup_daf(
 - force_dev:
 
   (Default=FALSE) Whether to force dev versions of packages, default
-  value comes from getOption("dafJuliaWrapper.force_dev")
+  value comes from getOption("dafrjulia.force_dev")
 
 - confirm_install:
 
@@ -77,12 +77,12 @@ setup_daf(
   environment (default if option not set), "default" uses the default
   Julia environment, any other value can be the path to a custom
   environment. Default value comes from
-  getOption("dafJuliaWrapper.julia_environment")
+  getOption("dafrjulia.julia_environment")
 
 - JULIA_HOME:
 
   The path to the Julia installation. Default value comes from
-  getOption("dafJuliaWrapper.JULIA_HOME"). See
+  getOption("dafrjulia.JULIA_HOME"). See
   [`julia_setup`](https://rdrr.io/pkg/JuliaCall/man/julia_setup.html)
   for more details.
 
@@ -121,7 +121,7 @@ setup_daf(julia_environment = "default")
 setup_daf(pkg_check = FALSE)
 
 # Set global option
-options(dafJuliaWrapper.julia_environment = "default")
+options(dafrjulia.julia_environment = "default")
 setup_daf() # Will use the default Julia environment
 } # }
 ```

@@ -51,7 +51,7 @@ For zero-copy-eligible element types, the returned matrix is a live view
 over Julia-side memory; sparse CSC matrices are also zero-copy via
 [`jlview::jlview_sparse`](https://rdrr.io/pkg/jlview/man/jlview_sparse.html).
 Mutating the Daf through
-[`set_matrix()`](https://tanaylab.github.io/dafJuliaWrapper/reference/set_matrix.md)
+[`set_matrix()`](https://tanaylab.github.io/dafrjulia/reference/set_matrix.md)
 or file-mapped writes may alter the contents of a previously returned
 matrix. Copy explicitly if stability across modifications is required.
 See the Julia

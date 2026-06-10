@@ -13,7 +13,7 @@ An R6 object of class `DafAnnData`.
 Wraps a Daf object and provides AnnData-compatible accessors (`$X`,
 `$obs`, `$var`, `$layers`, `$uns`). This is a read-only facade: reads
 are lazy and go through to the underlying Daf object on demand,
-benefiting from dafJuliaWrapper's R-side caching.
+benefiting from dafrjulia's R-side caching.
 
 The facade maps AnnData concepts to Daf data:
 

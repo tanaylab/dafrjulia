@@ -22,7 +22,7 @@ A character vector of scalar property names
 
 This function provides the complete set of available scalar properties
 that can be retrieved using
-[`get_scalar()`](https://tanaylab.github.io/dafJuliaWrapper/reference/get_scalar.md).
+[`get_scalar()`](https://tanaylab.github.io/dafrjulia/reference/get_scalar.md).
 See the Julia
 [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.scalars_set)
 for details.

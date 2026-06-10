@@ -3,4 +3,4 @@
 ### All vignettes
 
 - [Getting Started with
-  dafJuliaWrapper](https://tanaylab.github.io/dafJuliaWrapper/articles/dafJuliaWrapper.md):
+  dafrjulia](https://tanaylab.github.io/dafrjulia/articles/dafJuliaWrapper.md):

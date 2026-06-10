@@ -32,7 +32,7 @@ A character vector of axis entry names
 Axis entries provide names for each position along an axis, such as gene
 names for a "gene" axis or cell barcodes for a "cell" axis. These entry
 names can be used to look up specific indices using the
-[`axis_indices()`](https://tanaylab.github.io/dafJuliaWrapper/reference/axis_indices.md)
+[`axis_indices()`](https://tanaylab.github.io/dafrjulia/reference/axis_indices.md)
 function. See the Julia
 [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/readers.html#DataAxesFormats.Readers.axis_vector)
 for details.
