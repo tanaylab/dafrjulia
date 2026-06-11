@@ -12,7 +12,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/tanaylab/dafrjulia/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/tanaylab/dafrjulia/blob/v0.1.1/DESCRIPTION)
 
 Lifshitz A, Ben-Kiki O (2026). *dafrjulia: R Interface to the Julia
 'DataAxesFormats' Package*. R package version 0.1.1,
