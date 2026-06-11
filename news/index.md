@@ -1,5 +1,28 @@
 # Changelog
 
+## dafrjulia 0.1.1
+
+**Tracks DataAxesFormats.jl 0.3.0.** DataAxesFormats 0.3.0 requires
+Julia 1.12 and changed the empty-buffer builder protocol in
+`writers.jl`, which broke the wrapper’s `filled_empty_sparse_vector` /
+`filled_empty_sparse_matrix` (they hit `MethodError`s on the new
+signatures). Fixed:
+
+- `get_empty_sparse_vector` / `get_empty_sparse_matrix` capture the
+  `cache_group` the builder now returns and hold it until the paired
+  `filled_*` call. `filled_empty_sparse_vector` /
+  `filled_empty_sparse_matrix` thread that `cache_group` to the Julia
+  finalizer and release the data write lock the builder opened (the old
+  `_b` binding helpers a non-Julia wrapper used to rely on were removed
+  in 0.3.0).
+- `get_empty_dense_vector` / `get_empty_dense_matrix` unwrap the buffer
+  from the new `(buffer, cache_group)` return tuple and release the
+  write lock (dense buffers have no separate finalizer step).
+
+The public R API (function names, arguments, return shapes) is
+unchanged. Full test suite passes against DataAxesFormats 0.3.0 on Julia
+1.12.
+
 ## dafrjulia 0.1.0
 
 **First CRAN release. Renamed from `dafr` — the `dafr` name has been

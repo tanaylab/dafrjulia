@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">dafrjulia</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,6 +36,15 @@
       <small>Source: <a href="https://github.com/tanaylab/dafrjulia/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.1.1" id="dafrjulia-011">dafrjulia 0.1.1<a class="anchor" aria-label="anchor" href="#dafrjulia-011"></a></h2>
+<p><strong>Tracks DataAxesFormats.jl 0.3.0.</strong> DataAxesFormats 0.3.0 requires Julia 1.12 and changed the empty-buffer builder protocol in <code>writers.jl</code>, which broke the wrapper’s <code>filled_empty_sparse_vector</code> / <code>filled_empty_sparse_matrix</code> (they hit <code>MethodError</code>s on the new signatures). Fixed:</p>
+<ul><li>
+<code>get_empty_sparse_vector</code> / <code>get_empty_sparse_matrix</code> capture the <code>cache_group</code> the builder now returns and hold it until the paired <code>filled_*</code> call. <code>filled_empty_sparse_vector</code> / <code>filled_empty_sparse_matrix</code> thread that <code>cache_group</code> to the Julia finalizer and release the data write lock the builder opened (the old <code>_b</code> binding helpers a non-Julia wrapper used to rely on were removed in 0.3.0).</li>
+<li>
+<code>get_empty_dense_vector</code> / <code>get_empty_dense_matrix</code> unwrap the buffer from the new <code>(buffer, cache_group)</code> return tuple and release the write lock (dense buffers have no separate finalizer step).</li>
+</ul><p>The public R API (function names, arguments, return shapes) is unchanged. Full test suite passes against DataAxesFormats 0.3.0 on Julia 1.12.</p>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.0" id="dafrjulia-010">dafrjulia 0.1.0<a class="anchor" aria-label="anchor" href="#dafrjulia-010"></a></h2>
 <p><strong>First CRAN release. Renamed from <code>dafr</code> — the <code>dafr</code> name has been freed for a native-R reimplementation in a separate repository. This package is the JuliaCall-based wrapper around DataAxesFormats.jl and has been renamed accordingly.</strong></p>

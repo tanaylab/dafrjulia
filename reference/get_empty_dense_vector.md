@@ -35,10 +35,10 @@ get_empty_dense_vector(daf, axis, name, eltype, overwrite = FALSE)
 
 ## Value
 
-A Julia vector object that can be filled in-place
+A Julia vector object backed by the (uninitialized) property storage
 
 ## Details
 
 See the Julia
-[documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/writers.html#DataAxesFormats.Writers.get_empty_dense_vector!)
+[documentation](https://tanaylab.github.io/DataAxesFormats.jl/writers.html#DataAxesFormats.Writers.get_empty_dense_vector!)
 for details.
