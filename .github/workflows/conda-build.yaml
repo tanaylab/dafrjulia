@@ -42,9 +42,11 @@ jobs:
       - name: Install conda-build and anaconda-client
         # Install into the base env: `conda build` is a plugin of the conda
         # driver (which lives in base), so installing it into the activated
-        # `test` env leaves `conda build` an "invalid choice".
+        # `test` env leaves `conda build` an "invalid choice". conda-verify is
+        # dropped - it has no build for base's python 3.13 and is an optional
+        # package linter, not required by `conda build`.
         run: |
-          conda install -n base -y conda-build anaconda-client conda-verify
+          conda install -n base -y -c conda-forge conda-build anaconda-client
 
       - name: Extract version from DESCRIPTION
         id: version
