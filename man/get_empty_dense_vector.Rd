@@ -18,7 +18,7 @@ get_empty_dense_vector(daf, axis, name, eltype, overwrite = FALSE)
 \item{overwrite}{Whether to overwrite if vector already exists (FALSE by default)}
 }
 \value{
-A Julia vector object that can be filled in-place
+A Julia vector object backed by the (uninitialized) property storage
 }
 \description{
 Returns an empty dense vector for the specified axis and property, which can be filled
@@ -26,5 +26,5 @@ in-place. This is useful for efficiently constructing large vectors without allo
 temporary storage. After filling, the vector is automatically stored in the Daf object.
 }
 \details{
-See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/writers.html#DataAxesFormats.Writers.get_empty_dense_vector!}{documentation} for details.
+See the Julia \href{https://tanaylab.github.io/DataAxesFormats.jl/writers.html#DataAxesFormats.Writers.get_empty_dense_vector!}{documentation} for details.
 }
