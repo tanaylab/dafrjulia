@@ -48,7 +48,7 @@ jobs:
       # include the Julia version and is content-hash validated by Julia's
       # own precompile machinery, so a cached build is never reused against a
       # changed DataAxesFormats/TanayLabUtilities source.
-      - uses: julia-actions/cache@v2
+      - uses: julia-actions/cache@v3
         with:
           cache-name: ${{ runner.os }}-R${{ steps.setup-r.outputs.installed-r-version }}
 
