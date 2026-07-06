@@ -1,0 +1,20 @@
+test_that("files <-> zarr conversion preserves data", {
+    skip_if(!JULIA_AVAILABLE, "Julia not available")
+    fdir <- file.path(tempdir(), "conv.files")
+    unlink(fdir, recursive = TRUE, force = TRUE)
+    d <- files_daf(fdir, "w", name = "c!")
+    add_axis(d, "cell", c("A", "B", "C"))
+    set_vector(d, "cell", "score", c(1.0, 2.0, 3.0))
+
+    zpath <- file.path(tempdir(), "conv.daf.zarr")
+    unlink(zpath, recursive = TRUE, force = TRUE)
+    files_to_zarr(fdir, zpath)
+    z <- zarr_daf(zpath, "r")
+    expect_equal(as.numeric(get_vector(z, "cell", "score")), c(1, 2, 3))
+
+    fdir2 <- file.path(tempdir(), "conv2.files")
+    unlink(fdir2, recursive = TRUE, force = TRUE)
+    zarr_to_files(zpath, fdir2)
+    d2 <- files_daf(fdir2, "r")
+    expect_equal(as.numeric(get_vector(d2, "cell", "score")), c(1, 2, 3))
+})
