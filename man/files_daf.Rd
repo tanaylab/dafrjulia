@@ -4,7 +4,7 @@
 \alias{files_daf}
 \title{Create a Daf object with file-based storage}
 \usage{
-files_daf(path, mode = "r", name = NULL)
+files_daf(path, mode = "r", name = NULL, packed = FALSE)
 }
 \arguments{
 \item{path}{Path to the files storage location}
@@ -12,13 +12,15 @@ files_daf(path, mode = "r", name = NULL)
 \item{mode}{Mode to open the storage ("r" for read-only, "r+" for read-write)}
 
 \item{name}{Optional name for the Daf object}
+
+\item{packed}{If TRUE, store arrays chunked and compressed (DataAxesFormats v0.3.0+).}
 }
 \value{
 A Daf object with file-based storage
 }
 \description{
 This function creates a Daf object that stores data in disk files. See the Julia
-\href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/files_format.html}{documentation} for details.
+\href{https://tanaylab.github.io/DataAxesFormats.jl/v0.3.0/files_format.html}{documentation} for details.
 }
 \examples{
 \dontrun{

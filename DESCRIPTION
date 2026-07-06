@@ -1,6 +1,6 @@
 Package: dafrjulia
 Title: R Interface to the Julia 'DataAxesFormats' Package
-Version: 0.1.1
+Version: 0.1.1.9000
 Authors@R: c(
     person("Aviezer", "Lifshitz", , "aviezer.lifshitz@weizmann.ac.il", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-8458-9507")),
@@ -55,6 +55,7 @@ Collate:
     'cache.R'
     'complete.R'
     'concat.R'
+    'config.R'
     'contracts.R'
     'copies.R'
     'dafrjulia-package.R'
@@ -70,6 +71,7 @@ Collate:
     'operations.R'
     'query.R'
     'reconstruction.R'
+    'reorder.R'
     'setup.R'
     'utils.R'
     'views.R'

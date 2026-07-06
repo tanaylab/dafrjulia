@@ -7,13 +7,14 @@
 #' @param leaf Path to the leaf repository, which will be traced back through its ancestors
 #' @param mode Mode to open the repositories ("r" for read-only, "r+" for read-write)
 #' @param name Optional name for the complete Daf object
+#' @param packed If TRUE, open the writable leaf repository with packed storage.
 #' @return A Daf object combining the leaf repository with all its ancestors
 #' @details If mode is "r+", only the first (leaf) repository is opened in write mode.
 #'   The `base_daf_repository` path is relative to the directory containing the child repository.
 #'
 #'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/complete.html) for details.
 #' @export
-complete_daf <- function(leaf, mode = "r", name = NULL) {
+complete_daf <- function(leaf, mode = "r", name = NULL, packed = FALSE) {
     # Validate mode parameter
     if (!mode %in% c("r", "r+")) {
         cli::cli_abort("Mode must be one of 'r' or 'r+'")
@@ -25,7 +26,7 @@ complete_daf <- function(leaf, mode = "r", name = NULL) {
     leaf <- normalizePath(leaf, mustWork = FALSE)
 
     # Call the Julia implementation directly
-    jl_obj <- julia_call("DataAxesFormats.complete_daf", leaf, mode, name = name)
+    jl_obj <- julia_call("DataAxesFormats.complete_daf", leaf, mode, name = name, packed = packed)
 
     return(Daf(jl_obj))
 }
@@ -84,28 +85,23 @@ complete_chain <- function(base_daf, new_daf, name = NULL, axes = NULL, data = N
 
 #' Open a Daf repository based on path
 #'
-#' This function determines whether to open a files-based Daf or an HDF5-based Daf
-#' based on the file path.
+#' Dispatches to the appropriate backend based on `path`, mirroring Julia's
+#' `open_daf`: `.daf.zarr`/`.daf.zarr.zip` open a Zarr Daf; `.daf.zip` opens a ZIP
+#' Daf; `http(s)://` opens a read-only HTTP Daf; `.h5df` opens an HDF5 Daf;
+#' otherwise a native files Daf.
 #'
-#' @param path Path to the Daf repository
-#' @param mode Mode to open the storage ("r" for read-only, "r+" for read-write)
+#' @param path Path (or URL) to the Daf repository
+#' @param mode Mode to open the storage ("r", "r+", "w", or "w+"; HTTP is "r" only)
 #' @param name Optional name for the Daf object
-#' @return A Daf object (either files_daf or h5df)
-#' @details If the path ends with `.h5df` or contains `.h5dfs#` (followed by a group path),
-#'   then it opens an HDF5 file (or a group in one). Otherwise, it opens a files-based Daf.
-#'
-#'   As a shorthand, you can specify a path to a group within an HDF5 file by using a path
-#'   with a `.h5dfs` suffix, followed by `#` and the path of the group in the file.
-#'
-#'   See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/complete.html) for details.
+#' @param packed If TRUE, store arrays chunked and compressed
+#' @return A Daf object using the backend selected by `path`
+#' @details See the Julia
+#'   [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.3.0/complete.html) for details.
 #' @export
-open_daf <- function(path, mode = "r", name = NULL) {
-    # Determine the type of Daf repository based on the path
-    if (grepl("\\.h5df$", path) || grepl("\\.h5dfs#", path)) {
-        # HDF5-based Daf
-        return(h5df(path, mode, name = name))
-    } else {
-        # Files-based Daf
-        return(files_daf(path, mode, name = name))
+open_daf <- function(path, mode = "r", name = NULL, packed = FALSE) {
+    if (!grepl("^https?://", path)) {
+        path <- normalizePath(path, mustWork = FALSE)
     }
+    jl_obj <- julia_call("DataAxesFormats.open_daf", path, mode, name = name, packed = packed)
+    return(Daf(jl_obj))
 }

@@ -4,7 +4,7 @@
 \alias{complete_daf}
 \title{Complete chain of Daf repositories}
 \usage{
-complete_daf(leaf, mode = "r", name = NULL)
+complete_daf(leaf, mode = "r", name = NULL, packed = FALSE)
 }
 \arguments{
 \item{leaf}{Path to the leaf repository, which will be traced back through its ancestors}
@@ -12,6 +12,8 @@ complete_daf(leaf, mode = "r", name = NULL)
 \item{mode}{Mode to open the repositories ("r" for read-only, "r+" for read-write)}
 
 \item{name}{Optional name for the complete Daf object}
+
+\item{packed}{If TRUE, open the writable leaf repository with packed storage.}
 }
 \value{
 A Daf object combining the leaf repository with all its ancestors

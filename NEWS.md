@@ -1,3 +1,24 @@
+# dafrjulia (development version)
+
+## New Features (DataAxesFormats 0.3.0 catch-up)
+
+* New storage backends: `zarr_daf()`, `zip_daf()`, and read-only `http_daf()`.
+* `packed = TRUE` for chunked+compressed storage on `files_daf()`, `h5df()`,
+  `zarr_daf()`, `zip_daf()`, `open_daf()`, and `complete_daf()`.
+* `open_daf()` now delegates to the Julia dispatch, routing `.daf.zarr`,
+  `.daf.zip`, `http(s)://`, and `.h5df` paths to the correct backend (it
+  previously opened `.daf.zarr`/`.daf.zip` as plain files repositories).
+* Format conversion: `files_to_zarr()` and `zarr_to_files()`.
+* Axis reordering: `reorder_axes()` and `reset_reorder_axes()`.
+* Configuration: `daf_packed_options()` and `enforce_contracts()`.
+
+## Bug Fixes
+
+* Reading a vector or matrix from packed/chunked/disk-backed storage
+  (Zarr/Zip/Http or `packed = TRUE`) no longer segfaults the R process: the
+  zero-copy `jlview` path is now restricted to genuine in-memory arrays, and
+  lazy arrays are materialized via a copying fallback.
+
 # dafrjulia 0.1.1
 
 **Tracks DataAxesFormats.jl 0.3.0.** DataAxesFormats 0.3.0 requires Julia
