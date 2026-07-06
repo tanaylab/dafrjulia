@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">dafrjulia</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -388,6 +388,41 @@
 
         </dt>
         <dd>Open a Daf repository based on path</dd>
+
+        <dt>
+
+          <code><a href="zarr_daf.html">zarr_daf()</a></code>
+
+        </dt>
+        <dd>Create a Daf object with Zarr-based storage</dd>
+
+        <dt>
+
+          <code><a href="zip_daf.html">zip_daf()</a></code>
+
+        </dt>
+        <dd>Create a Daf object with ZIP-archive storage</dd>
+
+        <dt>
+
+          <code><a href="http_daf.html">http_daf()</a></code>
+
+        </dt>
+        <dd>Create a read-only Daf object served over HTTP(S)</dd>
+
+        <dt>
+
+          <code><a href="files_to_zarr.html">files_to_zarr()</a></code>
+
+        </dt>
+        <dd>Convert a native files Daf to Zarr format</dd>
+
+        <dt>
+
+          <code><a href="zarr_to_files.html">zarr_to_files()</a></code>
+
+        </dt>
+        <dd>Convert a Zarr Daf to native files format</dd>
       </dl></div><div class="section level2">
       <h2 id="writers">Writers<a class="anchor" aria-label="anchor" href="#writers"></a></h2>
 
@@ -411,6 +446,20 @@
 
         </dt>
         <dd>Create a writable chain wrapper of DafReader objects</dd>
+
+        <dt>
+
+          <code><a href="reorder_axes.html">reorder_axes()</a></code>
+
+        </dt>
+        <dd>Reorder the entries of one or more axes</dd>
+
+        <dt>
+
+          <code><a href="reset_reorder_axes.html">reset_reorder_axes()</a></code>
+
+        </dt>
+        <dd>Roll back an interrupted axis reorder</dd>
       </dl></div><div class="section level2">
       <h2 id="constants-and-handlers">Constants and Handlers<a class="anchor" aria-label="anchor" href="#constants-and-handlers"></a></h2>
 
@@ -497,6 +546,20 @@
 
         </dt>
         <dd>Set the handler for inefficient matrix access</dd>
+
+        <dt>
+
+          <code><a href="daf_packed_options.html">daf_packed_options()</a></code>
+
+        </dt>
+        <dd>Get or set the packing (chunk/compression) options</dd>
+
+        <dt>
+
+          <code><a href="enforce_contracts.html">enforce_contracts()</a></code>
+
+        </dt>
+        <dd>Get or set whether Daf contracts are enforced</dd>
       </dl></div><div class="section level2">
       <h2 id="axes-and-properties">Axes and Properties<a class="anchor" aria-label="anchor" href="#axes-and-properties"></a></h2>
 

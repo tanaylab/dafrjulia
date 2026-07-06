@@ -8,7 +8,7 @@ repository (if any).
 ## Usage
 
 ``` r
-complete_daf(leaf, mode = "r", name = NULL)
+complete_daf(leaf, mode = "r", name = NULL, packed = FALSE)
 ```
 
 ## Arguments
@@ -25,6 +25,10 @@ complete_daf(leaf, mode = "r", name = NULL)
 - name:
 
   Optional name for the complete Daf object
+
+- packed:
+
+  If TRUE, open the writable leaf repository with packed storage.
 
 ## Value
 

@@ -1,5 +1,46 @@
 # Changelog
 
+## dafrjulia (development version)
+
+### New Features (DataAxesFormats 0.3.0 catch-up)
+
+- New storage backends:
+  [`zarr_daf()`](https://tanaylab.github.io/dafrjulia/reference/zarr_daf.md),
+  [`zip_daf()`](https://tanaylab.github.io/dafrjulia/reference/zip_daf.md),
+  and read-only
+  [`http_daf()`](https://tanaylab.github.io/dafrjulia/reference/http_daf.md).
+- `packed = TRUE` for chunked+compressed storage on
+  [`files_daf()`](https://tanaylab.github.io/dafrjulia/reference/files_daf.md),
+  [`h5df()`](https://tanaylab.github.io/dafrjulia/reference/h5df.md),
+  [`zarr_daf()`](https://tanaylab.github.io/dafrjulia/reference/zarr_daf.md),
+  [`zip_daf()`](https://tanaylab.github.io/dafrjulia/reference/zip_daf.md),
+  [`open_daf()`](https://tanaylab.github.io/dafrjulia/reference/open_daf.md),
+  and
+  [`complete_daf()`](https://tanaylab.github.io/dafrjulia/reference/complete_daf.md).
+- [`open_daf()`](https://tanaylab.github.io/dafrjulia/reference/open_daf.md)
+  now delegates to the Julia dispatch, routing `.daf.zarr`, `.daf.zip`,
+  `http(s)://`, and `.h5df` paths to the correct backend (it previously
+  opened `.daf.zarr`/`.daf.zip` as plain files repositories).
+- Format conversion:
+  [`files_to_zarr()`](https://tanaylab.github.io/dafrjulia/reference/files_to_zarr.md)
+  and
+  [`zarr_to_files()`](https://tanaylab.github.io/dafrjulia/reference/zarr_to_files.md).
+- Axis reordering:
+  [`reorder_axes()`](https://tanaylab.github.io/dafrjulia/reference/reorder_axes.md)
+  and
+  [`reset_reorder_axes()`](https://tanaylab.github.io/dafrjulia/reference/reset_reorder_axes.md).
+- Configuration:
+  [`daf_packed_options()`](https://tanaylab.github.io/dafrjulia/reference/daf_packed_options.md)
+  and
+  [`enforce_contracts()`](https://tanaylab.github.io/dafrjulia/reference/enforce_contracts.md).
+
+### Bug Fixes
+
+- Reading a vector or matrix from packed/chunked/disk-backed storage
+  (Zarr/Zip/Http or `packed = TRUE`) no longer segfaults the R process:
+  the zero-copy `jlview` path is now restricted to genuine in-memory
+  arrays, and lazy arrays are materialized via a copying fallback.
+
 ## dafrjulia 0.1.1
 
 **Tracks DataAxesFormats.jl 0.3.0.** DataAxesFormats 0.3.0 requires

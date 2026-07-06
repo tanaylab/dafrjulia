@@ -2,13 +2,13 @@
 
 This function creates a Daf object that stores data in an HDF5 disk
 file. See the Julia
-[documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/h5df_format.html)
+[documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.3.0/h5df_format.html)
 for details.
 
 ## Usage
 
 ``` r
-h5df(root, mode = "r", name = NULL)
+h5df(root, mode = "r", name = NULL, packed = FALSE)
 ```
 
 ## Arguments
@@ -24,6 +24,11 @@ h5df(root, mode = "r", name = NULL)
 - name:
 
   Optional name for the Daf object
+
+- packed:
+
+  If TRUE, store arrays chunked and compressed (DataAxesFormats
+  v0.3.0+).
 
 ## Value
 

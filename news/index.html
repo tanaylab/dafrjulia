@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">dafrjulia</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,9 +33,27 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/tanaylab/dafrjulia/blob/v0.1.1/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/tanaylab/dafrjulia/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="development version" id="dafrjulia-development-version">dafrjulia (development version)<a class="anchor" aria-label="anchor" href="#dafrjulia-development-version"></a></h2>
+<div class="section level3">
+<h3 id="new-features-dataaxesformats-catch-up-development-version">New Features (DataAxesFormats 0.3.0 catch-up)<a class="anchor" aria-label="anchor" href="#new-features-dataaxesformats-catch-up-development-version"></a></h3>
+<ul><li>New storage backends: <code><a href="../reference/zarr_daf.html">zarr_daf()</a></code>, <code><a href="../reference/zip_daf.html">zip_daf()</a></code>, and read-only <code><a href="../reference/http_daf.html">http_daf()</a></code>.</li>
+<li>
+<code>packed = TRUE</code> for chunked+compressed storage on <code><a href="../reference/files_daf.html">files_daf()</a></code>, <code><a href="../reference/h5df.html">h5df()</a></code>, <code><a href="../reference/zarr_daf.html">zarr_daf()</a></code>, <code><a href="../reference/zip_daf.html">zip_daf()</a></code>, <code><a href="../reference/open_daf.html">open_daf()</a></code>, and <code><a href="../reference/complete_daf.html">complete_daf()</a></code>.</li>
+<li>
+<code><a href="../reference/open_daf.html">open_daf()</a></code> now delegates to the Julia dispatch, routing <code>.daf.zarr</code>, <code>.daf.zip</code>, <code>http(s)://</code>, and <code>.h5df</code> paths to the correct backend (it previously opened <code>.daf.zarr</code>/<code>.daf.zip</code> as plain files repositories).</li>
+<li>Format conversion: <code><a href="../reference/files_to_zarr.html">files_to_zarr()</a></code> and <code><a href="../reference/zarr_to_files.html">zarr_to_files()</a></code>.</li>
+<li>Axis reordering: <code><a href="../reference/reorder_axes.html">reorder_axes()</a></code> and <code><a href="../reference/reset_reorder_axes.html">reset_reorder_axes()</a></code>.</li>
+<li>Configuration: <code><a href="../reference/daf_packed_options.html">daf_packed_options()</a></code> and <code><a href="../reference/enforce_contracts.html">enforce_contracts()</a></code>.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-development-version">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-development-version"></a></h3>
+<ul><li>Reading a vector or matrix from packed/chunked/disk-backed storage (Zarr/Zip/Http or <code>packed = TRUE</code>) no longer segfaults the R process: the zero-copy <code>jlview</code> path is now restricted to genuine in-memory arrays, and lazy arrays are materialized via a copying fallback.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.1" id="dafrjulia-011">dafrjulia 0.1.1<a class="anchor" aria-label="anchor" href="#dafrjulia-011"></a></h2>
 <p><strong>Tracks DataAxesFormats.jl 0.3.0.</strong> DataAxesFormats 0.3.0 requires Julia 1.12 and changed the empty-buffer builder protocol in <code>writers.jl</code>, which broke the wrapper’s <code>filled_empty_sparse_vector</code> / <code>filled_empty_sparse_matrix</code> (they hit <code>MethodError</code>s on the new signatures). Fixed:</p>

@@ -116,6 +116,16 @@ Reading Daf data from different sources and formats
   : Get the complete filesystem path of a persistent Daf repository
 - [`open_daf()`](https://tanaylab.github.io/dafrjulia/reference/open_daf.md)
   : Open a Daf repository based on path
+- [`zarr_daf()`](https://tanaylab.github.io/dafrjulia/reference/zarr_daf.md)
+  : Create a Daf object with Zarr-based storage
+- [`zip_daf()`](https://tanaylab.github.io/dafrjulia/reference/zip_daf.md)
+  : Create a Daf object with ZIP-archive storage
+- [`http_daf()`](https://tanaylab.github.io/dafrjulia/reference/http_daf.md)
+  : Create a read-only Daf object served over HTTP(S)
+- [`files_to_zarr()`](https://tanaylab.github.io/dafrjulia/reference/files_to_zarr.md)
+  : Convert a native files Daf to Zarr format
+- [`zarr_to_files()`](https://tanaylab.github.io/dafrjulia/reference/zarr_to_files.md)
+  : Convert a Zarr Daf to native files format
 
 ## Writers
 
@@ -125,6 +135,10 @@ Writing Daf data to different formats
   : Convert Daf object to h5ad file
 - [`chain_writer()`](https://tanaylab.github.io/dafrjulia/reference/chain_writer.md)
   : Create a writable chain wrapper of DafReader objects
+- [`reorder_axes()`](https://tanaylab.github.io/dafrjulia/reference/reorder_axes.md)
+  : Reorder the entries of one or more axes
+- [`reset_reorder_axes()`](https://tanaylab.github.io/dafrjulia/reference/reset_reorder_axes.md)
+  : Roll back an interrupted axis reorder
 
 ## Constants and Handlers
 
@@ -154,6 +168,10 @@ Constants and handler functions
   : Handler types for abnormal operations
 - [`inefficient_action_handler()`](https://tanaylab.github.io/dafrjulia/reference/inefficient_action_handler.md)
   : Set the handler for inefficient matrix access
+- [`daf_packed_options()`](https://tanaylab.github.io/dafrjulia/reference/daf_packed_options.md)
+  : Get or set the packing (chunk/compression) options
+- [`enforce_contracts()`](https://tanaylab.github.io/dafrjulia/reference/enforce_contracts.md)
+  : Get or set whether Daf contracts are enforced
 
 ## Axes and Properties
 

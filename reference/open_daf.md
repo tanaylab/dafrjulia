@@ -1,42 +1,40 @@
 # Open a Daf repository based on path
 
-This function determines whether to open a files-based Daf or an
-HDF5-based Daf based on the file path.
+Dispatches to the appropriate backend based on `path`, mirroring Julia's
+`open_daf`: `.daf.zarr`/`.daf.zarr.zip` open a Zarr Daf; `.daf.zip`
+opens a ZIP Daf; `http(s)://` opens a read-only HTTP Daf; `.h5df` opens
+an HDF5 Daf; otherwise a native files Daf.
 
 ## Usage
 
 ``` r
-open_daf(path, mode = "r", name = NULL)
+open_daf(path, mode = "r", name = NULL, packed = FALSE)
 ```
 
 ## Arguments
 
 - path:
 
-  Path to the Daf repository
+  Path (or URL) to the Daf repository
 
 - mode:
 
-  Mode to open the storage ("r" for read-only, "r+" for read-write)
+  Mode to open the storage ("r", "r+", "w", or "w+"; HTTP is "r" only)
 
 - name:
 
   Optional name for the Daf object
 
+- packed:
+
+  If TRUE, store arrays chunked and compressed
+
 ## Value
 
-A Daf object (either files_daf or h5df)
+A Daf object using the backend selected by `path`
 
 ## Details
 
-If the path ends with `.h5df` or contains `.h5dfs#` (followed by a group
-path), then it opens an HDF5 file (or a group in one). Otherwise, it
-opens a files-based Daf.
-
-As a shorthand, you can specify a path to a group within an HDF5 file by
-using a path with a `.h5dfs` suffix, followed by `#` and the path of the
-group in the file.
-
 See the Julia
-[documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/complete.html)
+[documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.3.0/complete.html)
 for details.

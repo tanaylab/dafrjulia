@@ -105,6 +105,7 @@
 <url><loc>https://tanaylab.github.io/dafrjulia/reference/create_contract.html</loc></url>
 <url><loc>https://tanaylab.github.io/dafrjulia/reference/daf_as_h5ad.html</loc></url>
 <url><loc>https://tanaylab.github.io/dafrjulia/reference/daf_name.html</loc></url>
+<url><loc>https://tanaylab.github.io/dafrjulia/reference/daf_packed_options.html</loc></url>
 <url><loc>https://tanaylab.github.io/dafrjulia/reference/dafrjulia-package.html</loc></url>
 <url><loc>https://tanaylab.github.io/dafrjulia/reference/delete_axis.html</loc></url>
 <url><loc>https://tanaylab.github.io/dafrjulia/reference/delete_matrix.html</loc></url>
@@ -113,11 +114,13 @@
 <url><loc>https://tanaylab.github.io/dafrjulia/reference/deprecated-queries.html</loc></url>
 <url><loc>https://tanaylab.github.io/dafrjulia/reference/description.html</loc></url>
 <url><loc>https://tanaylab.github.io/dafrjulia/reference/empty_cache.html</loc></url>
+<url><loc>https://tanaylab.github.io/dafrjulia/reference/enforce_contracts.html</loc></url>
 <url><loc>https://tanaylab.github.io/dafrjulia/reference/escape_value.html</loc></url>
 <url><loc>https://tanaylab.github.io/dafrjulia/reference/example_cells_daf.html</loc></url>
 <url><loc>https://tanaylab.github.io/dafrjulia/reference/example_chain_daf.html</loc></url>
 <url><loc>https://tanaylab.github.io/dafrjulia/reference/example_metacells_daf.html</loc></url>
 <url><loc>https://tanaylab.github.io/dafrjulia/reference/files_daf.html</loc></url>
+<url><loc>https://tanaylab.github.io/dafrjulia/reference/files_to_zarr.html</loc></url>
 <url><loc>https://tanaylab.github.io/dafrjulia/reference/filled_empty_sparse_matrix.html</loc></url>
 <url><loc>https://tanaylab.github.io/dafrjulia/reference/filled_empty_sparse_vector.html</loc></url>
 <url><loc>https://tanaylab.github.io/dafrjulia/reference/get_dataframe.html</loc></url>
@@ -139,6 +142,7 @@
 <url><loc>https://tanaylab.github.io/dafrjulia/reference/has_query.html</loc></url>
 <url><loc>https://tanaylab.github.io/dafrjulia/reference/has_scalar.html</loc></url>
 <url><loc>https://tanaylab.github.io/dafrjulia/reference/has_vector.html</loc></url>
+<url><loc>https://tanaylab.github.io/dafrjulia/reference/http_daf.html</loc></url>
 <url><loc>https://tanaylab.github.io/dafrjulia/reference/index.html</loc></url>
 <url><loc>https://tanaylab.github.io/dafrjulia/reference/inefficient_action_handler.html</loc></url>
 <url><loc>https://tanaylab.github.io/dafrjulia/reference/install_daf_packages.html</loc></url>
@@ -159,6 +163,8 @@
 <url><loc>https://tanaylab.github.io/dafrjulia/reference/read_only.html</loc></url>
 <url><loc>https://tanaylab.github.io/dafrjulia/reference/reconstruct_axis.html</loc></url>
 <url><loc>https://tanaylab.github.io/dafrjulia/reference/relayout_matrix.html</loc></url>
+<url><loc>https://tanaylab.github.io/dafrjulia/reference/reorder_axes.html</loc></url>
+<url><loc>https://tanaylab.github.io/dafrjulia/reference/reset_reorder_axes.html</loc></url>
 <url><loc>https://tanaylab.github.io/dafrjulia/reference/scalar_contract.html</loc></url>
 <url><loc>https://tanaylab.github.io/dafrjulia/reference/scalars_set.html</loc></url>
 <url><loc>https://tanaylab.github.io/dafrjulia/reference/set_matrix.html</loc></url>
@@ -178,5 +184,8 @@
 <url><loc>https://tanaylab.github.io/dafrjulia/reference/verify_input.html</loc></url>
 <url><loc>https://tanaylab.github.io/dafrjulia/reference/verify_output.html</loc></url>
 <url><loc>https://tanaylab.github.io/dafrjulia/reference/viewer.html</loc></url>
+<url><loc>https://tanaylab.github.io/dafrjulia/reference/zarr_daf.html</loc></url>
+<url><loc>https://tanaylab.github.io/dafrjulia/reference/zarr_to_files.html</loc></url>
+<url><loc>https://tanaylab.github.io/dafrjulia/reference/zip_daf.html</loc></url>
 </urlset>
 
