@@ -1041,13 +1041,18 @@ filled_empty_sparse_vector <- function(daf, axis, name, nzind, nzval) {
     # (JuliaCall converts single-element R vectors to Julia scalars)
     jl_nzind <- to_julia_vector(as.integer(nzind))
     jl_nzval <- to_julia_vector(as.numeric(nzval))
+    # DataAxesFormats 0.3.0 added a trailing `cache_group` argument. We drive the
+    # get/filled pair with explicit values rather than a callback, so we don't
+    # carry the cache_group through; passing `nothing` skips re-caching the
+    # freshly filled vector (it is still written to storage), which is correct.
     julia_call(
         "DataAxesFormats.filled_empty_sparse_vector!",
         daf$jl_obj,
         axis,
         name,
         jl_nzind,
-        jl_nzval
+        jl_nzval,
+        julia_eval("nothing")
     )
     invisible(daf)
 }
@@ -1075,6 +1080,9 @@ filled_empty_sparse_matrix <- function(daf, rows_axis, columns_axis, name, colpt
     jl_colptr <- to_julia_vector(as.integer(colptr))
     jl_rowval <- to_julia_vector(as.integer(rowval))
     jl_nzval <- to_julia_vector(as.numeric(nzval))
+    # DataAxesFormats 0.3.0 added a trailing `cache_group` argument; passing
+    # `nothing` skips re-caching the freshly filled matrix (it is still written
+    # to storage). See filled_empty_sparse_vector for the rationale.
     julia_call(
         "DataAxesFormats.filled_empty_sparse_matrix!",
         daf$jl_obj,
@@ -1083,7 +1091,8 @@ filled_empty_sparse_matrix <- function(daf, rows_axis, columns_axis, name, colpt
         name,
         jl_colptr,
         jl_rowval,
-        jl_nzval
+        jl_nzval,
+        julia_eval("nothing")
     )
     invisible(daf)
 }
