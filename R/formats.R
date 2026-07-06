@@ -69,6 +69,43 @@ h5df <- function(root, mode = "r", name = NULL, packed = FALSE) {
     return(Daf(jl_obj))
 }
 
+#' Create a Daf object with Zarr-based storage
+#'
+#' Stores data using the Zarr format (a directory, a `.daf.zarr.zip` archive, or a
+#' remote `http(s)://` Zarr). See the Julia
+#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.3.0/zarr_format.html) for details.
+#'
+#' @param path Path to the Zarr storage (`.daf.zarr`, `.daf.zarr.zip`, `.dafs.zarr.zip#/<group>`, or an `http(s)://` URL)
+#' @param mode Mode to open the storage ("r", "r+", "w", or "w+")
+#' @param name Optional name for the Daf object
+#' @param packed If TRUE, store arrays chunked and compressed
+#' @return A Daf object with Zarr-based storage
+#' @export
+zarr_daf <- function(path, mode = "r", name = NULL, packed = FALSE) {
+    if (!grepl("^https?://", path)) {
+        path <- normalizePath(path, mustWork = FALSE)
+    }
+    jl_obj <- julia_call("DataAxesFormats.ZarrDaf", path, mode, name = name, packed = packed)
+    return(Daf(jl_obj))
+}
+
+#' Create a Daf object with ZIP-archive storage
+#'
+#' Stores data in a single append-only `.daf.zip` archive. See the Julia
+#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.3.0/zip_files.html) for details.
+#'
+#' @param path Path to the ZIP archive (`.daf.zip` or `.dafs.zip#/<group>`)
+#' @param mode Mode to open the storage ("r", "r+", "w", or "w+")
+#' @param name Optional name for the Daf object
+#' @param packed If TRUE, store arrays chunked and compressed
+#' @return A Daf object with ZIP-archive storage
+#' @export
+zip_daf <- function(path, mode = "r", name = NULL, packed = FALSE) {
+    path <- normalizePath(path, mustWork = FALSE)
+    jl_obj <- julia_call("DataAxesFormats.ZipDaf", path, mode, name = name, packed = packed)
+    return(Daf(jl_obj))
+}
+
 #' Create a read-only chain wrapper of DafReader objects
 #'
 #' This function creates a read-only chain wrapper of DafReader objects, presenting them as a single DafReader.
