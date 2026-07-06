@@ -57,12 +57,19 @@ reference:
       - complete_chain
       - complete_path
       - open_daf
+      - zarr_daf
+      - zip_daf
+      - http_daf
+      - files_to_zarr
+      - zarr_to_files
 
   - title: "Writers"
     desc: "Writing Daf data to different formats"
     contents:
       - daf_as_h5ad
       - chain_writer
+      - reorder_axes
+      - reset_reorder_axes
 
   - title: "Constants and Handlers"
     desc: "Constants and handler functions"
@@ -71,6 +78,8 @@ reference:
       - starts_with("VIEW_ALL_")
       - ends_with("_HANDLER")
       - inefficient_action_handler
+      - daf_packed_options
+      - enforce_contracts
 
   - title: "Axes and Properties"
     desc: "Functions for managing axes and properties in Daf objects"
