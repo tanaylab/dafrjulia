@@ -95,6 +95,21 @@ define_julia_functions <- function() {
         end
     end")
 
+    julia_eval("
+    function _reorder_axes!(dafs::AbstractVector, axis_names::AbstractVector, perms::AbstractVector)
+        permutations = Dict{String, Vector{Int}}()
+        for i in 1:length(axis_names)
+            permutations[String(axis_names[i])] = Vector{Int}(_to_julia_vec(perms[i]))
+        end
+        DataAxesFormats.reorder_axes!(Vector{DafWriter}(dafs), permutations)
+        return nothing
+    end")
+
+    julia_eval("
+    function _reset_reorder_axes!(dafs::AbstractVector)::Bool
+        return DataAxesFormats.reset_reorder_axes!(Vector{DafWriter}(dafs))
+    end")
+
     julia_eval("_DafReadersVector = Vector{DafReader}")
 
     # Add function to convert R strings to Julia AbstractString
