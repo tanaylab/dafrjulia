@@ -125,6 +125,32 @@ http_daf <- function(url, name = NULL, packed = FALSE) {
     return(Daf(jl_obj))
 }
 
+#' Convert a native files Daf to Zarr format
+#'
+#' @param files_path Path to the source native files Daf directory
+#' @param zarr_path Path to the destination `.daf.zarr` (created)
+#' @return NULL, invisibly. Called for its side effect.
+#' @export
+files_to_zarr <- function(files_path, zarr_path) {
+    files_path <- normalizePath(files_path, mustWork = TRUE)
+    zarr_path <- normalizePath(zarr_path, mustWork = FALSE)
+    julia_call("DataAxesFormats.files_to_zarr", files_path = files_path, zarr_path = zarr_path)
+    invisible(NULL)
+}
+
+#' Convert a Zarr Daf to native files format
+#'
+#' @param zarr_path Path to the source `.daf.zarr`
+#' @param files_path Path to the destination native files Daf directory (created)
+#' @return NULL, invisibly. Called for its side effect.
+#' @export
+zarr_to_files <- function(zarr_path, files_path) {
+    zarr_path <- normalizePath(zarr_path, mustWork = TRUE)
+    files_path <- normalizePath(files_path, mustWork = FALSE)
+    julia_call("DataAxesFormats.zarr_to_files", zarr_path = zarr_path, files_path = files_path)
+    invisible(NULL)
+}
+
 #' Create a read-only chain wrapper of DafReader objects
 #'
 #' This function creates a read-only chain wrapper of DafReader objects, presenting them as a single DafReader.
