@@ -187,13 +187,19 @@ define_julia_functions <- function() {
         is_named_mat = array isa NamedArrays.NamedMatrix
         is_named = is_named_vec || is_named_mat
         is_sparse = is_sparse_csc || is_sparse_abstract
-        flags = Bool[is_sparse, is_named, is_sparse_csc, is_sparse_abstract, is_named_vec, is_named_mat]
+        # Only a genuine in-memory dense `Array` is safe to hand to the zero-copy
+        # jlview bridge. Packed/chunked/disk-backed storage (v0.3.0 Zarr/Zip/Http
+        # or `packed=true`) yields lazy arrays with a zero-copy eltype that
+        # segfault jlview; route those through the copying fallback instead.
+        is_dense_array = !is_sparse && (stripped isa Array)
+        flags = Bool[is_sparse, is_named, is_sparse_csc, is_sparse_abstract, is_named_vec, is_named_mat, is_dense_array]
         names1 = is_named ? collect(string.(NamedArrays.names(array, 1))) : String[]
         names2 = is_named_mat ? collect(string.(NamedArrays.names(array, 2))) : String[]
-        # Eager materialisation for dense non-zero-copy types (Bool, String, etc.):
-        # the R fallback would call `collect(stripped)` anyway; doing it here
-        # saves one bridge round-trip and keeps type dispatch inside Julia.
-        if !is_sparse && !(et in _ZERO_COPY_TYPES)
+        # Eager materialisation for dense non-zero-copy types (Bool, String, etc.)
+        # and for lazy dense arrays that are not a plain `Array`: the R fallback
+        # would call `collect(stripped)` anyway; doing it here saves a bridge
+        # round-trip and keeps type dispatch inside Julia.
+        if !is_sparse && (!(et in _ZERO_COPY_TYPES) || !is_dense_array)
             stripped = collect(stripped)
         end
         return (et, flags, names1, names2, stripped)
@@ -427,8 +433,8 @@ from_julia_array <- function(julia_array) {
     prep <- JuliaCall::julia_call("_prepare_for_r", julia_array, need_return = "Julia")
     eltype_str <- JuliaCall::julia_call("getindex", prep, 1L, need_return = "R")
     flags      <- as.logical(JuliaCall::julia_call("getindex", prep, 2L, need_return = "R"))
-    if (length(flags) != 6L) {
-        cli::cli_abort("from_julia_array: Julia helper returned {length(flags)} flags; expected 6")
+    if (length(flags) != 7L) {
+        cli::cli_abort("from_julia_array: Julia helper returned {length(flags)} flags; expected 7")
     }
     is_sparse          <- flags[1]
     is_named           <- flags[2]
@@ -436,6 +442,7 @@ from_julia_array <- function(julia_array) {
     is_sparse_abstract <- flags[4]
     is_named_vec       <- flags[5]
     is_named_mat       <- flags[6]
+    is_dense_array     <- flags[7]
 
     stripped <- JuliaCall::julia_call("getindex", prep, 5L, need_return = "Julia")
 
@@ -478,8 +485,10 @@ from_julia_array <- function(julia_array) {
         return(sp)
     }
 
-    # Dense zero-copy path via jlview
-    if (eltype_str %in% zero_copy_types && !is_sparse_abstract) {
+    # Dense zero-copy path via jlview. Restricted to genuine in-memory `Array`s;
+    # lazy/packed dense arrays (is_dense_array == FALSE) fall through to the
+    # copying fallback below, which materialises `stripped` safely.
+    if (is_dense_array && eltype_str %in% zero_copy_types && !is_sparse_abstract) {
         if (is_named_vec && length(names1) > 0) {
             r_array <- jlview::jlview(julia_array, names = names1)
             # jlview may return the view with a dim attribute (observed on
