@@ -106,6 +106,25 @@ zip_daf <- function(path, mode = "r", name = NULL, packed = FALSE) {
     return(Daf(jl_obj))
 }
 
+#' Create a read-only Daf object served over HTTP(S)
+#'
+#' Opens a Daf data set served over `http://` or `https://`. Read-only; there is no
+#' `mode` argument. See the Julia
+#' [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.3.0/http_format.html) for details.
+#'
+#' @param url The `http(s)://` URL of the served Daf data set
+#' @param name Optional name for the Daf object
+#' @param packed Ignored for HTTP (kept for signature symmetry with other backends)
+#' @return A read-only Daf object
+#' @export
+http_daf <- function(url, name = NULL, packed = FALSE) {
+    if (!grepl("^https?://", url)) {
+        cli::cli_abort("{.arg url} must be an http:// or https:// URL, got {.val {url}}")
+    }
+    jl_obj <- julia_call("DataAxesFormats.HttpDaf", url, name = name, packed = packed)
+    return(Daf(jl_obj))
+}
+
 #' Create a read-only chain wrapper of DafReader objects
 #'
 #' This function creates a read-only chain wrapper of DafReader objects, presenting them as a single DafReader.
