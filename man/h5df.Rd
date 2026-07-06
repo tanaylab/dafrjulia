@@ -4,7 +4,7 @@
 \alias{h5df}
 \title{Create a Daf object with HDF5-based storage}
 \usage{
-h5df(root, mode = "r", name = NULL)
+h5df(root, mode = "r", name = NULL, packed = FALSE)
 }
 \arguments{
 \item{root}{Path to the HDF5 file, or a Julia HDF5 File or Group object}
@@ -12,13 +12,15 @@ h5df(root, mode = "r", name = NULL)
 \item{mode}{Mode to open the storage ("r" for read-only, "r+" for read-write)}
 
 \item{name}{Optional name for the Daf object}
+
+\item{packed}{If TRUE, store arrays chunked and compressed (DataAxesFormats v0.3.0+).}
 }
 \value{
 A Daf object with HDF5-based storage
 }
 \description{
 This function creates a Daf object that stores data in an HDF5 disk file. See the Julia
-\href{https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/h5df_format.html}{documentation} for details.
+\href{https://tanaylab.github.io/DataAxesFormats.jl/v0.3.0/h5df_format.html}{documentation} for details.
 }
 \examples{
 \dontrun{
