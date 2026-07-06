@@ -891,6 +891,51 @@ vector_version_counter <- function(daf, axis, name) {
     julia_call("string", julia_call("DataAxesFormats.vector_version_counter", daf$jl_obj, axis, name, need_return = "Julia"), need_return = "R")
 }
 
+# --- empty/filled builder bridge (DataAxesFormats 0.3.0) ---------------------
+#
+# As of DataAxesFormats 0.3.0 the empty-buffer builder protocol changed
+# (writers.jl):
+#   * get_empty_{dense,sparse}_{vector,matrix}! now return the buffer(s)
+#     PLUS a trailing `Maybe{CacheGroup}`, and hold an open data write lock
+#     on success.
+#   * filled_empty_sparse_{vector,matrix}! now require that cache_group as a
+#     trailing argument.
+#   * the write lock is released by the OUTER `empty_*!` callback wrapper, not
+#     by `filled_*!`. The 0.2.0 `_b` binding helpers a non-Julia wrapper used
+#     to lean on are gone.
+#
+# So a wrapper driving the get/filled pair directly (we can't hand Julia an R
+# callback) must: stash the cache_group between the two separate R calls and
+# release the lock itself. We stash it on the Daf object's cache_env (which has
+# reference semantics, so it survives across the two calls), keyed by the
+# property identity so independent pending fills don't collide.
+
+.empty_fill_key <- function(...) paste(c(...), collapse = "\r")
+
+.stash_empty_fill <- function(daf, key, cache_group) {
+    assign(paste0(".empty_fill::", key), list(cache_group = cache_group),
+        envir = daf$cache_env)
+    invisible(NULL)
+}
+
+# Returns list(found = <logical>, cache_group = <Julia obj or NULL>). A missing
+# slot means filled_* was called without a paired get_* (so no lock is held);
+# callers must not release a lock in that case.
+.pop_empty_fill <- function(daf, key) {
+    slot <- paste0(".empty_fill::", key)
+    if (!exists(slot, envir = daf$cache_env, inherits = FALSE)) {
+        return(list(found = FALSE, cache_group = NULL))
+    }
+    stashed <- get(slot, envir = daf$cache_env, inherits = FALSE)
+    rm(list = slot, envir = daf$cache_env)
+    list(found = TRUE, cache_group = stashed$cache_group)
+}
+
+.end_data_write_lock <- function(daf) {
+    julia_call("DataAxesFormats.end_data_write_lock", daf$jl_obj)
+    invisible(NULL)
+}
+
 #' Get an empty dense vector for filling
 #'
 #' Returns an empty dense vector for the specified axis and property, which can be filled
@@ -902,12 +947,15 @@ vector_version_counter <- function(daf, axis, name) {
 #' @param name Name of the vector property
 #' @param eltype Element type for the vector (e.g., "Float64", "Int32")
 #' @param overwrite Whether to overwrite if vector already exists (FALSE by default)
-#' @return A Julia vector object that can be filled in-place
-#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/v0.2.0/writers.html#DataAxesFormats.Writers.get_empty_dense_vector!) for details.
+#' @return A Julia vector object backed by the (uninitialized) property storage
+#' @details See the Julia [documentation](https://tanaylab.github.io/DataAxesFormats.jl/writers.html#DataAxesFormats.Writers.get_empty_dense_vector!) for details.
 #' @export
 get_empty_dense_vector <- function(daf, axis, name, eltype, overwrite = FALSE) {
     validate_daf_object(daf)
     julia_type <- jl_R_to_julia_type(eltype)
+    # 0.3.0 returns (vector, cache_group) and holds a write lock. A dense fill
+    # has no `filled_*` finalizer (the buffer IS the storage), so unwrap the
+    # vector and release the lock here.
     result <- julia_call(
         "DataAxesFormats.get_empty_dense_vector!",
         daf$jl_obj,
@@ -917,7 +965,9 @@ get_empty_dense_vector <- function(daf, axis, name, eltype, overwrite = FALSE) {
         overwrite = overwrite,
         need_return = "Julia"
     )
-    return(result)
+    vec <- julia_call("getindex", result, 1L, need_return = "Julia")
+    .end_data_write_lock(daf)
+    return(vec)
 }
 
 #' Get an empty sparse vector for filling
@@ -940,6 +990,9 @@ get_empty_sparse_vector <- function(daf, axis, name, eltype, nnz, indtype = "Int
     validate_daf_object(daf)
     julia_type <- jl_R_to_julia_type(eltype)
     julia_indtype <- jl_R_to_julia_type(indtype)
+    # 0.3.0 returns (nzind, nzval, cache_group) and holds a write lock until
+    # the paired filled_empty_sparse_vector() runs. Stash the cache_group so
+    # filled can thread it back and release the lock.
     result <- julia_call(
         "DataAxesFormats.get_empty_sparse_vector!",
         daf$jl_obj,
@@ -951,6 +1004,8 @@ get_empty_sparse_vector <- function(daf, axis, name, eltype, nnz, indtype = "Int
         overwrite = overwrite,
         need_return = "Julia"
     )
+    cache_group <- julia_call("getindex", result, 3L, need_return = "Julia")
+    .stash_empty_fill(daf, .empty_fill_key(axis, name), cache_group)
     return(result)
 }
 
@@ -972,6 +1027,8 @@ get_empty_sparse_vector <- function(daf, axis, name, eltype, nnz, indtype = "Int
 get_empty_dense_matrix <- function(daf, rows_axis, columns_axis, name, eltype, overwrite = FALSE) {
     validate_daf_object(daf)
     julia_type <- jl_R_to_julia_type(eltype)
+    # 0.3.0 returns (matrix, cache_group) and holds a write lock; dense has no
+    # `filled_*` finalizer, so unwrap the matrix and release the lock here.
     result <- julia_call(
         "DataAxesFormats.get_empty_dense_matrix!",
         daf$jl_obj,
@@ -982,7 +1039,9 @@ get_empty_dense_matrix <- function(daf, rows_axis, columns_axis, name, eltype, o
         overwrite = overwrite,
         need_return = "Julia"
     )
-    return(result)
+    mat <- julia_call("getindex", result, 1L, need_return = "Julia")
+    .end_data_write_lock(daf)
+    return(mat)
 }
 
 #' Get an empty sparse matrix for filling
@@ -1006,6 +1065,8 @@ get_empty_sparse_matrix <- function(daf, rows_axis, columns_axis, name, eltype, 
     validate_daf_object(daf)
     julia_type <- jl_R_to_julia_type(eltype)
     julia_indtype <- jl_R_to_julia_type(indtype)
+    # 0.3.0 returns (colptr, rowval, nzval, cache_group) and holds a write lock
+    # until the paired filled_empty_sparse_matrix() runs. Stash the cache_group.
     result <- julia_call(
         "DataAxesFormats.get_empty_sparse_matrix!",
         daf$jl_obj,
@@ -1018,6 +1079,9 @@ get_empty_sparse_matrix <- function(daf, rows_axis, columns_axis, name, eltype, 
         overwrite = overwrite,
         need_return = "Julia"
     )
+    cache_group <- julia_call("getindex", result, 4L, need_return = "Julia")
+    .stash_empty_fill(daf, .empty_fill_key(rows_axis, columns_axis, name),
+        cache_group)
     return(result)
 }
 
@@ -1041,10 +1105,10 @@ filled_empty_sparse_vector <- function(daf, axis, name, nzind, nzval) {
     # (JuliaCall converts single-element R vectors to Julia scalars)
     jl_nzind <- to_julia_vector(as.integer(nzind))
     jl_nzval <- to_julia_vector(as.numeric(nzval))
-    # DataAxesFormats 0.3.0 added a trailing `cache_group` argument. We drive the
-    # get/filled pair with explicit values rather than a callback, so we don't
-    # carry the cache_group through; passing `nothing` skips re-caching the
-    # freshly filled vector (it is still written to storage), which is correct.
+    # 0.3.0 requires the cache_group from the paired get_empty_sparse_vector();
+    # we stashed it there. Pass it through, then release the write lock that
+    # get_empty_sparse_vector() opened.
+    pending <- .pop_empty_fill(daf, .empty_fill_key(axis, name))
     julia_call(
         "DataAxesFormats.filled_empty_sparse_vector!",
         daf$jl_obj,
@@ -1052,8 +1116,11 @@ filled_empty_sparse_vector <- function(daf, axis, name, nzind, nzval) {
         name,
         jl_nzind,
         jl_nzval,
-        julia_eval("nothing")
+        pending$cache_group
     )
+    if (pending$found) {
+        .end_data_write_lock(daf)
+    }
     invisible(daf)
 }
 
@@ -1080,9 +1147,9 @@ filled_empty_sparse_matrix <- function(daf, rows_axis, columns_axis, name, colpt
     jl_colptr <- to_julia_vector(as.integer(colptr))
     jl_rowval <- to_julia_vector(as.integer(rowval))
     jl_nzval <- to_julia_vector(as.numeric(nzval))
-    # DataAxesFormats 0.3.0 added a trailing `cache_group` argument; passing
-    # `nothing` skips re-caching the freshly filled matrix (it is still written
-    # to storage). See filled_empty_sparse_vector for the rationale.
+    # 0.3.0 requires the cache_group from the paired get_empty_sparse_matrix();
+    # thread it through, then release the write lock it opened.
+    pending <- .pop_empty_fill(daf, .empty_fill_key(rows_axis, columns_axis, name))
     julia_call(
         "DataAxesFormats.filled_empty_sparse_matrix!",
         daf$jl_obj,
@@ -1092,8 +1159,11 @@ filled_empty_sparse_matrix <- function(daf, rows_axis, columns_axis, name, colpt
         jl_colptr,
         jl_rowval,
         jl_nzval,
-        julia_eval("nothing")
+        pending$cache_group
     )
+    if (pending$found) {
+        .end_data_write_lock(daf)
+    }
     invisible(daf)
 }
 
